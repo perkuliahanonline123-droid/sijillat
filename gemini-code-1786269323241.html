@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sijillāt | Beranda Utama</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #FAFAF7; color: #333; margin: 0; padding: 0; }
+        .container { max-width: 100%; padding: 20px 3%; box-sizing: border-box; margin: 0 auto; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #E5E5E5; margin-bottom: 40px; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #4A5D43; text-decoration: none; }
+        .logo-circle { width: 30px; height: 30px; background-color: #4A5D43; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .logo-circle::after { content: ''; width: 12px; height: 12px; background-color: #FAFAF7; display: block; }
+        
+        .nav-links { display: flex; gap: 30px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+        .nav-links a { text-decoration: none; color: #888; transition: color 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: #556B4E; }
+        
+        .nav-search-btn { border: 1px solid #ccc; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; background: transparent; cursor: pointer; }
+
+        .main-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 40px; flex: 1; }
+
+        .hero-section { background-color: #556B4E; border-radius: 16px; padding: 50px 40px; color: #FAFAF7; margin-bottom: 20px; text-align: center; display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:300px; }
+        .hero-tag { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #D1D8CC; margin-bottom: 15px; display: block; }
+        .hero-title { font-family: 'Playfair Display', serif; font-size: 48px; line-height: 1.3; margin: 0 0 20px 0; }
+        .hero-desc { font-size: 16px; color: #E0E5DC; margin-bottom: 40px; line-height: 1.6; max-width: 80%; }
+        
+        .btn-download { display: inline-block; padding: 14px 28px; background-color: #FAFAF7; color: #556B4E; border: 1px solid #556B4E; text-decoration: none; border-radius: 8px; font-size: 15px; font-weight: 700; transition: all 0.3s; }
+        .btn-download:hover { background-color: #D1D8CC; color: #333; }
+
+        .sidebar { background-color: #F3F1EB; border-radius: 16px; padding: 30px; height: fit-content; }
+        .sidebar-title { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #666; margin-bottom: 25px; border-bottom: 1px solid #E0DED7; padding-bottom: 15px;}
+        .sidebar-item { margin-bottom: 25px; }
+        .sidebar-item span { font-size: 11px; font-weight: 600; color: #556B4E; display: block; margin-bottom: 5px; }
+        .sidebar-item h4 { font-family: 'Playfair Display', serif; font-size: 18px; color: #333; margin: 0; line-height: 1.4; font-weight: 600; }
+        
+        .newsletter-box { background-color: #556B4E; border-radius: 12px; padding: 25px; color: white; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .newsletter-box div span { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+        .newsletter-box div h4 { margin: 5px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; }
+        .arrow-btn { width: 30px; height: 30px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0;}
+
+        .footer { text-align: center; padding: 30px 0 10px 0; margin-top: 40px; font-size: 13px; color: #888; border-top: 1px solid #E5E5E5; }
+
+        .bottom-nav {
+            display: none; 
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            border-top: 1px solid #E5E5E5; box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+            border-top-left-radius: 24px; border-top-right-radius: 24px;
+            z-index: 9999; padding: 10px 5px 20px 5px;
+            justify-content: space-around; align-items: center;
+        }
+        .bottom-nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            color: #A0AAB2; text-decoration: none; font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; 
+            flex: 1; 
+            padding: 10px 0; 
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent; 
+        }
+        .bottom-nav-item i { font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; }
+        .bottom-nav-item:hover, .bottom-nav-item:active { color: #556B4E; transform: translateY(-3px); }
+        .bottom-nav-item:hover i, .bottom-nav-item:active i { background-color: #E0E5DC; color: #556B4E; box-shadow: 0 4px 10px rgba(85, 107, 78, 0.2); }
+
+        @media (max-width: 900px) {
+            body { padding-bottom: 90px; } 
+            .bottom-nav { display: flex; }
+            .nav-links { display: none; }
+            .nav-search-btn { display: none; }
+            .main-grid { grid-template-columns: 1fr; gap: 25px; }
+            .navbar { padding: 15px 0; margin-bottom: 20px; justify-content: center;}
+            .hero-section { padding: 40px 20px; }
+            .hero-title { font-size: 36px; }
+            .hero-desc { max-width: 100%; font-size: 15px; }
+            .sidebar { padding: 20px; }
+            .newsletter-box { gap: 15px; }
+            .footer { padding-bottom: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="navbar">
+            <a href="https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec?page=index" class="logo-area" target="_top">
+                <div class="logo-circle"></div> Sijillāt
+            </a>
+            <div class="nav-links">
+                <a href="https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec?page=sertifikat" target="_top">Sertifikat</a>
+                <a href="https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec?page=ujian" target="_top">Ujian</a>
+                <a href="https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec?page=pengumuman" target="_top">Pengumuman</a>
+                <a href="https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec?page=spmbstaiis" target="_top">SPMB STAIIS</a>
+            </div>
+            <button class="nav-search-btn">CARI INFORMASI</button>
+        </div>
+
+        <div class="main-grid">
+            <div class="main-content">
+                <div class="hero-section">
+                    <span class="hero-tag">Sistem Informasi Akademik</span>
+                    <h1 class="hero-title">Selamat Datang di Sijillāt</h1>
+                    <p class="hero-desc">Pusat layanan informasi akademik terpadu. Unduh sertifikat elektronik Anda, cek jadwal ujian, dan pantau pengumuman resmi institusi dengan mudah dan cepat.</p>
+                    <a href="https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec?page=sertifikat" class="btn-download" target="_top"><i class="fas fa-search"></i> Cari Sertifikat</a>
+                </div>
+            </div>
+
+            <div class="sidebar-wrapper">
+                <div class="sidebar">
+                    <div class="sidebar-title">Informasi Menarik Lainnya</div>
+                    <div class="sidebar-item"><span>01 / Regulasi</span><h4>Panduan Asimetri Tahapan Penyelesaian Konflik</h4></div>
+                    <div class="sidebar-item"><span>02 / Linguistik</span><h4>Kompilasi Materi dan Hasil Keputusan Munas 2026</h4></div>
+                    <div class="sidebar-item"><span>03 / Akademik</span><h4>Pembaruan Status Akreditasi Unggul Institusi</h4></div>
+                </div>
+
+                <div class="newsletter-box">
+                    <div><span>Langganan Buletin</span><h4>Info Mingguan Kita</h4></div>
+                    <div class="arrow-btn">→</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            &copy; 2026 Abdul Hakim, S.H., M.A.
+        </div>
+    </div>
+
+    <!-- MENU BAWAH KHUSUS HP -->
+    <div class="bottom-nav">
+        <a href="https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec?page=sertifikat" class="bottom-nav-item" target="_top">
+            <i class="fas fa-certificate"></i><span>Sertifikat</span>
+        </a>
+        <a href="https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec?page=ujian" class="bottom-nav-item" target="_top">
+            <i class="fas fa-file-alt"></i><span>Ujian</span>
+        </a>
+        <a href="https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec?page=pengumuman" class="bottom-nav-item" target="_top">
+            <i class="fas fa-bullhorn"></i><span>Pengumuman</span>
+        </a>
+        <a href="https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec?page=spmbstaiis" class="bottom-nav-item" target="_top">
+            <i class="fas fa-user-graduate"></i><span>SPMB</span>
+        </a>
+    </div>
+
+</body>
+</html>
