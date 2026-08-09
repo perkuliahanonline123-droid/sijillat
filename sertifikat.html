@@ -1,1 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sijillāt | Portal Sertifikat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #FAFAF7; color: #333; margin: 0; padding: 0; }
+        .container { max-width: 100%; padding: 20px 3%; box-sizing: border-box; margin: 0 auto; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #E5E5E5; margin-bottom: 40px; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #4A5D43; text-decoration: none; }
+        .logo-circle { width: 30px; height: 30px; background-color: #4A5D43; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .logo-circle::after { content: ''; width: 12px; height: 12px; background-color: #FAFAF7; display: block; }
+        
+        .nav-links { display: flex; gap: 30px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+        .nav-links a { text-decoration: none; color: #888; transition: color 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: #556B4E; }
+        .nav-search-btn { border: 1px solid #ccc; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; background: transparent; cursor: pointer; }
 
+        .main-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 40px; flex: 1; }
+
+        .hero-section { background-color: #556B4E; border-radius: 16px; padding: 50px 40px; color: #FAFAF7; margin-bottom: 20px; }
+        .hero-tag { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #D1D8CC; margin-bottom: 15px; display: block; }
+        .hero-title { font-family: 'Playfair Display', serif; font-size: 42px; line-height: 1.3; margin: 0 0 20px 0; }
+        .hero-desc { font-size: 15px; color: #E0E5DC; margin-bottom: 30px; line-height: 1.6; max-width: 90%; }
+        
+        .search-container { display: flex; flex-direction: column; gap: 15px; }
+        .filter-box, .search-box { width: 100%; padding: 16px 20px; border: none; border-radius: 8px; font-size: 16px; font-family: 'Inter', sans-serif; box-sizing: border-box; outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .filter-box { cursor: pointer; color: #333; background-color: #FAFAF7; }
+
+        .data-section { background-color: #FFFFFF; border-radius: 16px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #EBEBEB; }
+        .table-responsive { width: 100%; overflow-x: auto; }
+        .table-responsive::-webkit-scrollbar { height: 6px; }
+        .table-responsive::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; display: none; min-width: 500px; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #F0F0F0; }
+        th { color: #888; font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
+        tr:hover { background-color: #FAFAF7; }
+        
+        .btn-download { display: inline-block; padding: 8px 16px; background-color: #FAFAF7; color: #556B4E; border: 1px solid #556B4E; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: 600; transition: all 0.3s; white-space: nowrap; }
+        .btn-download:hover { background-color: #556B4E; color: #FAFAF7; }
+        .btn-disabled { background-color: #f4f4f4; border: 1px solid #ddd; color: #999; cursor: not-allowed; }
+        #loading { text-align: center; font-style: italic; color: #777; padding: 20px; font-size: 14px; }
+        #emptyState { text-align: center; color: #888; font-size: 14px; margin-top: 10px; display: none; }
+
+        .sidebar { background-color: #F3F1EB; border-radius: 16px; padding: 30px; height: fit-content; }
+        .sidebar-title { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #666; margin-bottom: 25px; border-bottom: 1px solid #E0DED7; padding-bottom: 15px;}
+        .sidebar-item { margin-bottom: 25px; }
+        .sidebar-item span { font-size: 11px; font-weight: 600; color: #556B4E; display: block; margin-bottom: 5px; }
+        .sidebar-item h4 { font-family: 'Playfair Display', serif; font-size: 18px; color: #333; margin: 0; line-height: 1.4; font-weight: 600; }
+        
+        .newsletter-box { background-color: #556B4E; border-radius: 12px; padding: 25px; color: white; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .newsletter-box div span { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+        .newsletter-box div h4 { margin: 5px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; }
+        .arrow-btn { width: 30px; height: 30px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0;}
+
+        .footer { text-align: center; padding: 30px 0 10px 0; margin-top: 40px; font-size: 13px; color: #888; border-top: 1px solid #E5E5E5; }
+
+        .bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-top: 1px solid #E5E5E5; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); border-top-left-radius: 24px; border-top-right-radius: 24px; z-index: 9999; padding: 10px 5px 20px 5px; justify-content: space-around; align-items: center; }
+        .bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #A0AAB2; text-decoration: none; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; flex: 1; padding: 10px 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .bottom-nav-item i { font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; }
+        .bottom-nav-item.active, .bottom-nav-item:hover, .bottom-nav-item:active { color: #556B4E; transform: translateY(-3px); }
+        .bottom-nav-item.active i, .bottom-nav-item:hover i, .bottom-nav-item:active i { background-color: #E0E5DC; color: #556B4E; box-shadow: 0 4px 10px rgba(85, 107, 78, 0.2); }
+
+        @media (max-width: 900px) {
+            body { padding-bottom: 90px; } 
+            .bottom-nav { display: flex; }
+            .nav-links { display: none; }
+            .nav-search-btn { display: none; }
+            .main-grid { grid-template-columns: 1fr; gap: 25px; }
+            .navbar { padding: 15px 0; margin-bottom: 20px; justify-content: center;}
+            .hero-section { padding: 30px 20px; }
+            .hero-title { font-size: 32px; }
+            .hero-desc { max-width: 100%; font-size: 14px; }
+            .data-section { padding: 20px 15px; }
+            .sidebar { padding: 20px; }
+            .newsletter-box { gap: 15px; }
+            .footer { padding-bottom: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="navbar">
+            <a href="index.html" class="logo-area" target="_top">
+                <div class="logo-circle"></div> Sijillāt
+            </a>
+            <div class="nav-links">
+                <a href="index.html" target="_top">Beranda</a>
+                <a href="sertifikat.html" class="active" target="_top">Sertifikat</a>
+                <a href="ujian.html" target="_top">Ujian</a>
+                <a href="pengumuman.html" target="_top">Pengumuman</a>
+                <a href="spmbstaiis.html" target="_top">INFO SPMB</a>
+            </div>
+            <button class="nav-search-btn">CARI INFORMASI</button>
+        </div>
+
+        <div class="main-grid">
+            <div class="main-content">
+                <div class="hero-section">
+                    <span class="hero-tag">Layanan Akademik</span>
+                    <h1 class="hero-title">Portal Unduh Sertifikat</h1>
+                    <p class="hero-desc">Pilih kegiatan terlebih dahulu, lalu masukkan nama lengkap Anda untuk mencari sertifikat.</p>
+                    
+                    <div class="search-container">
+                        <select id="sheetFilter" class="filter-box" onchange="filterTable()">
+                            <option value="">Memuat daftar kegiatan...</option>
+                        </select>
+                        <input type="text" id="searchInput" class="search-box" placeholder="Ketik nama lengkap Anda di sini..." onkeyup="filterTable()">
+                    </div>
+                </div>
+
+                <div class="data-section" id="areaTabel">
+                    <div class="table-responsive">
+                        <table id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Nama Lengkap</th>
+                                    <th>Kegiatan</th>
+                                    <th>Aksi Unduh</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="loading">Memuat antarmuka sistem...</div>
+                    <div id="emptyState">Sistem siap. Silakan pilih kegiatan dan ketik nama Anda di atas.</div>
+                </div>
+            </div>
+
+            <div class="sidebar-wrapper">
+                <div class="sidebar">
+                    <div class="sidebar-title">Informasi Menarik Lainnya</div>
+                    <div class="sidebar-item"><span>01 / Regulasi</span><h4>Panduan Asimetri Tahapan Penyelesaian Konflik</h4></div>
+                    <div class="sidebar-item"><span>02 / Linguistik</span><h4>Kompilasi Materi dan Hasil Keputusan Munas 2026</h4></div>
+                    <div class="sidebar-item"><span>03 / Akademik</span><h4>Pembaruan Status Akreditasi Unggul Institusi</h4></div>
+                </div>
+                <div class="newsletter-box">
+                    <div><span>Langganan Buletin</span><h4>Info Mingguan Kita</h4></div>
+                    <div class="arrow-btn">→</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            &copy; 2026 Abdul Hakim, S.H., M.A.
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="sertifikat.html" class="bottom-nav-item active" target="_top">
+            <i class="fas fa-certificate"></i><span>Sertifikat</span>
+        </a>
+        <a href="ujian.html" class="bottom-nav-item" target="_top">
+            <i class="fas fa-file-alt"></i><span>Ujian</span>
+        </a>
+        <a href="pengumuman.html" class="bottom-nav-item" target="_top">
+            <i class="fas fa-bullhorn"></i><span>Pengumuman</span>
+        </a>
+        <a href="spmbstaiis.html" class="bottom-nav-item" target="_top">
+            <i class="fas fa-user-graduate"></i><span>SPMB</span>
+        </a>
+    </div>
+
+    <script>
+        // URL API Google Web App Baru Anda
+        const API_URL = "https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec";
+        let timerPencarian; 
+
+        window.onload = function() {
+            document.getElementById("loading").style.display = "block";
+            document.getElementById("loading").innerHTML = "Menyinkronkan daftar kegiatan...";
+            document.getElementById("emptyState").style.display = "none";
+            document.getElementById("dataTable").style.display = "none";
+            
+            // Fetch API untuk mengambil Daftar Sheet/Kegiatan
+            fetch(`${API_URL}?action=getDaftarSheet`, { method: "GET", redirect: "follow" })
+                .then(response => response.json())
+                .then(result => {
+                    if(result.status === "success") {
+                        susunDropdown(result.data);
+                    } else {
+                        document.getElementById("loading").innerHTML = "Gagal memuat kegiatan. " + result.message;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("loading").innerHTML = "Terjadi kesalahan jaringan.";
+                    console.error("Error fetching sheets:", error);
+                });
+        };
+
+        function susunDropdown(daftarSheet) {
+            let filterElement = document.getElementById("sheetFilter");
+            filterElement.innerHTML = '<option value="">-- Pilih Kegiatan --</option>'; 
+            daftarSheet.forEach(function(nama) {
+                filterElement.innerHTML += '<option value="' + nama + '">' + nama + '</option>';
+            });
+            document.getElementById("loading").style.display = "none";
+            document.getElementById("emptyState").style.display = "block";
+        }
+
+        function filterTable() {
+            clearTimeout(timerPencarian); 
+
+            let namaSheetTarget = document.getElementById("sheetFilter").value;
+            let kataKunci = document.getElementById("searchInput").value;
+            let table = document.getElementById("dataTable");
+            let emptyState = document.getElementById("emptyState");
+            let loadingText = document.getElementById("loading");
+            let tbody = document.getElementById("tableBody");
+
+            if (namaSheetTarget === "") {
+                table.style.display = "none";
+                emptyState.style.display = "none";
+                loadingText.style.display = "block";
+                loadingText.innerHTML = "Silakan pilih Kegiatan terlebih dahulu.";
+                return;
+            }
+
+            if (kataKunci.trim() === "") {
+                table.style.display = "none";
+                emptyState.style.display = "block";
+                loadingText.style.display = "none";
+                tbody.innerHTML = "";
+                return;
+            }
+
+            if (kataKunci.trim().length < 3) {
+                table.style.display = "none";
+                emptyState.style.display = "none";
+                loadingText.style.display = "block";
+                loadingText.innerHTML = "Ketik minimal 3 huruf nama Anda...";
+                return;
+            }
+
+            table.style.display = "none";
+            emptyState.style.display = "none";
+            loadingText.style.display = "block";
+            loadingText.innerHTML = "Menunggu Anda selesai mengetik...";
+
+            timerPencarian = setTimeout(function() {
+                loadingText.innerHTML = "Sedang mencari data di pangkalan data...";
+                
+                // Fetch API untuk mengambil Data Sertifikat berdasarkan keyword
+                const fetchUrl = `${API_URL}?action=ambilDataSertifikat&sheet=${encodeURIComponent(namaSheetTarget)}&keyword=${encodeURIComponent(kataKunci)}`;
+                
+                fetch(fetchUrl, { method: "GET", redirect: "follow" })
+                    .then(response => response.json())
+                    .then(result => {
+                        if(result.status === "success") {
+                            susunTabel(result.data);
+                        } else {
+                            loadingText.innerHTML = "Gagal memuat data. " + result.message;
+                        }
+                    })
+                    .catch(error => {
+                        loadingText.innerHTML = "Terjadi kesalahan jaringan.";
+                        console.error("Error fetching certificates:", error);
+                    });
+
+            }, 800); 
+        }
+
+        function susunTabel(dataArray) {
+            let table = document.getElementById("dataTable");
+            let emptyState = document.getElementById("emptyState");
+            let loadingText = document.getElementById("loading");
+            let tbody = document.getElementById("tableBody");
+
+            loadingText.style.display = "none";
+            tbody.innerHTML = ""; 
+
+            if (!dataArray || dataArray.length === 0) {
+                emptyState.style.display = "block";
+                emptyState.innerHTML = "Nama tidak ditemukan di kegiatan tersebut. Pastikan ejaan sudah benar.";
+                table.style.display = "none";
+                return;
+            }
+
+            dataArray.forEach(function(row) {
+                let nama = row[1] ? row[1].toString() : "-";
+                let link = row[2] ? row[2].toString() : "";
+                let kegiatan = document.getElementById("sheetFilter").value; 
+
+                let baris = "<tr>";
+                baris += "<td><strong>" + nama + "</strong></td>";
+                baris += "<td>" + kegiatan + "</td>";
+
+                if (link !== "") {
+                    baris += "<td><a href='" + link + "' class='btn-download' target='_blank'>Unduh PDF</a></td>";
+                } else {
+                    baris += "<td><a href='#' class='btn-download btn-disabled' onclick='return false;'>Belum Tersedia</a></td>";
+                }
+                baris += "</tr>";
+                tbody.innerHTML += baris;
+            });
+
+            table.style.display = "table";
+            emptyState.style.display = "none";
+        }
+    </script>
+</body>
+</html>
