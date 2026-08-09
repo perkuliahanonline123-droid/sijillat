@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sijillāt | Portal Pengumuman & Jurnal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    },
+                    colors: { 
+                        brand: { 900: '#064e3b', 800: '#4A5D43', 700: '#405339', 600: '#556B4E', 500: '#10b981', 100: '#d1fae5', 50: '#ecfdf5' } 
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.05)',
+                        'float': '0 10px 30px -5px rgba(0,0,0,0.08)',
+                        'up': '0 -4px 20px rgba(0,0,0,0.05)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #FAFAF7; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .animate-slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; } 
+            to { opacity: 1; } 
+        }
+        
+        /* Mencegah highlight biru saat menu diklik di HP */
+        a, button, select { -webkit-tap-highlight-color: transparent; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800 font-sans selection:bg-brand-100 selection:text-brand-900">
+
+    <!-- Header Desktop -->
+    <header class="w-full max-w-7xl mx-auto px-6 py-5 flex justify-between items-center border-b border-slate-200/60 mb-6 sticky top-0 bg-[#FAFAF7]/90 backdrop-blur-md z-40">
+        <a href="<?= getScriptUrl() ?>?page=index" class="flex items-center gap-3 font-serif text-2xl font-bold text-brand-900 no-underline group" target="_top">
+            <div class="w-9 h-9 bg-brand-800 rounded-full flex items-center justify-center group-hover:bg-brand-900 transition-colors shadow-sm">
+                <div class="w-3.5 h-3.5 bg-[#FAFAF7] rounded-full"></div>
+            </div>
+            Sijillāt
+        </a>
+        <nav class="hidden md:flex gap-8 text-sm font-semibold tracking-wide uppercase text-slate-500">
+            <a href="<?= getScriptUrl() ?>?page=index" class="hover:text-brand-800 transition-colors" target="_top">Beranda</a>
+            <a href="<?= getScriptUrl() ?>?page=sertifikat" class="hover:text-brand-800 transition-colors" target="_top">Sertifikat</a>
+            <a href="<?= getScriptUrl() ?>?page=ujian" class="hover:text-brand-800 transition-colors" target="_top">Ujian</a>
+            <a href="<?= getScriptUrl() ?>?page=pengumuman" class="text-brand-800 relative after:content-[''] after:absolute after:-bottom-1.5 after:left-0 after:w-full after:h-0.5 after:bg-brand-800 after:rounded-full" target="_top">Pengumuman</a>
+            <a href="<?= getScriptUrl() ?>?page=spmbstaiis" class="hover:text-brand-800 transition-colors" target="_top">Info SPMB</a>
+        </nav>
+        <button class="hidden md:flex items-center gap-2 border border-slate-300 px-5 py-2.5 rounded-full text-xs font-bold tracking-wide hover:bg-slate-100 hover:border-slate-400 transition-all active:scale-95">
+            <i class="fas fa-search"></i> CARI
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 pb-28 md:pb-12">
+        
+        <!-- Left/Main Column -->
+        <div class="lg:col-span-8 space-y-8">
+            
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-br from-brand-900 via-brand-800 to-brand-600 rounded-[2rem] p-8 md:p-12 text-white shadow-float relative overflow-hidden">
+                <!-- Decorative pattern -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-brand-100 opacity-10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4"></div>
+                
+                <div class="relative z-10">
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-bold tracking-widest text-emerald-100 uppercase mb-5 backdrop-blur-sm">
+                        <i class="fas fa-chart-line"></i> Riwayat Jurnal Perkuliahan
+                    </span>
+                    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight mb-5 drop-shadow-sm">Jumlah Pertemuan Sesi</h1>
+                    <p class="text-emerald-50/90 text-sm md:text-base max-w-2xl leading-relaxed font-medium">
+                        Pantau rekapitulasi jumlah pertemuan tatap muka seluruh mata kuliah secara transparan berdasarkan rekaman pangkalan data terintegrasi.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div id="globalStats" class="hidden grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 animate-slide-up">
+                <div class="bg-white rounded-3xl shadow-soft border border-slate-100/80 p-6 flex items-center gap-5 hover:shadow-float transition-shadow duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-50/80 text-blue-600 flex items-center justify-center text-2xl shrink-0"><i class="fas fa-book"></i></div>
+                    <div>
+                        <h4 class="text-3xl font-black text-slate-800 leading-none mb-1.5" id="statTotalMatkul">0</h4>
+                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest leading-tight">Mata Kuliah</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl shadow-soft border border-slate-100/80 p-6 flex items-center gap-5 hover:shadow-float transition-shadow duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-50/80 text-emerald-600 flex items-center justify-center text-2xl shrink-0"><i class="fas fa-calendar-check"></i></div>
+                    <div>
+                        <h4 class="text-3xl font-black text-slate-800 leading-none mb-1.5" id="statTotalSesi">0</h4>
+                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest leading-tight">Total Pertemuan</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl shadow-soft border border-slate-100/80 p-6 flex items-center gap-5 hover:shadow-float transition-shadow duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-50/80 text-amber-600 flex items-center justify-center text-2xl shrink-0"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <div>
+                        <h4 class="text-3xl font-black text-slate-800 leading-none mb-1.5" id="statTotalProgram">0</h4>
+                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest leading-tight">Program Studi</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Section -->
+            <div class="bg-white rounded-[2rem] shadow-soft border border-slate-100/80 p-5 md:p-8 animate-slide-up" style="animation-delay: 0.1s;">
+                
+                <!-- Search & Filter Bar -->
+                <div class="bg-slate-50 p-2 md:p-2.5 rounded-[1.2rem] border border-slate-200/80 flex flex-col md:flex-row items-center gap-3 mb-6 focus-within:ring-4 focus-within:ring-brand-500/10 focus-within:border-brand-300 transition-all duration-300">
+                    <div class="flex items-center w-full bg-white rounded-xl border border-slate-200/80 px-4 py-2.5 shadow-sm focus-within:border-brand-500 transition-all group">
+                        <i class="fas fa-search text-slate-400 mr-3 group-focus-within:text-brand-500 transition-colors"></i>
+                        <input type="text" id="searchInput" oninput="filterTableClient()" placeholder="Cari Mata Kuliah atau Program Studi..." class="w-full bg-transparent outline-none font-medium text-slate-700 placeholder-slate-400 text-sm md:text-base">
+                    </div>
+                    <div class="relative w-full md:w-auto shrink-0">
+                        <select id="filterSemester" onchange="filterTableClient()" class="w-full md:w-auto bg-white pl-4 pr-10 py-2.5 rounded-xl border border-slate-200/80 font-bold text-slate-700 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 shadow-sm cursor-pointer text-sm transition-all appearance-none">
+                            <option value="Semua">Semua Semester</option>
+                            <option value="Ganjil">Semester Ganjil</option>
+                            <option value="Genap">Semester Genap</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loading" class="flex flex-col items-center justify-center py-16 animate-pulse">
+                    <div class="w-12 h-12 border-4 border-brand-100 border-t-brand-600 rounded-full animate-spin mb-4"></div>
+                    <p class="text-slate-500 font-medium text-sm">Menyinkronkan data jurnal perkuliahan...</p>
+                </div>
+                
+                <!-- Error State (Hidden by default) -->
+                <div id="errorState" class="hidden text-center py-12">
+                    <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-2xl mx-auto mb-3"><i class="fas fa-exclamation-triangle"></i></div>
+                    <h3 class="text-slate-800 font-bold text-lg mb-1">Gagal Memuat Data</h3>
+                    <p class="text-slate-500 text-sm">Terjadi kesalahan saat mengambil data. Silakan muat ulang halaman.</p>
+                </div>
+
+                <!-- Empty State (Hidden by default) -->
+                <div id="emptyState" class="hidden text-center py-16">
+                    <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-folder-open text-3xl text-slate-300"></i>
+                    </div>
+                    <h3 class="text-slate-700 font-bold text-lg mb-1">Data Tidak Ditemukan</h3>
+                    <p class="text-slate-500 text-sm">Coba sesuaikan kata kunci pencarian atau filter Anda.</p>
+                </div>
+
+                <!-- Data Table/List -->
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table id="dataTable" class="w-full text-left hidden whitespace-nowrap md:whitespace-normal min-w-[500px]">
+                        <thead class="text-slate-400 uppercase text-[10px] font-black tracking-widest border-b-2 border-slate-100/80">
+                            <tr>
+                                <th class="pb-4 px-2 md:px-4 w-3/4">Informasi Kelas & Klasifikasi</th>
+                                <th class="pb-4 px-2 md:px-4 text-center">Total Sesi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="divide-y divide-slate-100">
+                            <!-- Rows will be injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column / Sidebar -->
+        <div class="lg:col-span-4 space-y-6">
+            
+            <!-- News Widget -->
+            <div class="bg-[#F3F1EB] rounded-3xl p-6 md:p-8 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-300/60 pb-4 mb-6">
+                    <h3 class="text-[11px] font-black tracking-widest uppercase text-slate-500">Informasi Menarik</h3>
+                    <i class="fas fa-newspaper text-slate-400"></i>
+                </div>
+                
+                <div class="space-y-6">
+                    <a href="#" class="block group">
+                        <span class="text-[10px] font-bold text-brand-600 block mb-1.5 flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 bg-brand-500 rounded-full"></span> 01 / Regulasi
+                        </span>
+                        <h4 class="font-serif text-lg text-slate-800 leading-snug group-hover:text-brand-600 transition-colors">Panduan Asimetri Tahapan Penyelesaian Konflik Internal</h4>
+                    </a>
+                    <a href="#" class="block group">
+                        <span class="text-[10px] font-bold text-brand-600 block mb-1.5 flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 bg-brand-500 rounded-full"></span> 02 / Linguistik
+                        </span>
+                        <h4 class="font-serif text-lg text-slate-800 leading-snug group-hover:text-brand-600 transition-colors">Kompilasi Materi dan Hasil Keputusan Munas Ke-V 2026</h4>
+                    </a>
+                    <a href="#" class="block group">
+                        <span class="text-[10px] font-bold text-brand-600 block mb-1.5 flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 bg-brand-500 rounded-full"></span> 03 / Akademik
+                        </span>
+                        <h4 class="font-serif text-lg text-slate-800 leading-snug group-hover:text-brand-600 transition-colors">Pembaruan Status Akreditasi Unggul Institusi Nasional</h4>
+                    </a>
+                </div>
+                
+                <button class="w-full mt-8 py-3 rounded-xl border-2 border-slate-300 text-xs font-bold text-slate-600 hover:border-brand-600 hover:text-brand-700 transition-all">
+                    LIHAT SEMUA
+                </button>
+            </div>
+
+            <!-- Newsletter Widget -->
+            <div class="bg-brand-800 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] rounded-2xl p-6 text-white flex justify-between items-center cursor-pointer hover:bg-brand-900 transition-colors shadow-float group">
+                <div>
+                    <span class="text-[9px] uppercase tracking-widest text-brand-100/80 block mb-1 font-bold">Langganan Buletin</span>
+                    <h4 class="font-semibold text-sm group-hover:text-brand-50 transition-colors">Info Kampus Mingguan</h4>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-brand-900 transition-all duration-300">
+                    <i class="fas fa-arrow-right text-sm"></i>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full text-center py-8 border-t border-slate-200/80 text-slate-400 text-xs font-medium tracking-wide bg-white/50">
+        &copy; 2026 Sijillāt Portal - Abdul Hakim, S.H., M.A.
+    </footer>
+
+    <!-- Bottom Navigation (Mobile Only) -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-lg border-t border-slate-200/60 flex justify-around items-center pt-2 pb-5 px-2 z-50 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)] rounded-t-3xl">
+        <a href="<?= getScriptUrl() ?>?page=sertifikat" class="flex flex-col items-center gap-1 w-1/4 text-slate-400 hover:text-brand-600 transition-colors" target="_top">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center"><i class="fas fa-certificate text-[1.1rem]"></i></div>
+            <span class="text-[9px] font-black tracking-widest uppercase">Sertifikat</span>
+        </a>
+        <a href="<?= getScriptUrl() ?>?page=ujian" class="flex flex-col items-center gap-1 w-1/4 text-slate-400 hover:text-brand-600 transition-colors" target="_top">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center"><i class="fas fa-file-alt text-[1.1rem]"></i></div>
+            <span class="text-[9px] font-black tracking-widest uppercase">Ujian</span>
+        </a>
+        
+        <!-- Active Tab -->
+        <a href="<?= getScriptUrl() ?>?page=pengumuman" class="flex flex-col items-center gap-1 w-1/4 text-brand-700 relative -top-3" target="_top">
+            <div class="bg-brand-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-float border-4 border-[#FAFAF7]"><i class="fas fa-bullhorn text-[1.1rem]"></i></div>
+            <span class="text-[9px] font-black tracking-widest uppercase mt-0.5">Info</span>
+        </a>
+
+        <a href="<?= getScriptUrl() ?>?page=spmbstaiis" class="flex flex-col items-center gap-1 w-1/4 text-slate-400 hover:text-brand-600 transition-colors" target="_top">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center"><i class="fas fa-user-graduate text-[1.1rem]"></i></div>
+            <span class="text-[9px] font-black tracking-widest uppercase">SPMB</span>
+        </a>
+    </div>
+
+    <!-- Script Utama -->
+    <script>
+        let dataRekapKeseluruhan = [];
+
+        window.onload = function() {
+            // Memanggil Google Apps Script dengan penanganan Sukses dan Gagal
+            if(typeof google !== 'undefined' && google.script) {
+                google.script.run
+                    .withSuccessHandler(prosesDataJurnal)
+                    .withFailureHandler(tampilkanError)
+                    .ambilSemuaDataPengumuman();
+            } else {
+                // Fallback untuk environment lokal/development (jika tidak berjalan di dalam Apps Script)
+                tampilkanError(new Error("Google Apps Script API tidak ditemukan."));
+            }
+        };
+
+        function tampilkanError(error) {
+            console.error("Gagal memuat data:", error);
+            document.getElementById("loading").style.display = "none";
+            document.getElementById("errorState").style.display = "block";
+        }
+
+        function prosesDataJurnal(dataMentah) {
+            let rekap = {};
+            const indexSemester = [4, 68];
+            const indexMatkul = [5, 26, 42, 54, 69, 85, 103, 113];
+
+            dataMentah.forEach((row) => {
+                let tanggalStr = row[1] ? row[1].toString().trim() : "";
+                let isGanjil = false;
+                let isGenap = false;
+                
+                // Cek Semester berdasarkan Tanggal Bulan
+                if (tanggalStr !== "") {
+                    let sep = tanggalStr.includes("/") ? "/" : (tanggalStr.includes("-") ? "-" : "");
+                    if (sep !== "") {
+                        let parts = tanggalStr.split(sep); 
+                        if (parts.length >= 2) {
+                            let bulan = parseInt(parts[1], 10); 
+                            if (bulan >= 8 || bulan === 1) isGanjil = true;
+                            else if (bulan >= 2 && bulan <= 7) isGenap = true;
+                        }
+                    }
+                }
+
+                // Parsing Timestamp
+                let timestampAsli = row[0] ? row[0].toString().trim() : "";
+                let waktuInput = 0;
+                if (timestampAsli !== "") {
+                    let parts = timestampAsli.split(" ");
+                    let tglParts = parts[0].split("/"); 
+                    
+                    if (tglParts.length === 3) {
+                        let jamParts = parts[1] ? parts[1].split(":") : [0, 0, 0];
+                        waktuInput = new Date(tglParts[2], tglParts[1] - 1, tglParts[0], jamParts[0], jamParts[1], jamParts[2] || 0).getTime();
+                    } else {
+                        waktuInput = new Date(timestampAsli).getTime() || 0;
+                    }
+                }
+
+                let program = row[3] ? row[3].toString().trim() : "Umum";
+                let kelas = "-";
+                
+                // Cari Kelas
+                for (let i = 0; i < indexSemester.length; i++) {
+                    if (row[indexSemester[i]] && row[indexSemester[i]].toString().trim() !== "") {
+                        kelas = row[indexSemester[i]].toString().trim();
+                        break;
+                    }
+                }
+
+                // Cari Mata Kuliah
+                let matkul = "";
+                for (let i = 0; i < indexMatkul.length; i++) {
+                    let idx = indexMatkul[i];
+                    if (row[idx] && row[idx].toString().trim() !== "") {
+                        matkul = row[idx].toString().trim();
+                        break;
+                    }
+                }
+                
+                // Agregasi Data
+                if (matkul !== "") {
+                    let kunci = `${matkul}|${program}`;
+                    
+                    if (!rekap[kunci]) {
+                        rekap[kunci] = { 
+                            matkul: matkul, 
+                            program: program, 
+                            kelas: kelas, 
+                            jumlah: 0,
+                            countGanjil: 0,
+                            countGenap: 0,
+                            timestampTerbaru: waktuInput
+                        };
+                    } else {
+                        if (kelas.length > rekap[kunci].kelas.length && kelas !== "-") {
+                            rekap[kunci].kelas = kelas;
+                        }
+                        if (waktuInput > rekap[kunci].timestampTerbaru) {
+                            rekap[kunci].timestampTerbaru = waktuInput;
+                        }
+                    }
+                    
+                    rekap[kunci].jumlah += 1;
+                    if (isGanjil) rekap[kunci].countGanjil += 1;
+                    if (isGenap) rekap[kunci].countGenap += 1;
+                }
+            });
+
+            // Format ke Array
+            for (let kunci in rekap) {
+                let data = rekap[kunci];
+                data.tipeSemester = (data.countGanjil >= data.countGenap) ? "Ganjil" : "Genap";
+                dataRekapKeseluruhan.push(data);
+            }
+
+            // Urutkan berdasarkan timestamp terbaru (descending)
+            dataRekapKeseluruhan.sort((a, b) => b.timestampTerbaru - a.timestampTerbaru);
+            
+            // Tampilkan Tabel
+            susunTabel(dataRekapKeseluruhan);
+        }
+
+        function filterTableClient() {
+            let kataKunci = document.getElementById("searchInput").value.toLowerCase().trim();
+            let filterSemester = document.getElementById("filterSemester").value;
+            
+            let hasilTapisan = dataRekapKeseluruhan.filter((item) => {
+                let matchTeks = item.matkul.toLowerCase().includes(kataKunci) || item.program.toLowerCase().includes(kataKunci);
+                let matchSemester = (filterSemester === "Semua" || item.tipeSemester === filterSemester);
+                return matchTeks && matchSemester;
+            });
+
+            susunTabel(hasilTapisan);
+        }
+
+        function susunTabel(dataArray) {
+            let table = document.getElementById("dataTable");
+            let emptyState = document.getElementById("emptyState");
+            let errorState = document.getElementById("errorState");
+            let loadingText = document.getElementById("loading");
+            let tbody = document.getElementById("tableBody");
+            let statsArea = document.getElementById("globalStats");
+
+            // Reset UI
+            loadingText.style.display = "none";
+            errorState.style.display = "none";
+            tbody.innerHTML = ""; 
+
+            // Cek data kosong
+            if (!dataArray || dataArray.length === 0) {
+                emptyState.style.display = "block";
+                table.style.display = "none";
+                if(dataRekapKeseluruhan.length === 0) statsArea.style.display = "none";
+                return;
+            }
+
+            let htmlString = "";
+            let setProgram = new Set();
+            let totalSesiKumulatif = 0;
+
+            dataArray.forEach((item, index) => {
+                // Update statistik hanya jika memuat semua data awal
+                if(document.getElementById("searchInput").value === "" && document.getElementById("filterSemester").value === "Semua") {
+                    setProgram.add(item.program);
+                    totalSesiKumulatif += item.jumlah;
+                }
+
+                // Warna Badge Semester
+                let badgeClass = item.tipeSemester === 'Ganjil' 
+                    ? 'bg-amber-50 text-amber-700 border-amber-200' 
+                    : item.tipeSemester === 'Genap'
+                        ? 'bg-blue-50 text-blue-700 border-blue-200'
+                        : 'bg-slate-50 text-slate-600 border-slate-200';
+
+                // Animasi delay untuk setiap baris
+                let animDelay = (index * 0.05) > 0.5 ? 0.5 : (index * 0.05);
+
+                htmlString += `
+                    <tr class="hover:bg-slate-50/80 transition-colors group border-b border-slate-100 last:border-0 animate-fade-in" style="animation-delay: ${animDelay}s; opacity: 0;">
+                        <td class="py-5 px-2 md:px-4 align-middle">
+                            <div class="flex flex-wrap items-center gap-2 md:gap-3 mb-1.5">
+                                <div class="font-bold text-slate-800 text-lg md:text-xl whitespace-normal leading-snug group-hover:text-brand-700 transition-colors">${item.matkul}</div>
+                                <div class="text-[9px] md:text-[10px] font-bold px-2 py-0.5 md:py-1 rounded-md border tracking-wider shrink-0 uppercase ${badgeClass}">Sem. ${item.tipeSemester}</div>
+                            </div>
+                            <div class="flex items-center gap-2 mt-2">
+                                <div class="text-[10px] md:text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-1 rounded-md inline-flex items-center gap-1.5">
+                                    <i class="fas fa-layer-group text-slate-400"></i> ${item.program}
+                                </div>
+                                <div class="text-[10px] md:text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-1 rounded-md inline-flex items-center gap-1.5 hidden md:inline-flex">
+                                    <i class="fas fa-chalkboard text-slate-400"></i> Kelas ${item.kelas}
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-5 px-2 md:px-4 align-middle text-center">
+                            <div class="inline-flex items-center justify-center min-w-[3rem] h-12 md:min-w-[4rem] md:h-14 rounded-2xl bg-white shadow-sm border border-slate-200 text-slate-700 group-hover:bg-brand-50 group-hover:text-brand-600 group-hover:border-brand-200 group-hover:shadow-md transition-all duration-300 mx-auto">
+                                <span class="text-xl md:text-2xl font-black">${item.jumlah}</span>
+                            </div>
+                            <div class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-2 hidden md:block">Pertemuan</div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            // Render UI
+            tbody.innerHTML = htmlString;
+            table.style.display = "table";
+            emptyState.style.display = "none";
+            
+            // Render Stats Card (hanya render jika tidak dalam status filter)
+            if(document.getElementById("searchInput").value === "" && document.getElementById("filterSemester").value === "Semua") {
+                // Efek hitung lambat (counter animation) sederhana
+                document.getElementById("statTotalMatkul").innerText = dataArray.length;
+                document.getElementById("statTotalProgram").innerText = setProgram.size;
+                document.getElementById("statTotalSesi").innerText = totalSesiKumulatif;
+                statsArea.style.display = "grid";
+            }
+        }
+    </script>
+</body>
+</html>
