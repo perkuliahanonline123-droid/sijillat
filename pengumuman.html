@@ -49,6 +49,28 @@
         
         /* Mencegah highlight biru saat menu diklik di HP */
         a, button, select { -webkit-tap-highlight-color: transparent; }
+
+        /* KODE CSS WAJIB UNTUK MENU BAWAH */
+        .bottom-nav {
+            display: flex; position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            border-top: 1px solid #E5E5E5; box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+            border-top-left-radius: 24px; border-top-right-radius: 24px;
+            z-index: 9999; padding: 10px 5px 20px 5px;
+            justify-content: space-around; align-items: center;
+        }
+        .bottom-nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            color: #A0AAB2; text-decoration: none; font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; 
+            flex: 1; padding: 10px 0; cursor: pointer;
+            -webkit-tap-highlight-color: transparent; 
+        }
+        .bottom-nav-item i { font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; }
+        
+        @media (min-width: 768px) {
+            .bottom-nav { display: none; }
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-slate-800 font-sans selection:bg-brand-100 selection:text-brand-900">
@@ -66,7 +88,7 @@
             <a href="sertifikat.html" class="hover:text-brand-800 transition-colors">Sertifikat</a>
             <a href="ujian.html" class="hover:text-brand-800 transition-colors">Ujian</a>
             <a href="pengumuman.html" class="text-brand-800 relative after:content-[''] after:absolute after:-bottom-1.5 after:left-0 after:w-full after:h-0.5 after:bg-brand-800 after:rounded-full">Pengumuman</a>
-            <a href="spmb.html" class="hover:text-brand-800 transition-colors">Info SPMB</a>
+            <a href="spmbstaiis.html" class="hover:text-brand-800 transition-colors">Info SPMB</a>
         </nav>
         <button class="hidden md:flex items-center gap-2 border border-slate-300 px-5 py-2.5 rounded-full text-xs font-bold tracking-wide hover:bg-slate-100 hover:border-slate-400 transition-all active:scale-95">
             <i class="fas fa-search"></i> CARI
@@ -242,30 +264,37 @@
             <i class="fas fa-file-alt"></i><span>Ujian</span>
         </a>
         
-        <!-- Active Tab -->
+        <!-- Active Tab: Pengumuman -->
         <a href="pengumuman.html" class="bottom-nav-item" style="color: #556B4E; transform: translateY(-3px);">
             <i class="fas fa-bullhorn" style="background-color: #E0E5DC; color: #556B4E; box-shadow: 0 4px 10px rgba(85, 107, 78, 0.2);"></i><span>Pengumuman</span>
         </a>
         
-        <a href="spmb.html" class="bottom-nav-item">
+        <a href="spmbstaiis.html" class="bottom-nav-item">
             <i class="fas fa-user-graduate"></i><span>SPMB</span>
         </a>
     </div>
-    <!-- Script Utama -->
+
+    <!-- Script Utama (Diperbarui untuk Fetch API) -->
     <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec";
         let dataRekapKeseluruhan = [];
 
         window.onload = function() {
-            // Memanggil Google Apps Script dengan penanganan Sukses dan Gagal
-            if(typeof google !== 'undefined' && google.script) {
-                google.script.run
-                    .withSuccessHandler(prosesDataJurnal)
-                    .withFailureHandler(tampilkanError)
-                    .ambilSemuaDataPengumuman();
-            } else {
-                // Fallback untuk environment lokal/development (jika tidak berjalan di dalam Apps Script)
-                tampilkanError(new Error("Google Apps Script API tidak ditemukan."));
-            }
+            // Memanggil API via Fetch
+            fetch(`${API_URL}?action=ambilSemuaDataPengumuman`, { method: "GET", redirect: "follow" })
+                .then(response => response.json())
+                .then(result => {
+                    if(result.status === "success" && result.data) {
+                        prosesDataJurnal(result.data);
+                    } else if (Array.isArray(result)) {
+                        prosesDataJurnal(result);
+                    } else {
+                        throw new Error("Data tidak valid atau gagal dimuat.");
+                    }
+                })
+                .catch(error => {
+                    tampilkanError(error);
+                });
         };
 
         function tampilkanError(error) {
