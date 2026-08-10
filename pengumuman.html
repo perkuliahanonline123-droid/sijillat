@@ -67,7 +67,7 @@
         .count-circle { display: inline-flex; align-items: center; justify-content: center; width: 45px; height: 45px; background-color: #FAFAF7; border: 1px solid #EBEBEB; border-radius: 50%; font-size: 18px; font-weight: 700; color: #556B4E; margin: 0 auto; }
 
         #loading { text-align: center; font-style: italic; color: #777; padding: 20px; font-size: 14px; }
-        #emptyState { text-align: center; color: #888; font-size: 14px; margin-top: 10px; display: none; }
+        #emptyState { text-align: center; color: #888; font-size: 14px; margin-top: 10px; padding: 20px; display: none; }
 
         /* Sidebar & Footer */
         .sidebar { background-color: #F3F1EB; border-radius: 16px; padding: 30px; height: fit-content; }
@@ -80,7 +80,6 @@
         .newsletter-box div span { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
         .newsletter-box div h4 { margin: 5px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; }
         .arrow-btn { width: 30px; height: 30px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0;}
-
         .footer { text-align: center; padding: 30px 0 10px 0; margin-top: 40px; font-size: 13px; color: #888; border-top: 1px solid #E5E5E5; }
 
         /* Bottom Nav Mobile */
@@ -113,7 +112,7 @@
 <body>
 
     <div class="container">
-        <!-- HEADER -->
+        <!-- HEADER / NAVBAR -->
         <div class="navbar">
             <a href="index.html" class="logo-area">
                 <div class="logo-circle"></div> Sijillāt
@@ -128,6 +127,7 @@
             <button class="nav-search-btn">CARI INFORMASI</button>
         </div>
 
+        <!-- MAIN LAYOUT -->
         <div class="main-grid">
             <div class="main-content">
                 <!-- HERO SECTION -->
@@ -142,7 +142,7 @@
                             <option value="Ganjil">Semester Ganjil</option>
                             <option value="Genap">Semester Genap</option>
                         </select>
-                        <input type="text" id="searchInput" class="search-box" placeholder="Ketik Mata Kuliah atau Program Studi..." oninput="filterTableClient()">
+                        <input type="text" id="searchInput" class="search-box" placeholder="Cari Mata Kuliah atau Program Studi..." oninput="filterTableClient()">
                     </div>
                 </div>
 
@@ -205,6 +205,7 @@
             </div>
         </div>
 
+        <!-- FOOTER -->
         <div class="footer">
             &copy; 2026 Abdul Hakim, S.H., M.A.
         </div>
@@ -229,13 +230,12 @@
         </a>
     </div>
 
-    <!-- Script Utama (Menggunakan Fetch API) -->
+    <!-- SCRIPT FETCH API -->
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec";
         let dataRekapKeseluruhan = [];
 
         window.onload = function() {
-            // Memanggil API via Fetch
             fetch(`${API_URL}?action=ambilSemuaDataPengumuman`, { method: "GET", redirect: "follow" })
                 .then(response => response.json())
                 .then(result => {
@@ -269,7 +269,6 @@
                 let isGanjil = false;
                 let isGenap = false;
                 
-                // Cek Semester berdasarkan Tanggal Bulan
                 if (tanggalStr !== "") {
                     let sep = tanggalStr.includes("/") ? "/" : (tanggalStr.includes("-") ? "-" : "");
                     if (sep !== "") {
@@ -282,7 +281,6 @@
                     }
                 }
 
-                // Parsing Timestamp
                 let timestampAsli = row[0] ? row[0].toString().trim() : "";
                 let waktuInput = 0;
                 if (timestampAsli !== "") {
@@ -300,7 +298,6 @@
                 let program = row[3] ? row[3].toString().trim() : "Umum";
                 let kelas = "-";
                 
-                // Cari Kelas
                 for (let i = 0; i < indexSemester.length; i++) {
                     if (row[indexSemester[i]] && row[indexSemester[i]].toString().trim() !== "") {
                         kelas = row[indexSemester[i]].toString().trim();
@@ -308,7 +305,6 @@
                     }
                 }
 
-                // Cari Mata Kuliah
                 let matkul = "";
                 for (let i = 0; i < indexMatkul.length; i++) {
                     let idx = indexMatkul[i];
@@ -318,7 +314,6 @@
                     }
                 }
                 
-                // Agregasi Data
                 if (matkul !== "") {
                     let kunci = `${matkul}|${program}`;
                     
@@ -347,17 +342,13 @@
                 }
             });
 
-            // Format ke Array
             for (let kunci in rekap) {
                 let data = rekap[kunci];
                 data.tipeSemester = (data.countGanjil >= data.countGenap) ? "Ganjil" : "Genap";
                 dataRekapKeseluruhan.push(data);
             }
 
-            // Urutkan berdasarkan timestamp terbaru (descending)
             dataRekapKeseluruhan.sort((a, b) => b.timestampTerbaru - a.timestampTerbaru);
-            
-            // Tampilkan Tabel
             susunTabel(dataRekapKeseluruhan);
         }
 
@@ -384,7 +375,6 @@
             loadingText.style.display = "none";
             tbody.innerHTML = ""; 
 
-            // Cek data kosong
             if (!dataArray || dataArray.length === 0) {
                 emptyState.style.display = "block";
                 table.style.display = "none";
@@ -397,13 +387,11 @@
             let totalSesiKumulatif = 0;
 
             dataArray.forEach((item) => {
-                // Update statistik hanya jika memuat semua data awal
                 if(document.getElementById("searchInput").value === "" && document.getElementById("filterSemester").value === "Semua") {
                     setProgram.add(item.program);
                     totalSesiKumulatif += item.jumlah;
                 }
 
-                // Warna Badge Semester
                 let badgeClass = item.tipeSemester === 'Ganjil' ? 'badge-ganjil' : item.tipeSemester === 'Genap' ? 'badge-genap' : 'badge-default';
 
                 htmlString += `
@@ -424,12 +412,10 @@
                 `;
             });
             
-            // Render UI
             tbody.innerHTML = htmlString;
             table.style.display = "table";
             emptyState.style.display = "none";
             
-            // Render Stats Card (hanya render jika tidak dalam status filter)
             if(document.getElementById("searchInput").value === "" && document.getElementById("filterSemester").value === "Semua") {
                 document.getElementById("statTotalMatkul").innerText = dataArray.length;
                 document.getElementById("statTotalProgram").innerText = setProgram.size;
