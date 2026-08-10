@@ -51,25 +51,14 @@
         a, button, select { -webkit-tap-highlight-color: transparent; }
 
         /* KODE CSS WAJIB UNTUK MENU BAWAH */
-        .bottom-nav {
-            display: flex; position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
-            border-top: 1px solid #E5E5E5; box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
-            border-top-left-radius: 24px; border-top-right-radius: 24px;
-            z-index: 9999; padding: 10px 5px 20px 5px;
-            justify-content: space-around; align-items: center;
-        }
-        .bottom-nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 5px;
-            color: #A0AAB2; text-decoration: none; font-size: 10px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; 
-            flex: 1; padding: 10px 0; cursor: pointer;
-            -webkit-tap-highlight-color: transparent; 
-        }
+       /* KODE CSS WAJIB UNTUK MENU BAWAH */
+        .bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-top: 1px solid #E5E5E5; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); border-top-left-radius: 24px; border-top-right-radius: 24px; z-index: 9999; padding: 10px 5px 20px 5px; justify-content: space-around; align-items: center; }
+        .bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #A0AAB2; text-decoration: none; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; flex: 1; padding: 10px 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
         .bottom-nav-item i { font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; }
         
-        @media (min-width: 768px) {
-            .bottom-nav { display: none; }
+        /* Menampilkan menu bawah hanya di layar HP */
+        @media (max-width: 900px) {
+            .bottom-nav { display: flex; }
         }
     </style>
 </head>
