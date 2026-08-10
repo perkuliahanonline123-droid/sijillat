@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sijillāt | Beranda Utama</title>
+    <title>Sijillāt | Profil Abdul Hakim</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -24,19 +24,26 @@
 
         .main-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 40px; flex: 1; }
 
-        .hero-section { background-color: #556B4E; border-radius: 16px; padding: 50px 40px; color: #FAFAF7; margin-bottom: 20px; text-align: center; display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:300px; }
+        /* Disesuaikan untuk perataan teks kiri pada CV */
+        .hero-section { background-color: #556B4E; border-radius: 16px; padding: 50px 40px; color: #FAFAF7; margin-bottom: 20px; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; min-height:300px; text-align: left; }
         .hero-tag { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #D1D8CC; margin-bottom: 15px; display: block; }
-        .hero-title { font-family: 'Playfair Display', serif; font-size: 48px; line-height: 1.3; margin: 0 0 20px 0; }
-        .hero-desc { font-size: 16px; color: #E0E5DC; margin-bottom: 40px; line-height: 1.6; max-width: 80%; }
+        .hero-title { font-family: 'Playfair Display', serif; font-size: 42px; line-height: 1.3; margin: 0 0 15px 0; }
+        .hero-desc { font-size: 15px; color: #E0E5DC; margin-bottom: 25px; line-height: 1.6; max-width: 90%; }
         
+        .cv-list { list-style: none; padding: 0; margin: 0 0 35px 0; color: #E0E5DC; font-size: 14px; width: 100%; }
+        .cv-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .cv-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .cv-list strong { color: #FAFAF7; font-weight: 600; }
+
         .btn-download { display: inline-block; padding: 14px 28px; background-color: #FAFAF7; color: #556B4E; border: 1px solid #556B4E; text-decoration: none; border-radius: 8px; font-size: 15px; font-weight: 700; transition: all 0.3s; }
         .btn-download:hover { background-color: #D1D8CC; color: #333; }
 
         .sidebar { background-color: #F3F1EB; border-radius: 16px; padding: 30px; height: fit-content; }
         .sidebar-title { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #666; margin-bottom: 25px; border-bottom: 1px solid #E0DED7; padding-bottom: 15px;}
         .sidebar-item { margin-bottom: 25px; }
-        .sidebar-item span { font-size: 11px; font-weight: 600; color: #556B4E; display: block; margin-bottom: 5px; }
-        .sidebar-item h4 { font-family: 'Playfair Display', serif; font-size: 18px; color: #333; margin: 0; line-height: 1.4; font-weight: 600; }
+        .sidebar-item span { font-size: 11px; font-weight: 600; color: #556B4E; display: block; margin-bottom: 5px; text-transform: uppercase; }
+        .sidebar-item h4 { font-family: 'Playfair Display', serif; font-size: 16px; color: #333; margin: 0; line-height: 1.4; font-weight: 600; }
+        .sidebar-item p { margin: 5px 0 0 0; font-size: 13px; color: #666; line-height: 1.5; }
         
         .newsletter-box { background-color: #556B4E; border-radius: 12px; padding: 25px; color: white; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
         .newsletter-box div span { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
@@ -75,8 +82,8 @@
             .main-grid { grid-template-columns: 1fr; gap: 25px; }
             .navbar { padding: 15px 0; margin-bottom: 20px; justify-content: center;}
             .hero-section { padding: 40px 20px; }
-            .hero-title { font-size: 36px; }
-            .hero-desc { max-width: 100%; font-size: 15px; }
+            .hero-title { font-size: 32px; }
+            .hero-desc { max-width: 100%; font-size: 14px; }
             .sidebar { padding: 20px; }
             .newsletter-box { gap: 15px; }
             .footer { padding-bottom: 30px; }
@@ -86,6 +93,7 @@
 <body>
 
     <div class="container">
+        <!-- HEADER -->
         <div class="navbar">
             <a href="index.html" class="logo-area">
                 <div class="logo-circle"></div> Sijillāt
@@ -99,35 +107,70 @@
             <button class="nav-search-btn">CARI INFORMASI</button>
         </div>
 
+        <!-- MAIN CONTENT -->
         <div class="main-grid">
             <div class="main-content">
                 <div class="hero-section">
-                    <span class="hero-tag">Sistem Informasi Akademik</span>
-                    <h1 class="hero-title">Selamat Datang di Sijillāt</h1>
-                    <p class="hero-desc">Pusat layanan informasi akademik terpadu. Unduh sertifikat elektronik Anda, cek jadwal ujian, dan pantau pengumuman resmi institusi dengan mudah dan cepat.</p>
-                    <a href="sertifikat.html" class="btn-download"><i class="fas fa-search"></i> Cari Sertifikat</a>
+                    <span class="hero-tag">Profil Akademik & Riwayat Hidup</span>
+                    <h1 class="hero-title">Abdul Hakim, S.H., M.A.[cite: 1]</h1>
+                    <p class="hero-desc">
+                        Lahir di Lamongan pada 5 April 1993[cite: 1]. Memiliki kompetensi mendalam dalam bidang fikih munakahat (hukum perkawinan), faraid (hukum waris), hukum keluarga Islam, dan perbandingan mazhab[cite: 1]. Mampu membaca serta menganalisis literatur Islam klasik[cite: 1].
+                    </p>
+                    
+                    <span class="hero-tag" style="margin-bottom: 10px; color: #FAFAF7;">Riwayat Pendidikan Terakhir</span>
+                    <ul class="cv-list">
+                        <li><strong>2025 - Sekarang:</strong> S3 Hukum Islam (Konsentrasi Hukum Keluarga Islam), UIN Sunan Gunung Djati Bandung[cite: 1]</li>
+                        <li><strong>Lulus 2020:</strong> S2 Pengkajian Islam (Konsentrasi Hukum Islam), UIN Syarif Hidayatullah Jakarta[cite: 1]</li>
+                        <li><strong>Lulus 2017:</strong> S1 Hukum Keluarga Islam, STAI Imam Syafi'i Cianjur[cite: 1]</li>
+                    </ul>
+
+                    <a href="mailto:abdulhakim.92@yahoo.com" class="btn-download"><i class="fas fa-envelope"></i> Hubungi via Email</a>
                 </div>
             </div>
 
+            <!-- SIDEBAR -->
             <div class="sidebar-wrapper">
                 <div class="sidebar">
-                    <div class="sidebar-title">Informasi Menarik Lainnya</div>
-                    <div class="sidebar-item"><span>01 / Regulasi</span><h4>Panduan Asimetri Tahapan Penyelesaian Konflik</h4></div>
-                    <div class="sidebar-item"><span>02 / Linguistik</span><h4>Kompilasi Materi dan Hasil Keputusan Munas 2026</h4></div>
-                    <div class="sidebar-item"><span>03 / Akademik</span><h4>Pembaruan Status Akreditasi Unggul Institusi</h4></div>
+                    <div class="sidebar-title">Data Diri & Profesional</div>
+                    
+                    <div class="sidebar-item">
+                        <span>Kontak & Domisili</span>
+                        <h4>📞 085759377241[cite: 1]</h4>
+                        <h4>✉️ abdulhakim.92@yahoo.com[cite: 1]</h4>
+                        <p>Jl. Sarongge No. 16, Desa Ciputri, Kec. Pacet, Kab. Cianjur, Jawa Barat 43253[cite: 1]</p>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <span>Jabatan Akademik</span>
+                        <h4>Lektor[cite: 1]</h4>
+                        <p>Pangkat: Penata - III/c (Efektif sejak April 2025)[cite: 1] <br>NUPTK: 2737771672130342[cite: 1]</p>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <span>Pengalaman Kerja Utama</span>
+                        <h4>Ketua Program Studi Hukum Keluarga Islam[cite: 1]</h4>
+                        <p>STAI Imam Syafi'i Cianjur (2022-sekarang)[cite: 1]</p>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <span>Identitas Publikasi Ilmiah</span>
+                        <h4>Scopus ID: 58409617400[cite: 1]</h4>
+                    </div>
                 </div>
 
                 <div class="newsletter-box">
-                    <div><span>Langganan Buletin</span><h4>Info Mingguan Kita</h4></div>
-                    <div class="arrow-btn">→</div>
+                    <div><span>Sertifikasi Profesi</span><h4>Dosen Kementerian Agama RI (2023)[cite: 1]</h4></div>
+                    <div class="arrow-btn"><i class="fas fa-check"></i></div>
                 </div>
             </div>
         </div>
 
+        <!-- FOOTER -->
         <div class="footer">
-            &copy; 2026 Abdul Hakim, S.H., M.A.
+            &copy; 2026 Abdul Hakim, S.H., M.A.[cite: 1]
         </div>
     </div>
+    
     <!-- MENU BAWAH KHUSUS HP -->
     <div class="bottom-nav">
         <a href="sertifikat.html" class="bottom-nav-item">
