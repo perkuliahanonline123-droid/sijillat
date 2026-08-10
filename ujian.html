@@ -62,11 +62,10 @@
 
         .footer { text-align: center; padding: 30px 0 10px 0; margin-top: 40px; font-size: 13px; color: #888; border-top: 1px solid #E5E5E5; }
 
+        /* KODE CSS WAJIB UNTUK MENU BAWAH */
         .bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-top: 1px solid #E5E5E5; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); border-top-left-radius: 24px; border-top-right-radius: 24px; z-index: 9999; padding: 10px 5px 20px 5px; justify-content: space-around; align-items: center; }
         .bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #A0AAB2; text-decoration: none; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; flex: 1; padding: 10px 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
         .bottom-nav-item i { font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; }
-        .bottom-nav-item.active, .bottom-nav-item:hover, .bottom-nav-item:active { color: #556B4E; transform: translateY(-3px); }
-        .bottom-nav-item.active i, .bottom-nav-item:hover i, .bottom-nav-item:active i { background-color: #E0E5DC; color: #556B4E; box-shadow: 0 4px 10px rgba(85, 107, 78, 0.2); }
 
         @media (max-width: 900px) {
             body { padding-bottom: 90px; } 
@@ -89,15 +88,15 @@
 
     <div class="container">
         <div class="navbar">
-            <a href="index.html" class="logo-area" target="_top">
+            <a href="index.html" class="logo-area">
                 <div class="logo-circle"></div> Sijillāt
             </a>
             <div class="nav-links">
-                <a href="index.html" target="_top">Beranda</a>
-                <a href="sertifikat.html" target="_top">Sertifikat</a>
-                <a href="ujian.html" class="active" target="_top">Ujian</a>
-                <a href="pengumuman.html" target="_top">Pengumuman</a>
-                <a href="spmb.html" target="_top">INFO SPMB</a>
+                <a href="index.html">Beranda</a>
+                <a href="sertifikat.html">Sertifikat</a>
+                <a href="ujian.html" class="active">Ujian</a>
+                <a href="pengumuman.html">Pengumuman</a>
+                <a href="spmb.html">INFO SPMB</a>
             </div>
             <button class="nav-search-btn">CARI INFORMASI</button>
         </div>
@@ -105,7 +104,7 @@
         <div class="main-grid">
             <div class="main-content">
                 <div class="hero-section">
-                    <span class="hero-tag">Layanan Academic</span>
+                    <span class="hero-tag">Layanan Akademik</span>
                     <h1 class="hero-title">Portal Tautan Ujian</h1>
                     <p class="hero-desc">Temukan tautan ujian Anda di bawah ini, atau gunakan kolom pencarian untuk mempersempit berdasarkan Mata Kuliah atau Dosen.</p>
                     
@@ -170,7 +169,7 @@
         
         <a href="spmb.html" class="bottom-nav-item">
             <i class="fas fa-user-graduate"></i>
-            <span>INFO SPMB</span>
+            <span>SPMB</span>
         </a>
     </div>
 
@@ -180,16 +179,14 @@
         let globalDataUjian = [];
 
         window.onload = function() {
-            // Memanggil API via Fetch, bukan lagi dengan google.script.run
+            // Memanggil API via Fetch
             fetch(`${API_URL}?action=ambilSemuaDataUjian`, { method: "GET", redirect: "follow" })
                 .then(response => response.json())
                 .then(result => {
-                    // Cek jika response sukses seperti format di script sertifikat
                     if(result.status === "success" && result.data) {
                         globalDataUjian = urutkanDataUjian(result.data);
                         susunTabel(globalDataUjian); 
                     } else {
-                        // Antisipasi jika API mereturn array secara langsung (format lama API)
                         if (Array.isArray(result)) {
                             globalDataUjian = urutkanDataUjian(result);
                             susunTabel(globalDataUjian); 
