@@ -4,211 +4,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sijillāt | Portal Pengumuman SPMB</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { 
-                        sans: ['Outfit', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif']
-                    },
-                    colors: { 
-                        brand: { 900: '#064e3b', 800: '#4A5D43', 700: '#405339', 600: '#556B4E', 500: '#10b981', 100: '#d1fae5', 50: '#ecfdf5' } 
-                    },
-                    boxShadow: {
-                        'soft': '0 10px 40px -10px rgba(0,0,0,0.05)',
-                        'float': '0 10px 30px -5px rgba(0,0,0,0.08)',
-                        'up': '0 -4px 20px rgba(0,0,0,0.05)'
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        body { background-color: #FAFAF7; }
-        .animate-slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #FAFAF7; color: #333; margin: 0; padding: 0; }
+        .container { max-width: 100%; padding: 20px 3%; box-sizing: border-box; margin: 0 auto; display: flex; flex-direction: column; min-height: 100vh; }
         
-        @keyframes slideUp { 
-            from { opacity: 0; transform: translateY(20px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
-        @keyframes fadeIn { 
-            from { opacity: 0; } 
-            to { opacity: 1; } 
-        }
+        /* Navbar & Logo */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #E5E5E5; margin-bottom: 40px; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #4A5D43; text-decoration: none; }
+        .logo-circle { width: 30px; height: 30px; background-color: #4A5D43; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .logo-circle::after { content: ''; width: 12px; height: 12px; background-color: #FAFAF7; display: block; }
         
-        /* Mencegah highlight biru saat menu diklik di HP */
-        a, button, input { -webkit-tap-highlight-color: transparent; }
+        .nav-links { display: flex; gap: 30px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+        .nav-links a { text-decoration: none; color: #888; transition: color 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: #556B4E; }
+        .nav-search-btn { border: 1px solid #ccc; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; background: transparent; cursor: pointer; }
 
-        /* KODE CSS WAJIB UNTUK MENU BAWAH */
-        .bottom-nav {
-            display: flex; position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
-            border-top: 1px solid #E5E5E5; box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
-            border-top-left-radius: 24px; border-top-right-radius: 24px;
-            z-index: 9999; padding: 10px 5px 20px 5px;
-            justify-content: space-around; align-items: center;
-        }
-        .bottom-nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 5px;
-            color: #A0AAB2; text-decoration: none; font-size: 10px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; 
-            flex: 1; padding: 10px 0; cursor: pointer;
-            -webkit-tap-highlight-color: transparent; 
-        }
-        .bottom-nav-item i { font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; }
+        /* Grid & Hero */
+        .main-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 40px; flex: 1; }
+        .hero-section { background-color: #556B4E; border-radius: 16px; padding: 50px 40px; color: #FAFAF7; margin-bottom: 20px; }
+        .hero-tag { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #D1D8CC; margin-bottom: 15px; display: block; }
+        .hero-title { font-family: 'Playfair Display', serif; font-size: 42px; line-height: 1.3; margin: 0 0 20px 0; }
+        .hero-desc { font-size: 15px; color: #E0E5DC; margin-bottom: 30px; line-height: 1.6; max-width: 90%; }
         
-        @media (min-width: 768px) {
-            .bottom-nav { display: none; }
+        /* Area Pencarian SPMB */
+        .data-section { background-color: #FFFFFF; border-radius: 16px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #EBEBEB; }
+        .search-container { display: flex; gap: 15px; align-items: center; }
+        .search-box { flex: 1; padding: 16px 20px; border: 1px solid #E5E5E5; border-radius: 8px; font-size: 16px; font-family: 'Inter', sans-serif; box-sizing: border-box; outline: none; background-color: #FAFAF7; }
+        .search-box:focus { border-color: #556B4E; }
+        .btn-cek { padding: 16px 30px; background-color: #556B4E; color: #FFFFFF; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s; white-space: nowrap; letter-spacing: 1px; }
+        .btn-cek:hover { background-color: #4A5D43; box-shadow: 0 4px 10px rgba(85,107,78,0.2); }
+
+        /* Kotak Hasil Kelulusan */
+        .result-box { margin-top: 30px; padding: 40px 20px; border-radius: 12px; text-align: center; display: none; border: 1px solid #E5E5E5; }
+        .result-title { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .result-name { font-family: 'Playfair Display', serif; font-size: 32px; color: #333; margin: 0 0 20px 0; }
+        .status-badge { display: inline-block; padding: 12px 25px; border-radius: 30px; font-weight: 700; font-size: 15px; letter-spacing: 1px; }
+        
+        .result-box.lulus { background-color: #F0FDF4; border-color: #BBF7D0; }
+        .status-badge.lulus { background-color: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
+        
+        .result-box.gagal { background-color: #FEF2F2; border-color: #FECACA; }
+        .status-badge.gagal { background-color: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; }
+        
+        #loading { text-align: center; font-style: italic; color: #777; padding: 20px; font-size: 14px; }
+        #errorState { text-align: center; color: #991B1B; background-color: #FEF2F2; padding: 20px; font-size: 14px; border-radius: 8px; display: none; }
+        #searchArea { display: none; }
+
+        /* Sidebar & Footer */
+        .sidebar { background-color: #F3F1EB; border-radius: 16px; padding: 30px; height: fit-content; }
+        .sidebar-title { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #666; margin-bottom: 25px; border-bottom: 1px solid #E0DED7; padding-bottom: 15px;}
+        .sidebar-item { margin-bottom: 25px; }
+        .sidebar-item span { font-size: 11px; font-weight: 600; color: #556B4E; display: block; margin-bottom: 5px; }
+        .sidebar-item h4 { font-family: 'Playfair Display', serif; font-size: 18px; color: #333; margin: 0; line-height: 1.4; font-weight: 600; }
+        
+        .newsletter-box { background-color: #556B4E; border-radius: 12px; padding: 25px; color: white; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .newsletter-box div span { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+        .newsletter-box div h4 { margin: 5px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; }
+        .arrow-btn { width: 30px; height: 30px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0;}
+        .footer { text-align: center; padding: 30px 0 10px 0; margin-top: 40px; font-size: 13px; color: #888; border-top: 1px solid #E5E5E5; }
+
+        /* Bottom Nav Mobile */
+        .bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-top: 1px solid #E5E5E5; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); border-top-left-radius: 24px; border-top-right-radius: 24px; z-index: 9999; padding: 10px 5px 20px 5px; justify-content: space-around; align-items: center; }
+        .bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #A0AAB2; text-decoration: none; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; flex: 1; padding: 10px 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .bottom-nav-item i { font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; }
+
+        @media (max-width: 900px) {
+            body { padding-bottom: 90px; } 
+            .bottom-nav { display: flex; }
+            .nav-links { display: none; }
+            .nav-search-btn { display: none; }
+            .main-grid { grid-template-columns: 1fr; gap: 25px; }
+            .navbar { padding: 15px 0; margin-bottom: 20px; justify-content: center;}
+            .hero-section { padding: 30px 20px; }
+            .hero-title { font-size: 32px; }
+            .hero-desc { max-width: 100%; font-size: 14px; }
+            .data-section { padding: 20px 15px; }
+            
+            .search-container { flex-direction: column; }
+            .search-box { width: 100%; }
+            .btn-cek { width: 100%; padding: 18px; }
+            
+            .sidebar { padding: 20px; }
+            .newsletter-box { gap: 15px; }
+            .footer { padding-bottom: 30px; }
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen text-slate-800 font-sans selection:bg-brand-100 selection:text-brand-900">
+<body>
 
-    <!-- Header Desktop -->
-    <header class="w-full max-w-7xl mx-auto px-6 py-5 flex justify-between items-center border-b border-slate-200/60 mb-6 sticky top-0 bg-[#FAFAF7]/90 backdrop-blur-md z-40">
-        <a href="index.html" class="flex items-center gap-[10px] font-serif text-[24px] font-bold text-[#4A5D43] no-underline">
-            <div class="w-[30px] h-[30px] bg-[#4A5D43] rounded-full flex items-center justify-center">
-                <div class="w-[12px] h-[12px] bg-[#FAFAF7] rounded-full"></div>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="navbar">
+            <a href="index.html" class="logo-area">
+                <div class="logo-circle"></div> Sijillāt
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Beranda</a>
+                <a href="sertifikat.html">Sertifikat</a>
+                <a href="ujian.html">Ujian</a>
+                <a href="pengumuman.html">Pengumuman</a>
+                <a href="spmb.html" class="active">INFO SPMB</a>
             </div>
-            Sijillāt
-        </a>
-        <nav class="hidden md:flex gap-8 text-sm font-semibold tracking-wide uppercase text-slate-500">
-            <a href="index.html" class="hover:text-brand-800 transition-colors">Beranda</a>
-            <a href="sertifikat.html" class="hover:text-brand-800 transition-colors">Sertifikat</a>
-            <a href="ujian.html" class="hover:text-brand-800 transition-colors">Ujian</a>
-            <a href="pengumuman.html" class="text-brand-800 relative after:content-[''] after:absolute after:-bottom-1.5 after:left-0 after:w-full after:h-0.5 after:bg-brand-800 after:rounded-full">Pengumuman</a>
-            <a href="spmb.html" class="hover:text-brand-800 transition-colors">Info SPMB</a>
-        </nav>
-        <button class="hidden md:flex items-center gap-2 border border-slate-300 px-5 py-2.5 rounded-full text-xs font-bold tracking-wide hover:bg-slate-100 hover:border-slate-400 transition-all active:scale-95">
-            <i class="fas fa-search"></i> CARI
-        </button>
-    </header>
+            <button class="nav-search-btn">CARI INFORMASI</button>
+        </div>
 
-    <!-- Main Content -->
-    <main class="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 pb-28 md:pb-12">
-        
-        <div class="space-y-8">
-            <!-- Hero Banner -->
-            <div class="bg-gradient-to-br from-brand-900 via-brand-800 to-brand-600 rounded-[2rem] p-8 md:p-12 text-white shadow-float relative overflow-hidden text-center">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-                <div class="absolute bottom-0 left-0 w-48 h-48 bg-brand-100 opacity-10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4"></div>
-                
-                <div class="relative z-10">
-                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-bold tracking-widest text-emerald-100 uppercase mb-5 backdrop-blur-sm">
-                        <i class="fas fa-user-graduate"></i> Portal Kelulusan
-                    </span>
-                    <h1 class="font-serif text-4xl md:text-5xl leading-tight mb-5 drop-shadow-sm">Pengumuman SPMB</h1>
-                    <p class="text-emerald-50/90 text-sm md:text-base max-w-2xl mx-auto leading-relaxed font-medium">
-                        Silakan masukkan ID Pendaftar Anda untuk mengecek status kelulusan Seleksi Penerimaan Mahasiswa Baru.
-                    </p>
+        <div class="main-grid">
+            <div class="main-content">
+                <!-- HERO SECTION -->
+                <div class="hero-section">
+                    <span class="hero-tag">Portal Kelulusan</span>
+                    <h1 class="hero-title">Pengumuman SPMB</h1>
+                    <p class="hero-desc">Silakan masukkan Nomor ID Pendaftar Anda untuk mengecek status kelulusan Seleksi Penerimaan Mahasiswa Baru tahun ajaran 2026/2027.</p>
                 </div>
-            </div>
 
-            <!-- Card Pengecekan -->
-            <div class="bg-white rounded-[2rem] shadow-soft border border-slate-100/80 p-6 md:p-10 animate-slide-up">
-                
-                <!-- Loading State -->
-                <div id="loading" class="flex flex-col items-center justify-center py-12 animate-pulse">
-                    <div class="w-12 h-12 border-4 border-brand-100 border-t-brand-600 rounded-full animate-spin mb-4"></div>
-                    <p class="text-slate-500 font-medium text-sm">Menyinkronkan data pendaftar...</p>
-                </div>
-                
-                <!-- Error State (Hidden by default) -->
-                <div id="errorState" class="hidden text-center py-12">
-                    <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-2xl mx-auto mb-3"><i class="fas fa-exclamation-triangle"></i></div>
-                    <h3 class="text-slate-800 font-bold text-lg mb-1">Gagal Memuat Data</h3>
-                    <p class="text-slate-500 text-sm">Gagal mengambil data dari server. Silakan muat ulang halaman.</p>
-                </div>
-                
-                <!-- Search Area -->
-                <div id="searchArea" class="hidden">
-                    <div class="flex flex-col md:flex-row gap-3">
-                        <div class="flex items-center w-full bg-slate-50 rounded-2xl border border-slate-200/80 px-5 py-4 focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-500/10 transition-all shadow-sm">
-                            <i class="fas fa-id-card text-slate-400 mr-4 text-lg"></i>
-                            <input type="text" id="inputId" placeholder="Masukkan ID Pendaftar..." class="w-full bg-transparent outline-none font-bold text-slate-700 placeholder-slate-400 text-base md:text-lg">
+                <!-- AREA PENCARIAN -->
+                <div class="data-section">
+                    <div id="loading"><i class="fas fa-spinner fa-spin"></i> Menyinkronkan pangkalan data peserta...</div>
+                    <div id="errorState"><i class="fas fa-exclamation-triangle"></i> Gagal memuat data dari server. Silakan muat ulang halaman.</div>
+                    
+                    <div id="searchArea">
+                        <div class="search-container">
+                            <input type="text" id="inputId" class="search-box" placeholder="Masukkan ID Pendaftar Anda di sini...">
+                            <button onclick="cekKelulusan()" class="btn-cek"><i class="fas fa-search"></i> CEK HASIL</button>
                         </div>
-                        <button onclick="cekKelulusan()" class="bg-brand-800 hover:bg-brand-900 text-white px-8 py-4 rounded-2xl font-bold tracking-wide transition-all shrink-0 shadow-md active:scale-95 flex items-center justify-center gap-2">
-                            <i class="fas fa-search text-xs"></i> CEK HASIL
-                        </button>
-                    </div>
-
-                    <!-- Result Box -->
-                    <div id="resultBox" class="hidden mt-8 p-8 rounded-3xl text-center border animate-slide-up">
-                        <p class="text-xs font-black tracking-widest text-slate-400 uppercase mb-2">Status Kelulusan</p>
-                        <h2 id="resultName" class="font-serif text-3xl md:text-4xl text-slate-800 font-bold mb-6">Nama Peserta</h2>
-                        <div id="resultStatus">
-                            <!-- Status inject by JS -->
+                        
+                        <!-- KOTAK HASIL -->
+                        <div id="resultBox" class="result-box">
+                            <p class="result-title">Status Kelulusan</p>
+                            <h2 id="resultName" class="result-name">Nama Peserta</h2>
+                            <div id="resultStatus"></div>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <!-- SIDEBAR -->
+            <div class="sidebar-wrapper">
+                <div class="sidebar">
+                    <div class="sidebar-title">Informasi Menarik Lainnya</div>
+                    <div class="sidebar-item"><span>01 / Regulasi</span><h4>Panduan Asimetri Tahapan Penyelesaian Konflik</h4></div>
+                    <div class="sidebar-item"><span>02 / Linguistik</span><h4>Kompilasi Materi dan Hasil Keputusan Munas 2026</h4></div>
+                    <div class="sidebar-item"><span>03 / Akademik</span><h4>Pembaruan Status Akreditasi Unggul Institusi</h4></div>
+                </div>
+                <div class="newsletter-box">
+                    <div><span>Langganan Buletin</span><h4>Info Mingguan Kita</h4></div>
+                    <div class="arrow-btn">→</div>
+                </div>
             </div>
         </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="w-full text-center py-8 border-t border-slate-200/80 text-slate-400 text-xs font-medium tracking-wide bg-white/50">
-        &copy; 2026 Sijillāt Portal - Abdul Hakim, S.H., M.A.
-    </footer>
+        <div class="footer">
+            &copy; 2026 Abdul Hakim, S.H., M.A.
+        </div>
+    </div>
 
     <!-- MENU BAWAH KHUSUS HP -->
     <div class="bottom-nav">
         <a href="sertifikat.html" class="bottom-nav-item">
-            <i class="fas fa-certificate"></i>
-            <span>Sertifikat</span>
+            <i class="fas fa-certificate"></i><span>Sertifikat</span>
         </a>
-        
         <a href="ujian.html" class="bottom-nav-item">
-            <i class="fas fa-file-alt"></i>
-            <span>Ujian</span>
+            <i class="fas fa-file-alt"></i><span>Ujian</span>
         </a>
-        
         <a href="pengumuman.html" class="bottom-nav-item">
-            <i class="fas fa-bullhorn"></i>
-            <span>Pengumuman</span>
+            <i class="fas fa-bullhorn"></i><span>Pengumuman</span>
         </a>
-        
         <!-- Active Tab: SPMB -->
         <a href="spmb.html" class="bottom-nav-item" style="color: #556B4E; transform: translateY(-3px);">
-            <i class="fas fa-user-graduate" style="background-color: #E0E5DC; color: #556B4E; box-shadow: 0 4px 10px rgba(85, 107, 78, 0.2);"></i>
-            <span>INFO SPMB</span>
+            <i class="fas fa-user-graduate" style="background-color: #E0E5DC; color: #556B4E; box-shadow: 0 4px 10px rgba(85, 107, 78, 0.2);"></i><span>SPMB</span>
         </a>
     </div>
 
-    <!-- Script Utama (Diperbarui untuk GitHub/Vercel) -->
     <script>
-        let dataPeserta = {};
-        
-        // GANTI URL INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA
         const API_URL = "https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec?action=ambilDataSPMB";
+        let dataPeserta = {};
 
         window.onload = function() {
-            // Mengambil data menggunakan Fetch API (karena hosting di luar Google Script)
             fetch(API_URL)
                 .then(response => response.json())
                 .then(result => {
                     if (result.status === "success") {
                         prosesDataSPMB(result.data);
                     } else {
-                        throw new Error(result.message || "Terjadi kesalahan pada server");
+                        document.getElementById("loading").style.display = "none";
+                        document.getElementById("errorState").style.display = "block";
                     }
                 })
                 .catch(error => {
-                    tampilkanError(error);
+                    document.getElementById("loading").style.display = "none";
+                    document.getElementById("errorState").style.display = "block";
+                    console.error(error);
                 });
         };
-
-        function tampilkanError(error) {
-            console.error("Gagal memuat data:", error);
-            document.getElementById("loading").style.display = "none";
-            document.getElementById("errorState").style.display = "block";
-        }
 
         function prosesDataSPMB(dataMentah) {
             document.getElementById("loading").style.display = "none";
@@ -220,10 +210,7 @@
                 if (index > 0) { 
                     let id = row[0] ? row[0].toString().trim() : "";
                     let nama = row[1] ? row[1].toString().trim() : "";
-                    
-                    if (id !== "") {
-                        dataPeserta[id] = nama; 
-                    }
+                    if (id !== "") dataPeserta[id] = nama; 
                 }
             });
         }
@@ -239,24 +226,21 @@
                 return;
             }
 
-            resultBox.classList.remove("hidden");
+            resultBox.style.display = "block";
 
             if (dataPeserta.hasOwnProperty(idInput)) {
                 resultName.innerText = dataPeserta[idInput]; 
-                resultStatus.innerHTML = `<span class="inline-block bg-emerald-100 text-emerald-800 px-6 py-3 rounded-full text-lg md:text-xl font-extrabold border border-emerald-200 shadow-sm"><i class="fas fa-check-circle mr-2"></i> Dinyatakan LULUS</span>`;
-                resultBox.className = "mt-8 p-8 bg-emerald-50/80 border-2 border-emerald-200 rounded-3xl text-center animate-slide-up block shadow-soft";
+                resultStatus.innerHTML = `<span class="status-badge lulus"><i class="fas fa-check-circle"></i> Dinyatakan LULUS</span>`;
+                resultBox.className = "result-box lulus";
             } else {
                 resultName.innerText = "ID: " + idInput;
-                resultStatus.innerHTML = `<span class="inline-block bg-red-100 text-red-800 px-6 py-3 rounded-full text-lg md:text-xl font-extrabold border border-red-200 shadow-sm"><i class="fas fa-times-circle mr-2"></i> Dinyatakan TIDAK LULUS</span>`;
-                resultBox.className = "mt-8 p-8 bg-red-50/80 border-2 border-red-200 rounded-3xl text-center animate-slide-up block shadow-soft";
+                resultStatus.innerHTML = `<span class="status-badge gagal"><i class="fas fa-times-circle"></i> Dinyatakan TIDAK LULUS</span>`;
+                resultBox.className = "result-box gagal";
             }
         }
 
-        // Jalankan pencarian saat menekan tombol Enter di dalam input
         document.getElementById("inputId").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                cekKelulusan();
-            }
+            if (event.key === "Enter") cekKelulusan();
         });
     </script>
 </body>
