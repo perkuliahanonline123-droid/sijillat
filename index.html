@@ -44,7 +44,7 @@
         }
         .profile-wrapper img {
             width: 100%; height: 100%; object-fit: cover; object-position: top; 
-            transform: scale(1.25) translate(-1%, 1%); /* Zoom dan Presisi */
+            transform: scale(1.25) translate(-4%, 1%); 
         }
 
         .sidebar-title { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #666; margin-bottom: 20px; border-bottom: 1px solid #E0DED7; padding-bottom: 10px;}
@@ -55,6 +55,10 @@
         .sidebar-item a { color: #556B4E; text-decoration: none; font-weight: 500; font-size: 12.5px;}
         .sidebar-item a:hover { text-decoration: underline; }
         
+        /* Modifikasi link untuk ID Scopus */
+        .id-link { color: #333; text-decoration: none; transition: color 0.3s; }
+        .id-link:hover { color: #556B4E; text-decoration: underline; }
+
         .newsletter-box { background-color: #556B4E; border-radius: 12px; padding: 25px; color: white; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
         .newsletter-box div span { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
         .newsletter-box div h4 { margin: 5px 0 0 0; font-family: 'Inter', sans-serif; font-size: 14px; }
@@ -63,29 +67,24 @@
         /* --- KOTAK KANAN (KONTEN UTAMA BESAR) --- */
         .web-content { display: flex; flex-direction: column; gap: 30px; }
 
-        /* Kartu Hero Hijau (Header Konten) */
         .hero-section { background-color: #556B4E; border-radius: 16px; padding: 45px 40px; color: #FAFAF7; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; box-shadow: 0 10px 30px rgba(85, 107, 78, 0.15); }
         .hero-tag { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #D1D8CC; margin-bottom: 15px; display: block; }
         .hero-title { font-family: 'Playfair Display', serif; font-size: 42px; line-height: 1.2; margin: 0 0 10px 0; color: #ffffff;}
         .hero-subtitle { font-size: 18px; font-weight: 500; color: #D1D8CC; margin: 0 0 25px 0; font-style: italic; }
         .hero-desc { font-size: 15px; color: #E0E5DC; line-height: 1.6; max-width: 95%; margin: 0;}
         
-        /* Kartu Putih Elegan untuk Seksi Riwayat */
         .content-card { background-color: #ffffff; border-radius: 16px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); border: 1px solid #E5E5E5; }
         .section-header { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #4A5D43; margin-top: 0; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #E5E5E5; padding-bottom: 15px; }
         
-        /* Grid Keahlian */
         .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .skill-item { background-color: #FAFAF7; padding: 15px 20px; border-radius: 10px; border-left: 3px solid #556B4E; font-size: 14px; color: #444; line-height: 1.5;}
         
-        /* Timeline Layout (Pendidikan & Pengalaman) */
         .timeline { display: flex; flex-direction: column; gap: 20px; }
         .timeline-row { display: flex; gap: 25px; }
         .timeline-year { width: 140px; flex-shrink: 0; font-weight: 700; font-size: 13px; color: #556B4E; text-transform: uppercase; padding-top: 2px;}
         .timeline-info h5 { margin: 0 0 5px 0; font-size: 16px; color: #333; font-weight: 600; }
         .timeline-info p { margin: 0; font-size: 14px; color: #666; line-height: 1.5; }
 
-        /* List Publikasi */
         .pub-group { margin-bottom: 25px; }
         .pub-group:last-child { margin-bottom: 0; }
         .pub-category { font-size: 12px; font-weight: 700; color: #556B4E; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; background-color: #F3F1EB; display: inline-block; padding: 4px 12px; border-radius: 20px; }
@@ -172,8 +171,9 @@
 
                     <div class="sidebar-item">
                         <span>Identitas Akademik</span>
-                        <h4>Scopus ID: 58409617400</h4>
-                        <p><a href="https://scholar.google.com/citations?user=Iesm26sAAAAJ&hl=id" target="_blank">Lihat Profil Google Scholar ↗</a></p>
+                        <!-- Scopus ID yang sudah bisa di-klik -->
+                        <h4>Scopus ID: <a href="http://www.scopus.com/authid/detail.uri?authorId=58409617400" target="_blank" class="id-link">58409617400</a></h4>
+                        <p style="margin-top: 5px;"><a href="https://scholar.google.com/citations?user=Iesm26sAAAAJ&hl=id" target="_blank">Lihat Profil Google Scholar ↗</a></p>
                     </div>
                 </div>
 
