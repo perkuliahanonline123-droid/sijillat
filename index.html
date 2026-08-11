@@ -541,6 +541,9 @@
                         const yearMatch = dateVal.match(/\d{4}/);
                         if(yearMatch) year = yearMatch[0];
 
+                        // Ubah string tahun menjadi angka murni untuk keperluan pengurutan
+                        const yearNumber = parseInt(year) || 0;
+
                         // Format Volume dan Issue (No)
                         let detailText = journal;
                         if(vol) detailText += `, Vol. ${vol}`;
@@ -582,18 +585,26 @@
                             if (!groups[assignedKey]) groups[assignedKey] = [];
                         }
 
-                        groups[assignedKey].push(listItemHTML);
+                        // Simpan objek berisi tahun dan HTML ke dalam array kategori
+                        groups[assignedKey].push({ year: yearNumber, html: listItemHTML });
                     });
 
                     // Render Hasilnya ke Layar (Menjaga Urutan Objek)
                     let finalHTML = '';
                     for (const [category, items] of Object.entries(groups)) {
                         if (items.length > 0) {
+                            
+                            // URUTKAN BERDASARKAN TAHUN (Descending / Paling Baru di Atas)
+                            items.sort((a, b) => b.year - a.year);
+                            
+                            // Ekstrak HTML-nya saja setelah diurutkan
+                            const htmlItems = items.map(item => item.html);
+
                             finalHTML += `
                                 <div class="pub-group">
                                     <div class="pub-category">${category}</div>
                                     <ul class="pub-list">
-                                        ${items.join('')}
+                                        ${htmlItems.join('')}
                                     </ul>
                                 </div>
                             `;
