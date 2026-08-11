@@ -84,70 +84,43 @@
         .timeline-info h5 { margin: 0 0 5px 0; font-size: 16px; color: #333; font-weight: 600; }
         .timeline-info p { margin: 0; font-size: 14px; color: #666; line-height: 1.5; }
 
-        /* --- DESAIN KARTU PUBLIKASI BARU --- */
+        /* --- DESAIN PUBLIKASI DAFTAR SEDERHANA --- */
         .pub-group { margin-bottom: 35px; }
         .pub-group:last-child { margin-bottom: 0; }
         
+        /* Label Kategori (Pill) */
         .pub-category { 
-            font-size: 13px; font-weight: 700; color: #4A5D43; 
+            font-size: 11px; font-weight: 700; color: #4A5D43; 
             text-transform: uppercase; letter-spacing: 1px; 
-            margin-bottom: 15px; border-left: 4px solid #4A5D43; 
-            padding-left: 10px; line-height: 1;
+            margin-bottom: 15px; background-color: #F3F1EB; 
+            display: inline-block; padding: 6px 14px; border-radius: 20px;
         }
 
-        .pub-card {
-            border: 1px solid #e4e6eb;
-            border-radius: 12px;
-            padding: 20px 25px;
-            margin-bottom: 15px;
-            background-color: #ffffff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-            transition: transform 0.2s, box-shadow 0.2s;
+        /* List Item */
+        .pub-list { list-style: none; padding: 0; margin: 0; }
+        .pub-list li { 
+            margin-bottom: 20px; padding-bottom: 20px; 
+            border-bottom: 1px dashed #E5E5E5; line-height: 1.5; 
         }
-        .pub-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
-            transform: translateY(-2px);
+        .pub-list li:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        
+        .pub-title { 
+            font-size: 15px; font-weight: 600; color: #222; 
+            display: block; margin-bottom: 4px; line-height: 1.4; 
         }
-
-        .pub-card-top {
-            display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;
-        }
-        .pub-badge {
-            background-color: #FDF5E6; color: #C28B4E; 
-            padding: 4px 12px; border-radius: 20px; 
-            font-size: 10px; font-weight: 700; 
-            display: inline-flex; align-items: center; gap: 6px;
-            letter-spacing: 0.5px;
+        .pub-detail { 
+            font-size: 13px; color: #666; font-style: italic; 
+            display: block; margin-bottom: 8px; 
         }
         
-        .pub-card-title {
-            font-size: 16px; font-weight: 700; color: #333; 
-            margin: 0 0 12px 0; line-height: 1.5;
+        /* Tautan Teks */
+        .pub-link { 
+            color: #556B4E; font-weight: 600; font-size: 12px; 
+            text-decoration: none; display: inline-flex; align-items: center; 
+            transition: color 0.3s; 
         }
-
-        /* Modifikasi Layout Bawah Kartu (Sejajar) */
-        .pub-card-footer {
-            display: flex; justify-content: space-between; align-items: center; 
-            flex-wrap: wrap; gap: 15px; 
-        }
-
-        .pub-card-details {
-            display: flex; flex-wrap: wrap; gap: 15px; 
-            font-size: 13px; color: #666; margin: 0;
-        }
-        .pub-detail-item {
-            display: flex; align-items: center; gap: 6px;
-        }
-        .pub-detail-item i { color: #888; font-size: 14px; }
-
-        /* Modifikasi Tombol Menjadi Selaras Tema */
-        .pub-btn {
-            background-color: transparent; color: #556B4E; border: 1px solid #556B4E; 
-            text-decoration: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; 
-            font-weight: 600; display: inline-flex; align-items: center; gap: 6px;
-            transition: all 0.2s; letter-spacing: 0.5px;
-        }
-        .pub-btn:hover { background-color: #556B4E; color: white; }
+        .pub-link i { margin-left: 5px; font-size: 11px; }
+        .pub-link:hover { color: #3a4a35; text-decoration: underline; }
 
         /* Loader Animation */
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid #556B4E; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin-right: 10px; display: inline-block; vertical-align: middle;}
@@ -174,9 +147,6 @@
             .skills-grid { grid-template-columns: 1fr; }
             .timeline-row { flex-direction: column; gap: 5px; }
             .timeline-year { width: 100%; }
-            .pub-card { padding: 15px; }
-            .pub-card-footer { flex-direction: column; align-items: stretch; gap: 15px; }
-            .pub-btn { justify-content: center; }
         }
     </style>
 </head>
@@ -395,7 +365,6 @@
                     rows.forEach(row => {
                         if (!row.c || !row.c[3]) return; 
                         
-                        const authorRole = row.c[2]?.v ? row.c[2].v.toUpperCase() : '';
                         let title = row.c[3]?.v || '';
                         const journal = row.c[4]?.v || '';
                         const vol = row.c[5]?.v || '';
@@ -415,42 +384,32 @@
                         if(yearMatch) year = yearMatch[0];
 
                         // Format Volume dan Issue (No)
-                        let volText = '';
-                        if(vol) volText += `Vol. ${vol}`;
-                        if(no) volText += (vol ? `, No. ${no}` : `No. ${no}`);
+                        let detailText = journal;
+                        if(vol) detailText += `, Vol. ${vol}`;
+                        if(no) detailText += `, No. ${no}`;
+                        if(year) detailText += `, ${year}`;
 
-                        // Buat HTML Kartu
-                        const cardHTML = `
-                            <div class="pub-card">
-                                ${authorRole ? `
-                                <div class="pub-card-top">
-                                    <span class="pub-badge"><i class="fas fa-feather-alt"></i> ${authorRole}</span>
-                                </div>` : ''}
-                                <h4 class="pub-card-title">${title}</h4>
-                                
-                                <div class="pub-card-footer">
-                                    <div class="pub-card-details">
-                                        ${journal ? `<div class="pub-detail-item"><i class="fas fa-book"></i> ${journal}</div>` : ''}
-                                        ${volText ? `<div class="pub-detail-item"><i class="fas fa-layer-group"></i> ${volText}</div>` : ''}
-                                        ${year ? `<div class="pub-detail-item"><i class="far fa-calendar-alt"></i> ${year}</div>` : ''}
-                                    </div>
-                                    <a href="${link}" target="_blank" class="pub-btn">Lihat Artikel <i class="fas fa-external-link-alt" style="font-size: 11px;"></i></a>
-                                </div>
-                            </div>
+                        // Buat HTML List Sederhana bergaya elegan
+                        const listItemHTML = `
+                            <li>
+                                <span class="pub-title">${title}</span>
+                                <span class="pub-detail">${detailText}.</span>
+                                <a href="${link}" target="_blank" class="pub-link">Lihat Jurnal <i class="fas fa-arrow-right"></i></a>
+                            </li>
                         `;
 
                         // Filter Kategorisasi (dipisah semua)
                         const indexLower = index.toLowerCase();
                         if (indexLower.includes('scopus')) {
-                            groups['TERINDEKS SCOPUS'].push(cardHTML);
+                            groups['TERINDEKS SCOPUS'].push(listItemHTML);
                         } else if (indexLower.includes('sinta 2')) {
-                            groups['SINTA 2'].push(cardHTML);
+                            groups['SINTA 2'].push(listItemHTML);
                         } else if (indexLower.includes('sinta 3')) {
-                            groups['SINTA 3'].push(cardHTML);
+                            groups['SINTA 3'].push(listItemHTML);
                         } else if (indexLower.includes('sinta 4')) {
-                            groups['SINTA 4'].push(cardHTML);
+                            groups['SINTA 4'].push(listItemHTML);
                         } else {
-                            groups['PUBLIKASI NASIONAL'].push(cardHTML);
+                            groups['PUBLIKASI NASIONAL'].push(listItemHTML);
                         }
                     });
 
@@ -461,7 +420,9 @@
                             finalHTML += `
                                 <div class="pub-group">
                                     <div class="pub-category">${category}</div>
-                                    ${items.join('')}
+                                    <ul class="pub-list">
+                                        ${items.join('')}
+                                    </ul>
                                 </div>
                             `;
                         }
