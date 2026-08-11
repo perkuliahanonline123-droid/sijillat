@@ -84,7 +84,7 @@
         .timeline-info h5 { margin: 0 0 5px 0; font-size: 16px; color: #333; font-weight: 600; }
         .timeline-info p { margin: 0; font-size: 14px; color: #666; line-height: 1.5; }
 
-        /* --- DESAIN PUBLIKASI DAFTAR SEDERHANA --- */
+        /* --- DESAIN PUBLIKASI BINGKAI PUTUS-PUTUS PENUH --- */
         .pub-group { margin-bottom: 35px; }
         .pub-group:last-child { margin-bottom: 0; }
         
@@ -96,21 +96,27 @@
             display: inline-block; padding: 6px 14px; border-radius: 20px;
         }
 
-        /* List Item */
+        /* List Item dengan Bingkai Dashed Penuh */
         .pub-list { list-style: none; padding: 0; margin: 0; }
         .pub-list li { 
-            margin-bottom: 20px; padding-bottom: 20px; 
-            border-bottom: 1px dashed #E5E5E5; line-height: 1.5; 
+            margin-bottom: 15px; 
+            padding: 20px; 
+            border: 1.5px dashed #D1D8CC; /* Bingkai putus-putus penuh */
+            border-radius: 10px; /* Lengkungan sudut */
+            line-height: 1.5; 
+            background-color: #ffffff;
+            transition: border-color 0.3s;
         }
-        .pub-list li:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .pub-list li:hover { border-color: #556B4E; } /* Interaktif saat disorot */
+        .pub-list li:last-child { margin-bottom: 0; }
         
         .pub-title { 
             font-size: 15px; font-weight: 600; color: #222; 
-            display: block; margin-bottom: 4px; line-height: 1.4; 
+            display: block; margin-bottom: 6px; line-height: 1.4; 
         }
         .pub-detail { 
             font-size: 13px; color: #666; font-style: italic; 
-            display: block; margin-bottom: 8px; 
+            display: block; margin-bottom: 10px; 
         }
         
         /* Tautan Teks */
@@ -353,7 +359,7 @@
                     const json = JSON.parse(jsonString);
                     const rows = json.table.rows;
                     
-                    // Kategori dipisah secara spesifik sesuai permintaan
+                    // Kategori dipisah secara spesifik
                     const groups = {
                         'TERINDEKS SCOPUS': [],
                         'SINTA 2': [],
@@ -389,7 +395,7 @@
                         if(no) detailText += `, No. ${no}`;
                         if(year) detailText += `, ${year}`;
 
-                        // Buat HTML List Sederhana bergaya elegan
+                        // Buat HTML List dengan Bingkai Dashed
                         const listItemHTML = `
                             <li>
                                 <span class="pub-title">${title}</span>
