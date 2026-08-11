@@ -112,9 +112,7 @@
         .pub-card-top {
             display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;
         }
-        .pub-author {
-            font-weight: 700; font-size: 12px; color: #1a1a1a; letter-spacing: 0.5px;
-        }
+        /* Style untuk badge disesuaikan */
         .pub-badge {
             background-color: #FDF5E6; color: #C28B4E; 
             padding: 4px 12px; border-radius: 20px; 
@@ -138,14 +136,13 @@
         .pub-detail-item i { color: #888; font-size: 14px; }
 
         .pub-card-action {
-            display: flex; justify-content: space-between; align-items: center; 
+            display: flex; justify-content: flex-end; align-items: center; 
             padding-top: 15px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; gap: 15px;
         }
+        /* Sembunyikan pub-index-info */
         .pub-index-info {
-            display: flex; align-items: center; gap: 6px; 
-            font-size: 13px; color: #666; font-weight: 500;
+           display: none;
         }
-        .pub-index-info i { color: #A0AAB2; font-size: 16px; }
 
         .pub-btn {
             background-color: #2D68F6; color: white; text-decoration: none; 
@@ -403,7 +400,6 @@
                         if (!row.c || !row.c[3]) return; 
                         
                         // Menyesuaikan kolom berdasarkan struktur Google Sheet
-                        const authorName = row.c[1]?.v || 'ABDUL HAKIM, S.H., M.A.';
                         const authorRole = row.c[2]?.v ? row.c[2].v.toUpperCase() : '';
                         const title = row.c[3]?.v || '';
                         const journal = row.c[4]?.v || '';
@@ -423,13 +419,13 @@
                         if(vol) volText += `Vol. ${vol}`;
                         if(no) volText += (vol ? `, No. ${no}` : `No. ${no}`);
 
-                        // Buat HTML Kartu
+                        // Buat HTML Kartu (Nama dan Info Scopus Dihilangkan)
                         const cardHTML = `
                             <div class="pub-card">
+                                ${authorRole ? `
                                 <div class="pub-card-top">
-                                    <span class="pub-author">${authorName}</span>
-                                    ${authorRole ? `<span class="pub-badge"><i class="fas fa-feather-alt"></i> ${authorRole}</span>` : ''}
-                                </div>
+                                    <span class="pub-badge"><i class="fas fa-feather-alt"></i> ${authorRole}</span>
+                                </div>` : ''}
                                 <h4 class="pub-card-title">${title}</h4>
                                 <div class="pub-card-details">
                                     ${journal ? `<div class="pub-detail-item"><i class="fas fa-book"></i> ${journal}</div>` : ''}
@@ -437,9 +433,6 @@
                                     ${year ? `<div class="pub-detail-item"><i class="far fa-calendar-alt"></i> ${year}</div>` : ''}
                                 </div>
                                 <div class="pub-card-action">
-                                    <div class="pub-index-info">
-                                        <i class="fas fa-shield-alt"></i> ${index || 'Tidak ada data indeks'}
-                                    </div>
                                     <a href="${link}" target="_blank" class="pub-btn">BUKA ARTIKEL <i class="fas fa-external-link-alt" style="font-size: 11px;"></i></a>
                                 </div>
                             </div>
