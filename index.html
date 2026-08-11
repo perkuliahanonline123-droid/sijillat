@@ -36,15 +36,13 @@
             display: inline-block;
         }
 
-        /* PERBAIKAN: Penyesuaian transform dan origin agar kepala tidak terpotong */
+        /* PERBAIKAN: Menggunakan translateY untuk menggeser gambar ke atas */
         .profile-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: top; /* Pastikan selalu berpatokan pada sisi atas gambar */
-            transform: scale(1.22); /* Zoom sedikit dikurangi agar proporsional */
-            transform-origin: top center; /* Pusat zoom diubah ke atas agar tidak meluber ke atas */
-            margin-top: 8px; /* Memberikan sedikit ruang bernapas (spasi) di atas kepala */
+            object-position: top; 
+            transform: scale(1.25) translateY(-6%); /* Skala 1.25x dan digeser ke atas (Y negatif) */
         }
 
         /* Disesuaikan untuk perataan teks kiri pada CV */
