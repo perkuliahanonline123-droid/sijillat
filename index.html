@@ -112,7 +112,6 @@
         .pub-card-top {
             display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;
         }
-        /* Style untuk badge disesuaikan */
         .pub-badge {
             background-color: #FDF5E6; color: #C28B4E; 
             padding: 4px 12px; border-radius: 20px; 
@@ -122,35 +121,33 @@
         }
         
         .pub-card-title {
-            font-size: 18px; font-weight: 800; color: #111827; 
-            margin: 0 0 15px 0; line-height: 1.4;
+            font-size: 16px; font-weight: 700; color: #333; 
+            margin: 0 0 12px 0; line-height: 1.5;
+        }
+
+        /* Modifikasi Layout Bawah Kartu (Sejajar) */
+        .pub-card-footer {
+            display: flex; justify-content: space-between; align-items: center; 
+            flex-wrap: wrap; gap: 15px; 
         }
 
         .pub-card-details {
-            display: flex; flex-wrap: wrap; gap: 20px; 
-            font-size: 13px; color: #555; margin-bottom: 20px;
+            display: flex; flex-wrap: wrap; gap: 15px; 
+            font-size: 13px; color: #666; margin: 0;
         }
         .pub-detail-item {
             display: flex; align-items: center; gap: 6px;
         }
         .pub-detail-item i { color: #888; font-size: 14px; }
 
-        .pub-card-action {
-            display: flex; justify-content: flex-end; align-items: center; 
-            padding-top: 15px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; gap: 15px;
-        }
-        /* Sembunyikan pub-index-info */
-        .pub-index-info {
-           display: none;
-        }
-
+        /* Modifikasi Tombol Menjadi Selaras Tema */
         .pub-btn {
-            background-color: #2D68F6; color: white; text-decoration: none; 
-            padding: 10px 20px; border-radius: 8px; font-size: 12px; 
-            font-weight: 700; display: inline-flex; align-items: center; gap: 8px;
-            transition: background-color 0.2s; letter-spacing: 0.5px;
+            background-color: transparent; color: #556B4E; border: 1px solid #556B4E; 
+            text-decoration: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; 
+            font-weight: 600; display: inline-flex; align-items: center; gap: 6px;
+            transition: all 0.2s; letter-spacing: 0.5px;
         }
-        .pub-btn:hover { background-color: #2352c9; }
+        .pub-btn:hover { background-color: #556B4E; color: white; }
 
         /* Loader Animation */
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid #556B4E; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin-right: 10px; display: inline-block; vertical-align: middle;}
@@ -178,8 +175,7 @@
             .timeline-row { flex-direction: column; gap: 5px; }
             .timeline-year { width: 100%; }
             .pub-card { padding: 15px; }
-            .pub-card-details { gap: 10px; }
-            .pub-card-action { flex-direction: column; align-items: stretch; }
+            .pub-card-footer { flex-direction: column; align-items: stretch; gap: 15px; }
             .pub-btn { justify-content: center; }
         }
     </style>
@@ -371,7 +367,7 @@
         </a>
     </div>
 
-    <!-- JAVASCRIPT UNTUK GOOGLE SHEETS (Desain Kartu) -->
+    <!-- JAVASCRIPT UNTUK GOOGLE SHEETS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sheetId = '170DRH93dE5HfOiHpJaS8Nc4otfiFLMGHCd9yGX_qGZE';
@@ -399,15 +395,19 @@
                     rows.forEach(row => {
                         if (!row.c || !row.c[3]) return; 
                         
-                        // Menyesuaikan kolom berdasarkan struktur Google Sheet
                         const authorRole = row.c[2]?.v ? row.c[2].v.toUpperCase() : '';
-                        const title = row.c[3]?.v || '';
+                        let title = row.c[3]?.v || '';
                         const journal = row.c[4]?.v || '';
                         const vol = row.c[5]?.v || '';
                         const no = row.c[6]?.v || '';
                         const link = row.c[8]?.v || '#';
                         const index = row.c[9]?.v || '';
                         
+                        // Memperbaiki Judul yang HURUF KAPITAL SEMUA menjadi Title Case
+                        if (title && title === title.toUpperCase()) {
+                            title = title.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+                        }
+
                         // Ambil 4 digit tahun dari string format tanggal
                         let dateVal = row.c[7]?.f || String(row.c[7]?.v || '');
                         let year = '';
@@ -419,7 +419,7 @@
                         if(vol) volText += `Vol. ${vol}`;
                         if(no) volText += (vol ? `, No. ${no}` : `No. ${no}`);
 
-                        // Buat HTML Kartu (Nama dan Info Scopus Dihilangkan)
+                        // Buat HTML Kartu
                         const cardHTML = `
                             <div class="pub-card">
                                 ${authorRole ? `
@@ -427,13 +427,14 @@
                                     <span class="pub-badge"><i class="fas fa-feather-alt"></i> ${authorRole}</span>
                                 </div>` : ''}
                                 <h4 class="pub-card-title">${title}</h4>
-                                <div class="pub-card-details">
-                                    ${journal ? `<div class="pub-detail-item"><i class="fas fa-book"></i> ${journal}</div>` : ''}
-                                    ${volText ? `<div class="pub-detail-item"><i class="fas fa-layer-group"></i> ${volText}</div>` : ''}
-                                    ${year ? `<div class="pub-detail-item"><i class="far fa-calendar-alt"></i> ${year}</div>` : ''}
-                                </div>
-                                <div class="pub-card-action">
-                                    <a href="${link}" target="_blank" class="pub-btn">BUKA ARTIKEL <i class="fas fa-external-link-alt" style="font-size: 11px;"></i></a>
+                                
+                                <div class="pub-card-footer">
+                                    <div class="pub-card-details">
+                                        ${journal ? `<div class="pub-detail-item"><i class="fas fa-book"></i> ${journal}</div>` : ''}
+                                        ${volText ? `<div class="pub-detail-item"><i class="fas fa-layer-group"></i> ${volText}</div>` : ''}
+                                        ${year ? `<div class="pub-detail-item"><i class="far fa-calendar-alt"></i> ${year}</div>` : ''}
+                                    </div>
+                                    <a href="${link}" target="_blank" class="pub-btn">Lihat Artikel <i class="fas fa-external-link-alt" style="font-size: 11px;"></i></a>
                                 </div>
                             </div>
                         `;
