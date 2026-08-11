@@ -191,44 +191,76 @@
                 margin: 15mm; /* Margin standar A4 */
             }
             body {
-                background-color: #fff;
-                -webkit-print-color-adjust: exact; /* Memastikan background hero section dan kotak tetap berwarna */
+                background-color: #fff !important;
+                -webkit-print-color-adjust: exact; 
                 print-color-adjust: exact;
+                margin: 0 !important;
+                padding: 0 !important;
             }
+            
             /* Sembunyikan elemen yang tidak perlu di PDF */
-            .navbar, .bottom-nav, .pub-link {
+            .navbar, .bottom-nav, .pub-link, .loader, .loading-text {
                 display: none !important;
             }
+            
             .container {
-                padding: 0;
-                margin: 0;
-                width: 100%;
+                /* Memaksa margin internal jika browser disetel Margin: "Tidak ada" */
+                padding: 10mm 15mm !important; 
+                margin: 0 auto !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                max-width: 100% !important;
             }
-            /* Sesuaikan grid agar muat di kertas */
+            
+            /* Memaksa layout tetap 2 kolom, mengabaikan CSS responsif layar kecil */
             .main-layout {
-                grid-template-columns: 260px 1fr;
-                gap: 20px;
-                display: grid;
+                display: grid !important;
+                grid-template-columns: 240px 1fr !important;
+                gap: 20px !important; /* Jarak antar kolom diperkecil */
+                align-items: start !important;
             }
+
+            /* Mengatur kotak kanan agar jarak vertikalnya lebih rapat */
+            .web-content {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 15px !important; /* Mengurangi jarak antar kotak konten */
+            }
+
             .sidebar {
-                padding: 20px;
-                border: 1px solid #E5E5E5; /* Tambah border halus untuk sidebar jika dicetak */
+                padding: 15px !important;
+                border: 1px solid #E5E5E5 !important; 
             }
+
             .hero-section, .content-card {
-                padding: 25px;
-                box-shadow: none;
-                border: 1px solid #E5E5E5;
+                padding: 20px !important; /* Padding dalam kotak diperkecil */
+                box-shadow: none !important;
+                border: 1px solid #E5E5E5 !important;
+                margin-bottom: 0 !important;
             }
+
             .hero-title {
-                font-size: 30px;
+                font-size: 26px !important;
             }
-            /* Mencegah pemotongan elemen di tengah halaman baru */
-            .content-card, .sidebar-wrapper, .timeline-row, .pub-list li, .pub-group {
+            
+            .section-header {
+                margin-bottom: 15px !important;
+                padding-bottom: 10px !important;
+            }
+
+            /* Mencegah pemotongan elemen KECIL di tengah halaman */
+            .sidebar-wrapper, .timeline-row, .pub-list li, .pub-group {
                 page-break-inside: avoid;
             }
+            
+            /* HAPUS page-break-inside pada .content-card agar teks bisa mengalir natural ke halaman berikutnya tanpa menyisakan ruang kosong besar */
+            .content-card {
+                page-break-inside: auto !important; 
+            }
+
             .footer {
-                margin-top: 20px;
-                padding: 10px 0;
+                margin-top: 15px !important;
+                padding: 10px 0 !important;
             }
         }
     </style>
