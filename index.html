@@ -21,7 +21,8 @@
         .nav-links a { text-decoration: none; color: #888; transition: color 0.3s; }
         .nav-links a:hover, .nav-links a.active { color: #556B4E; }
         
-        .nav-search-btn { border: 1px solid #ccc; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; background: transparent; cursor: pointer; }
+        .nav-search-btn { border: 1px solid #ccc; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; background: transparent; cursor: pointer; transition: 0.3s; }
+        .nav-search-btn:hover { background: #556B4E; color: white; border-color: #556B4E; }
 
         /* TATA LETAK UTAMA WEB ELEGAN (KIRI KECIL, KANAN BESAR) */
         .main-layout { 
@@ -153,6 +154,54 @@
             .timeline-row { flex-direction: column; gap: 5px; }
             .timeline-year { width: 100%; }
         }
+
+        /* --- PENGATURAN CETAK PDF (A4) --- */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 15mm; /* Margin standar A4 */
+            }
+            body {
+                background-color: #fff;
+                -webkit-print-color-adjust: exact; /* Memastikan background hero section dan kotak tetap berwarna */
+                print-color-adjust: exact;
+            }
+            /* Sembunyikan elemen yang tidak perlu di PDF */
+            .navbar, .bottom-nav, .pub-link {
+                display: none !important;
+            }
+            .container {
+                padding: 0;
+                margin: 0;
+                width: 100%;
+            }
+            /* Sesuaikan grid agar muat di kertas */
+            .main-layout {
+                grid-template-columns: 260px 1fr;
+                gap: 20px;
+                display: grid;
+            }
+            .sidebar {
+                padding: 20px;
+                border: 1px solid #E5E5E5; /* Tambah border halus untuk sidebar jika dicetak */
+            }
+            .hero-section, .content-card {
+                padding: 25px;
+                box-shadow: none;
+                border: 1px solid #E5E5E5;
+            }
+            .hero-title {
+                font-size: 30px;
+            }
+            /* Mencegah pemotongan elemen di tengah halaman baru */
+            .content-card, .sidebar-wrapper, .timeline-row, .pub-list li, .pub-group {
+                page-break-inside: avoid;
+            }
+            .footer {
+                margin-top: 20px;
+                padding: 10px 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -169,7 +218,8 @@
                 <a href="pengumuman.html">Pengumuman</a>
                 <a href="spmb.html">INFO SPMB</a>
             </div>
-            <button class="nav-search-btn">CARI INFORMASI</button>
+            <!-- Tombol diganti menjadi CETAK PDF dan memanggil fungsi cetak -->
+            <button class="nav-search-btn" onclick="window.print()"><i class="fas fa-file-pdf"></i> CETAK PDF</button>
         </div>
 
         <!-- TATA LETAK UTAMA -->
