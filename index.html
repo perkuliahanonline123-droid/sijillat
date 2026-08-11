@@ -358,13 +358,20 @@
                     const json = JSON.parse(jsonString);
                     const rows = json.table.rows;
                     
-                    // Kategori dipisah secara spesifik
+                    // Kategori dipisah secara spesifik berdasarkan format pada gambar
                     const groups = {
-                        'TERINDEKS SCOPUS': [],
+                        'Scopus Q1': [],
+                        'Scopus Q2': [],
+                        'Scopus Q3': [],
+                        'Scopus Q4': [],
+                        'Scopus No-Q': [],
+                        'SINTA 1': [],
                         'SINTA 2': [],
                         'SINTA 3': [],
                         'SINTA 4': [],
-                        'PUBLIKASI NASIONAL': []
+                        'SINTA 5': [],
+                        'SINTA 6': [],
+                        'Jurnal Nasional': []
                     };
 
                     rows.forEach(row => {
@@ -403,22 +410,35 @@
                             </li>
                         `;
 
-                        // Filter Kategorisasi (dipisah semua)
-                        const indexLower = index.toLowerCase();
-                        if (indexLower.includes('scopus')) {
-                            groups['TERINDEKS SCOPUS'].push(listItemHTML);
-                        } else if (indexLower.includes('sinta 2')) {
-                            groups['SINTA 2'].push(listItemHTML);
-                        } else if (indexLower.includes('sinta 3')) {
-                            groups['SINTA 3'].push(listItemHTML);
-                        } else if (indexLower.includes('sinta 4')) {
-                            groups['SINTA 4'].push(listItemHTML);
+                        // Filter Kategorisasi Presisi
+                        const indexLower = index.toLowerCase().trim();
+                        let assignedKey = '';
+
+                        if (indexLower.includes('scopus') || indexLower.includes('wos')) {
+                            if (indexLower.includes('q1')) assignedKey = 'Scopus Q1';
+                            else if (indexLower.includes('q2')) assignedKey = 'Scopus Q2';
+                            else if (indexLower.includes('q3')) assignedKey = 'Scopus Q3';
+                            else if (indexLower.includes('q4')) assignedKey = 'Scopus Q4';
+                            else assignedKey = 'Scopus No-Q';
+                        } else if (indexLower.includes('sinta')) {
+                            if (indexLower.includes('1')) assignedKey = 'SINTA 1';
+                            else if (indexLower.includes('2')) assignedKey = 'SINTA 2';
+                            else if (indexLower.includes('3')) assignedKey = 'SINTA 3';
+                            else if (indexLower.includes('4')) assignedKey = 'SINTA 4';
+                            else if (indexLower.includes('5')) assignedKey = 'SINTA 5';
+                            else if (indexLower.includes('6')) assignedKey = 'SINTA 6';
+                            else assignedKey = 'SINTA 1';
+                        } else if (indexLower.includes('nasional') || indexLower.includes('Jurnal Nasional')) {
+                            assignedKey = 'Jurnal Nasional';
                         } else {
-                            groups['PUBLIKASI NASIONAL'].push(listItemHTML);
+                            assignedKey = index ? index : 'Lainnya';
+                            if (!groups[assignedKey]) groups[assignedKey] = [];
                         }
+
+                        groups[assignedKey].push(listItemHTML);
                     });
 
-                    // Render Hasilnya ke Layar
+                    // Render Hasilnya ke Layar (Menjaga Urutan Objek)
                     let finalHTML = '';
                     for (const [category, items] of Object.entries(groups)) {
                         if (items.length > 0) {
