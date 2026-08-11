@@ -3,215 +3,530 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sijillāt | Profil Abdul Hakim</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>CV Abdul Hakim - Profesional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background-color: #FAFAF7; color: #333; margin: 0; padding: 0; }
-        .container { max-width: 100%; padding: 20px 3%; box-sizing: border-box; margin: 0 auto; display: flex; flex-direction: column; min-height: 100vh; }
-        
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #E5E5E5; margin-bottom: 40px; }
-        .logo-area { display: flex; align-items: center; gap: 10px; font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #4A5D43; text-decoration: none; }
-        .logo-circle { width: 30px; height: 30px; background-color: #4A5D43; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
-        .logo-circle::after { content: ''; width: 12px; height: 12px; background-color: #FAFAF7; display: block; }
-        
-        .nav-links { display: flex; gap: 30px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
-        .nav-links a { text-decoration: none; color: #888; transition: color 0.3s; }
-        .nav-links a:hover, .nav-links a.active { color: #556B4E; }
-        
-        .nav-search-btn { border: 1px solid #ccc; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; background: transparent; cursor: pointer; }
-
-        .main-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 40px; flex: 1; }
-
-        .profile-wrapper {
-            width: 140px; 
-            height: 140px; 
-            border-radius: 50%; 
-            border: 3px solid #FAFAF7; 
-            margin-bottom: 20px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
-            background-color: #D1D8CC;
-            overflow: hidden; 
-            display: inline-block;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        /* PERBAIKAN: Menambahkan translateX (-4%) untuk menggeser gambar sedikit ke kiri */
-        .profile-wrapper img {
-            width: 100%;
-            height: 100%;
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .cv-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background-color: #fff;
+            display: flex;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR KIRI (GELAP) --- */
+        .sidebar {
+            width: 35%;
+            background-color: #24262b;
+            color: #fff;
+            padding: 40px 30px;
+            position: relative;
+        }
+
+        /* Hiasan Sudut Emas */
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #d4af37 50%, transparent 50%);
+        }
+        
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #d4af37 50%, transparent 50%);
+        }
+
+        .profile-pic-container {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-pic {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
             object-fit: cover;
-            object-position: top; 
-            transform: scale(1.25) translate(-1%, 1%); /* Skala 1.25x, geser kiri 4%, geser bawah 1% */
+            object-position: top;
+            border: 4px solid #d4af37;
         }
 
-        /* Disesuaikan untuk perataan teks kiri pada CV */
-        .hero-section { background-color: #556B4E; border-radius: 16px; padding: 50px 40px; color: #FAFAF7; margin-bottom: 20px; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; min-height:300px; text-align: left; }
-        .hero-tag { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #D1D8CC; margin-bottom: 15px; display: block; }
-        .hero-title { font-family: 'Playfair Display', serif; font-size: 42px; line-height: 1.3; margin: 0 0 15px 0; }
-        .hero-desc { font-size: 15px; color: #E0E5DC; margin-bottom: 25px; line-height: 1.6; max-width: 90%; }
+        .sidebar-heading {
+            background-color: #d4af37;
+            color: #1a1a1a;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            text-align: center;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 30px 0 20px 0;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .sidebar-item {
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        .sidebar-item h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: #d4af37;
+            font-size: 12px;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+        }
+
+        .sidebar-item p {
+            color: #e0e0e0;
+            word-wrap: break-word;
+        }
+
+        .sidebar-item a {
+            color: #e0e0e0;
+            text-decoration: none;
+        }
+
+        .sidebar-item a:hover {
+            color: #d4af37;
+        }
+
+        .icon-text {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
         
-        .cv-list { list-style: none; padding: 0; margin: 0 0 35px 0; color: #E0E5DC; font-size: 14px; width: 100%; }
-        .cv-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .cv-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .cv-list strong { color: #FAFAF7; font-weight: 600; }
+        .icon-text i {
+            color: #d4af37;
+            margin-top: 4px;
+            width: 16px;
+            text-align: center;
+        }
 
-        .btn-download { display: inline-block; padding: 14px 28px; background-color: #FAFAF7; color: #556B4E; border: 1px solid #556B4E; text-decoration: none; border-radius: 8px; font-size: 15px; font-weight: 700; transition: all 0.3s; }
-        .btn-download:hover { background-color: #D1D8CC; color: #333; }
+        /* --- KONTEN UTAMA KANAN (TERANG) --- */
+        .main-content {
+            width: 65%;
+            padding: 50px 40px;
+            background-color: #ffffff;
+            position: relative;
+        }
 
-        .sidebar { background-color: #F3F1EB; border-radius: 16px; padding: 30px; height: fit-content; }
-        .sidebar-title { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #666; margin-bottom: 25px; border-bottom: 1px solid #E0DED7; padding-bottom: 15px;}
-        .sidebar-item { margin-bottom: 25px; }
-        .sidebar-item span { font-size: 11px; font-weight: 600; color: #556B4E; display: block; margin-bottom: 5px; text-transform: uppercase; }
-        .sidebar-item h4 { font-family: 'Playfair Display', serif; font-size: 16px; color: #333; margin: 0; line-height: 1.4; font-weight: 600; }
-        .sidebar-item p { margin: 5px 0 0 0; font-size: 13px; color: #666; line-height: 1.5; }
+        /* Hiasan Sudut Emas Kanan Atas */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(225deg, #d4af37 50%, transparent 50%);
+        }
+
+        .header-name {
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-name h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            color: #1a1a1a;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-name h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 500;
+            color: #666;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a1a;
+            border-bottom: 2px solid #1a1a1a;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .timeline-date {
+            width: 30%;
+            font-weight: 600;
+            font-size: 13px;
+            color: #555;
+            padding-right: 15px;
+        }
+
+        .timeline-content {
+            width: 70%;
+        }
+
+        .timeline-content h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 3px;
+        }
+
+        .timeline-content p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .skills-list {
+            list-style-type: disc;
+            padding-left: 20px;
+            font-size: 13px;
+            color: #444;
+        }
         
-        .newsletter-box { background-color: #556B4E; border-radius: 12px; padding: 25px; color: white; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .newsletter-box div span { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
-        .newsletter-box div h4 { margin: 5px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; }
-        .arrow-btn { width: 30px; height: 30px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0;}
-
-        .footer { text-align: center; padding: 30px 0 10px 0; margin-top: 40px; font-size: 13px; color: #888; border-top: 1px solid #E5E5E5; }
-
-        .bottom-nav {
-            display: none; 
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
-            border-top: 1px solid #E5E5E5; box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
-            border-top-left-radius: 24px; border-top-right-radius: 24px;
-            z-index: 9999; padding: 10px 5px 20px 5px;
-            justify-content: space-around; align-items: center;
+        .skills-list li {
+            margin-bottom: 8px;
         }
-        .bottom-nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 5px;
-            color: #A0AAB2; text-decoration: none; font-size: 10px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; 
-            flex: 1; 
-            padding: 10px 0; 
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent; 
-        }
-        .bottom-nav-item i { font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; }
-        .bottom-nav-item:hover, .bottom-nav-item:active { color: #556B4E; transform: translateY(-3px); }
-        .bottom-nav-item:hover i, .bottom-nav-item:active i { background-color: #E0E5DC; color: #556B4E; box-shadow: 0 4px 10px rgba(85, 107, 78, 0.2); }
 
-        @media (max-width: 900px) {
-            body { padding-bottom: 90px; } 
-            .bottom-nav { display: flex; }
-            .nav-links { display: none; }
-            .nav-search-btn { display: none; }
-            .main-grid { grid-template-columns: 1fr; gap: 25px; }
-            .navbar { padding: 15px 0; margin-bottom: 20px; justify-content: center;}
-            .hero-section { padding: 40px 20px; }
-            .hero-title { font-size: 32px; }
-            .hero-desc { max-width: 100%; font-size: 14px; }
-            .sidebar { padding: 20px; }
-            .newsletter-box { gap: 15px; }
-            .footer { padding-bottom: 30px; }
+        .pub-category {
+            font-weight: 700;
+            font-size: 13px;
+            color: #d4af37;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .pub-list {
+            list-style-type: none;
+            font-size: 12px;
+            color: #444;
+        }
+
+        .pub-list li {
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+
+        .pub-list li:last-child {
+            border-bottom: none;
+        }
+
+        .pub-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .pub-journal {
+            font-style: italic;
+        }
+
+        .pub-link {
+            color: #d4af37;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        /* Responsif untuk layar kecil / HP */
+        @media (max-width: 768px) {
+            .cv-container {
+                flex-direction: column;
+                margin: 0;
+            }
+            .sidebar, .main-content {
+                width: 100%;
+            }
+            .sidebar::after, .main-content::before {
+                display: none;
+            }
+            .timeline-item {
+                flex-direction: column;
+            }
+            .timeline-date {
+                width: 100%;
+                margin-bottom: 5px;
+                color: #d4af37;
+            }
+            .timeline-content {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- HEADER -->
-        <div class="navbar">
-            <a href="index.html" class="logo-area">
-                <div class="logo-circle"></div> Sijillāt
-            </a>
-            <div class="nav-links">
-                <a href="sertifikat.html">Sertifikat</a>
-                <a href="ujian.html">Ujian</a>
-                <a href="pengumuman.html">Pengumuman</a>
-                <a href="spmb.html">INFO SPMB</a>
+    <div class="cv-container">
+        
+        <!-- SIDEBAR KIRI -->
+        <div class="sidebar">
+            <div class="profile-pic-container">
+                <img src="fotoprofil.png" alt="Abdul Hakim" class="profile-pic">
             </div>
-            <button class="nav-search-btn">CARI INFORMASI</button>
-        </div>
 
-        <!-- MAIN CONTENT -->
-        <div class="main-grid">
-            <div class="main-content">
-                <div class="hero-section">
-                    
-                    <!-- Foto Profil -->
-                    <div class="profile-wrapper">
-                        <img src="fotoprofil.png" alt="Foto Profil">
-                    </div>
-                    
-                    <span class="hero-tag">Profil Akademik & Riwayat Hidup</span>
-                    <h1 class="hero-title">Abdul Hakim, S.H., M.A.[cite: 1]</h1>
-                    <p class="hero-desc">
-                        Lahir di Lamongan pada 5 April 1993[cite: 1]. Memiliki kompetensi mendalam dalam bidang fikih munakahat (hukum perkawinan), faraid (hukum waris), hukum keluarga Islam, dan perbandingan mazhab[cite: 1]. Mampu membaca serta menganalisis literatur Islam klasik[cite: 1].
-                    </p>
-                    
-                    <span class="hero-tag" style="margin-bottom: 10px; color: #FAFAF7;">Riwayat Pendidikan Terakhir</span>
-                    <ul class="cv-list">
-                        <li><strong>2025 - Sekarang:</strong> S3 Hukum Islam (Konsentrasi Hukum Keluarga Islam), UIN Sunan Gunung Djati Bandung[cite: 1]</li>
-                        <li><strong>Lulus 2020:</strong> S2 Pengkajian Islam (Konsentrasi Hukum Islam), UIN Syarif Hidayatullah Jakarta[cite: 1]</li>
-                        <li><strong>Lulus 2017:</strong> S1 Hukum Keluarga Islam, STAI Imam Syafi'i Cianjur[cite: 1]</li>
-                    </ul>
+            <div class="sidebar-heading">DATA DIRI</div>
+            
+            <div class="sidebar-item">
+                <h4>Tempat, Tanggal Lahir</h4>
+                <p>Lamongan, 5 April 1993</p>
+            </div>
+            <div class="sidebar-item">
+                <h4>Jenis Kelamin</h4>
+                <p>Laki-laki</p>
+            </div>
+            <div class="sidebar-item">
+                <h4>Jabatan Akademik</h4>
+                <p>Lektor (Penata – III/c)</p>
+            </div>
+            <div class="sidebar-item">
+                <h4>NUPTK</h4>
+                <p>2737771672130342</p>
+            </div>
+            <div class="sidebar-item">
+                <h4>Sertifikat Pendidik</h4>
+                <p>232129420082 (Tahun 2023)</p>
+            </div>
 
-                    <a href="mailto:abdulhakim.92@yahoo.com" class="btn-download"><i class="fas fa-envelope"></i> Hubungi via Email</a>
+            <div class="sidebar-heading">KONTAK & DOMISILI</div>
+
+            <div class="icon-text">
+                <i class="fas fa-phone"></i>
+                <div>
+                    <strong>Telepon</strong><br>
+                    085759377241
+                </div>
+            </div>
+            <div class="icon-text">
+                <i class="fas fa-envelope"></i>
+                <div>
+                    <strong>Email</strong><br>
+                    abdulhakim.92@yahoo.com
+                </div>
+            </div>
+            <div class="icon-text">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                    <strong>Domisili</strong><br>
+                    Jl. Sarongge No. 16, RT 01/RW 04, Desa Ciputri, Kec. Pacet, Kab. Cianjur, Jawa Barat 43253
+                </div>
+            </div>
+            <div class="icon-text">
+                <i class="fas fa-home"></i>
+                <div>
+                    <strong>Alamat Asal</strong><br>
+                    Blok Cilimus, Desa Cimangguhilir, Kec. Bantarujeg, Kab. Majalengka, Jawa Barat 45464
                 </div>
             </div>
 
-            <!-- SIDEBAR -->
-            <div class="sidebar-wrapper">
-                <div class="sidebar">
-                    <div class="sidebar-title">Data Diri & Profesional</div>
-                    
-                    <div class="sidebar-item">
-                        <span>Kontak & Domisili</span>
-                        <h4>📞 085759377241[cite: 1]</h4>
-                        <h4>✉️ abdulhakim.92@yahoo.com[cite: 1]</h4>
-                        <p>Jl. Sarongge No. 16, Desa Ciputri, Kec. Pacet, Kab. Cianjur, Jawa Barat 43253[cite: 1]</p>
-                    </div>
+            <div class="sidebar-heading">PROFIL AKADEMIK</div>
 
-                    <div class="sidebar-item">
-                        <span>Jabatan Akademik</span>
-                        <h4>Lektor[cite: 1]</h4>
-                        <p>Pangkat: Penata - III/c (Efektif sejak April 2025)[cite: 1] <br>NUPTK: 2737771672130342[cite: 1]</p>
-                    </div>
-
-                    <div class="sidebar-item">
-                        <span>Pengalaman Kerja Utama</span>
-                        <h4>Ketua Program Studi Hukum Keluarga Islam[cite: 1]</h4>
-                        <p>STAI Imam Syafi'i Cianjur (2022-sekarang)[cite: 1]</p>
-                    </div>
-
-                    <div class="sidebar-item">
-                        <span>Identitas Publikasi Ilmiah</span>
-                        <h4>Scopus ID: 58409617400[cite: 1]</h4>
-                    </div>
-                </div>
-
-                <div class="newsletter-box">
-                    <div><span>Sertifikasi Profesi</span><h4>Dosen Kementerian Agama RI (2023)[cite: 1]</h4></div>
-                    <div class="arrow-btn"><i class="fas fa-check"></i></div>
-                </div>
+            <div class="sidebar-item">
+                <h4>Scopus ID</h4>
+                <p>58409617400</p>
+            </div>
+            <div class="sidebar-item">
+                <h4>Google Scholar</h4>
+                <a href="https://scholar.google.com/citations?user=Iesm26sAAAAJ&hl=id" target="_blank">scholar.google.com/citations?user=Iesm26sAAAAJ&hl=id</a>
             </div>
         </div>
 
-        <!-- FOOTER -->
-        <div class="footer">
-            &copy; 2026 Abdul Hakim, S.H., M.A.[cite: 1]
+        <!-- KONTEN UTAMA KANAN -->
+        <div class="main-content">
+            
+            <div class="header-name">
+                <h1>ABDUL HAKIM</h1>
+                <h2>Ketua Program Studi & Dosen Tetap Hukum Keluarga Islam</h2>
+            </div>
+
+            <!-- KEAHLIAN -->
+            <div class="section">
+                <h3 class="section-title">Keahlian dan Kompetensi</h3>
+                <ul class="skills-list">
+                    <li>Memiliki kompetensi dalam bidang fikih munakahat (hukum perkawinan), faraid (hukum waris), hukum keluarga Islam, dan perbandingan mazhab.</li>
+                    <li>Mampu membaca, memahami, dan menganalisis literatur Islam klasik (kitab kuning).</li>
+                    <li>Berpengalaman dalam penelitian hukum Islam dan publikasi artikel ilmiah pada jurnal nasional dan internasional bereputasi.</li>
+                    <li>Berpengalaman dalam pengelolaan program studi, pengembangan kurikulum, dan administrasi akademik perguruan tinggi.</li>
+                    <li>Mampu berkomunikasi secara lisan dan tulisan dalam bahasa Arab.</li>
+                    <li>Menguasai Microsoft Office, Google Workspace, Google Classroom, Zoom Meeting, Microsoft Teams, dan Canva for Education.</li>
+                </ul>
+            </div>
+
+            <!-- PENGALAMAN -->
+            <div class="section">
+                <h3 class="section-title">Pengalaman Mengajar</h3>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2022 – Sekarang</div>
+                    <div class="timeline-content">
+                        <h4>Ketua Program Studi Hukum Keluarga Islam</h4>
+                        <p>STAI Imam Syafi'i Cianjur</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2020 – Sekarang</div>
+                    <div class="timeline-content">
+                        <h4>Dosen Tetap Program Studi Hukum Keluarga Islam</h4>
+                        <p>STAI Imam Syafi'i Cianjur</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2019 – Sekarang</div>
+                    <div class="timeline-content">
+                        <h4>Musyrif</h4>
+                        <p>Ma'had Aly Serambi Mekkah, Padang Panjang, Sumatera Barat</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2018 – 2019</div>
+                    <div class="timeline-content">
+                        <h4>Guru Kitab Kuning</h4>
+                        <p>Pesantren Komunitas Ya Bunayya, Tangerang Selatan</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PENDIDIKAN -->
+            <div class="section">
+                <h3 class="section-title">Riwayat Pendidikan</h3>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2025 – Sekarang</div>
+                    <div class="timeline-content">
+                        <h4>Program Doktor (S3) Hukum Islam</h4>
+                        <p>UIN Sunan Gunung Djati Bandung (Konsentrasi Hukum Keluarga Islam)</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Lulus 2020</div>
+                    <div class="timeline-content">
+                        <h4>Program Magister (M.A.) Pengkajian Islam</h4>
+                        <p>UIN Syarif Hidayatullah Jakarta (Konsentrasi Hukum Islam)</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Lulus 2017</div>
+                    <div class="timeline-content">
+                        <h4>Program Sarjana (S.H.) Hukum Keluarga Islam</h4>
+                        <p>STAI Imam Syafi'i Cianjur</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2006 - 2012</div>
+                    <div class="timeline-content">
+                        <h4>Pendidikan Menengah</h4>
+                        <p>MA Mamba'us Sholihin, Gresik (Lulus 2012)<br>
+                           MTsN Model Babat, Lamongan (Lulus 2009)<br>
+                           MI Nurul Ulum Moropelang, Babat (Lulus 2006)
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PUBLIKASI -->
+            <div class="section">
+                <h3 class="section-title">Publikasi Karya Ilmiah</h3>
+                
+                <div class="pub-category">Terindeks Scopus</div>
+                <ul class="pub-list">
+                    <li>
+                        <span class="pub-title">The Distinction Between Nusyūz and Domestic Violence: The Relevance of Muhammad Sa’id Ramadhan Al-Buthi Thought in Contemporary Context</span>
+                        <span class="pub-journal">Al-Ahwal: Jurnal Hukum Keluarga Islam, Vol. 15, No. 1, 2022, pp. 39-58.</span><br>
+                        <a href="https://ejournal.uin-suka.ac.id/syariah/Ahwal/article/view/2554" class="pub-link">Link Jurnal</a>
+                    </li>
+                    <li>
+                        <span class="pub-title">Reasons for Polygamy and Its Impact on Muslim Family Life: Experiences of Polygamous Perpetrators in Babat, Lamongan, Indonesia</span>
+                        <span class="pub-journal">JIL: Journal of Islamic Law, Vol. 3, No. 1, 2022, pp. 34–53.</span><br>
+                        <a href="https://e-journal.iainptk.ac.id/index.php/jil/article/view/529" class="pub-link">Link Jurnal</a>
+                    </li>
+                    <li>
+                        <span class="pub-title">Online Marriage During the Covid-19 Pandemic: A Study of the Fatwas in Egypt, Iraq, Syria, and Saudi Arabia</span>
+                        <span class="pub-journal">Al-’Adalah, Vol. 19, No. 1, 2022, pp. 141-160.</span><br>
+                        <a href="https://ejournal.radenintan.ac.id/index.php/adalah/article/view/10720" class="pub-link">Link Jurnal</a>
+                    </li>
+                </ul>
+
+                <div class="pub-category">SINTA 2 & SINTA 3</div>
+                <ul class="pub-list">
+                    <li>
+                        <span class="pub-title">Keselamatan Non-Muslim Pedalaman dan Orang Eropa: Studi Konsep Ahl Al-Fatrah dan Aplikasinya di Era Modern</span>
+                        <span class="pub-journal">Al-Banjari : Jurnal Ilmiah Ilmu-Ilmu Keislaman Vol. 22, No. 1, 2023, pp. 44-58.</span>
+                    </li>
+                    <li>
+                        <span class="pub-title">مشاكل تقسيم الميراث قبل الوفاة</span>
+                        <span class="pub-journal">ULUL ALBAB: Jurnal Studi Islam, Vol. 23, No. 1, 2022, pp. 94–118.</span>
+                    </li>
+                    <li>
+                        <span class="pub-title">Adoption of Children and Its Limits in Interacting with Adoptive Parents</span>
+                        <span class="pub-journal">Al Ahkam, Vol. 20, No. 2, 2024, pp. 257-269.</span>
+                    </li>
+                    <li>
+                        <span class="pub-title">Annulment of Marriage and Khuluk in Family Law in Muslim Countries: A Comparative Study of Family Law in Syria, Sudan, Turkey, and Indonesia</span>
+                        <span class="pub-journal">ALHURRIYAH: Jurnal Hukum Islam, Vol. 7, No. 2, 2022, pp. 192-203.</span>
+                    </li>
+                </ul>
+                
+                <div class="pub-category">Karya Ilmiah Lainnya (Buku / Tulisan)</div>
+                <ul class="pub-list">
+                    <li>
+                        <span class="pub-title">إشكاليات تقسيم الميراث قبل الوفاة: دراسة على كيفية تقسيم الميراث في منطقة بابات لامونجان جاوة الشرقية ووجه موافقتها لفقه المذاهب الأربعة</span>
+                        <span class="pub-journal">Buku (204 halaman). Penerbit: KBM Indonesia. ISBN: 978-623-6509-15-9</span>
+                    </li>
+                    <li>
+                        <span class="pub-title">Konsep Poligami dan Pengaruhnya Terhadap Kesejahteraan Keluarga</span>
+                        <span class="pub-journal">Skripsi (93 halaman)</span>
+                    </li>
+                    <li>
+                        <span class="pub-title">جواهر الكلم في تنبيه المتعلم: شرح منظومة تنبيه المتعلم</span>
+                        <span class="pub-journal">Tulisan (141 halaman)</span>
+                    </li>
+                </ul>
+            </div>
+
         </div>
-    </div>
-    
-    <!-- MENU BAWAH KHUSUS HP -->
-    <div class="bottom-nav">
-        <a href="sertifikat.html" class="bottom-nav-item">
-            <i class="fas fa-certificate"></i><span>Sertifikat</span>
-        </a>
-        <a href="ujian.html" class="bottom-nav-item">
-            <i class="fas fa-file-alt"></i><span>Ujian</span>
-        </a>
-        <a href="pengumuman.html" class="bottom-nav-item">
-            <i class="fas fa-bullhorn"></i><span>Pengumuman</span>
-        </a>
-        <a href="spmb.html" class="bottom-nav-item">
-            <i class="fas fa-user-graduate"></i><span>INFO SPMB</span>
-        </a>
     </div>
 
 </body>
