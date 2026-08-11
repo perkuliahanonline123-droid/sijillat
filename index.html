@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sijillāt | Profil Abdul Hakim</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         html { scroll-behavior: smooth; }
@@ -52,12 +52,11 @@
         .sidebar-item span { font-size: 11px; font-weight: 600; color: #556B4E; display: block; margin-bottom: 4px; text-transform: uppercase; }
         .sidebar-item h4 { font-family: 'Playfair Display', serif; font-size: 15px; color: #333; margin: 0 0 4px 0; line-height: 1.3; font-weight: 700; }
         .sidebar-item p { margin: 0; font-size: 12.5px; color: #666; line-height: 1.5; }
-        .sidebar-item a { color: #556B4E; text-decoration: none; font-weight: 500; font-size: 12.5px;}
-        .sidebar-item a:hover { text-decoration: underline; }
         
-        /* Modifikasi link untuk ID Scopus */
         .id-link { color: #333; text-decoration: none; transition: color 0.3s; }
         .id-link:hover { color: #556B4E; text-decoration: underline; }
+        .sidebar-item a:not(.id-link) { color: #556B4E; text-decoration: none; font-weight: 500; font-size: 12.5px;}
+        .sidebar-item a:not(.id-link):hover { text-decoration: underline; }
 
         .newsletter-box { background-color: #556B4E; border-radius: 12px; padding: 25px; color: white; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
         .newsletter-box div span { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
@@ -85,18 +84,76 @@
         .timeline-info h5 { margin: 0 0 5px 0; font-size: 16px; color: #333; font-weight: 600; }
         .timeline-info p { margin: 0; font-size: 14px; color: #666; line-height: 1.5; }
 
-        /* Gaya Publikasi Terhubung Spreadsheet */
-        .pub-group { margin-bottom: 25px; }
+        /* --- DESAIN KARTU PUBLIKASI BARU --- */
+        .pub-group { margin-bottom: 35px; }
         .pub-group:last-child { margin-bottom: 0; }
-        .pub-category { font-size: 11px; font-weight: 700; color: #556B4E; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; background-color: #F3F1EB; display: inline-block; padding: 6px 14px; border-radius: 20px; }
-        .pub-list { list-style: none; padding: 0; margin: 0; }
-        .pub-list li { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px dashed #E5E5E5; font-size: 14px; line-height: 1.6; }
-        .pub-list li:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-        .pub-title { font-weight: 600; color: #222; display: block; margin-bottom: 3px;}
-        .pub-detail { color: #666; font-style: italic; display: block; margin-bottom: 5px;}
-        .pub-link { color: #556B4E; font-weight: 600; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; transition: color 0.3s; }
-        .pub-link i { margin-left: 5px; font-size: 11px; }
-        .pub-link:hover { color: #3a4a35; text-decoration: underline; }
+        
+        .pub-category { 
+            font-size: 13px; font-weight: 700; color: #4A5D43; 
+            text-transform: uppercase; letter-spacing: 1px; 
+            margin-bottom: 15px; border-left: 4px solid #4A5D43; 
+            padding-left: 10px; line-height: 1;
+        }
+
+        .pub-card {
+            border: 1px solid #e4e6eb;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .pub-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+
+        .pub-card-top {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;
+        }
+        .pub-author {
+            font-weight: 700; font-size: 12px; color: #1a1a1a; letter-spacing: 0.5px;
+        }
+        .pub-badge {
+            background-color: #FDF5E6; color: #C28B4E; 
+            padding: 4px 12px; border-radius: 20px; 
+            font-size: 10px; font-weight: 700; 
+            display: inline-flex; align-items: center; gap: 6px;
+            letter-spacing: 0.5px;
+        }
+        
+        .pub-card-title {
+            font-size: 18px; font-weight: 800; color: #111827; 
+            margin: 0 0 15px 0; line-height: 1.4;
+        }
+
+        .pub-card-details {
+            display: flex; flex-wrap: wrap; gap: 20px; 
+            font-size: 13px; color: #555; margin-bottom: 20px;
+        }
+        .pub-detail-item {
+            display: flex; align-items: center; gap: 6px;
+        }
+        .pub-detail-item i { color: #888; font-size: 14px; }
+
+        .pub-card-action {
+            display: flex; justify-content: space-between; align-items: center; 
+            padding-top: 15px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; gap: 15px;
+        }
+        .pub-index-info {
+            display: flex; align-items: center; gap: 6px; 
+            font-size: 13px; color: #666; font-weight: 500;
+        }
+        .pub-index-info i { color: #A0AAB2; font-size: 16px; }
+
+        .pub-btn {
+            background-color: #2D68F6; color: white; text-decoration: none; 
+            padding: 10px 20px; border-radius: 8px; font-size: 12px; 
+            font-weight: 700; display: inline-flex; align-items: center; gap: 8px;
+            transition: background-color 0.2s; letter-spacing: 0.5px;
+        }
+        .pub-btn:hover { background-color: #2352c9; }
 
         /* Loader Animation */
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid #556B4E; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin-right: 10px; display: inline-block; vertical-align: middle;}
@@ -118,11 +175,15 @@
             .bottom-nav { display: flex; }
             .nav-links, .nav-search-btn { display: none; }
             .navbar { padding: 15px 0; margin-bottom: 20px; justify-content: center;}
-            .hero-section, .content-card { padding: 30px 25px; }
+            .hero-section, .content-card { padding: 30px 20px; }
             .hero-title { font-size: 32px; }
             .skills-grid { grid-template-columns: 1fr; }
             .timeline-row { flex-direction: column; gap: 5px; }
             .timeline-year { width: 100%; }
+            .pub-card { padding: 15px; }
+            .pub-card-details { gap: 10px; }
+            .pub-card-action { flex-direction: column; align-items: stretch; }
+            .pub-btn { justify-content: center; }
         }
     </style>
 </head>
@@ -149,7 +210,6 @@
             <!-- KOTAK KIRI (SIDEBAR DATA DIRI) -->
             <div class="sidebar-wrapper">
                 <div class="sidebar">
-                    <!-- Foto Profil -->
                     <div class="profile-center">
                         <div class="profile-wrapper">
                             <img src="fotoprofil.png" alt="Abdul Hakim">
@@ -280,11 +340,11 @@
                 <div class="content-card">
                     <h3 class="section-header"><i class="fas fa-book-open"></i> Publikasi Karya Ilmiah</h3>
                     
-                    <!-- Container untuk menampung data yang diambil via JavaScript -->
+                    <!-- Container JSON JS -->
                     <div id="publikasi-container">
                         <div style="padding: 20px 0;">
                             <span class="loader"></span>
-                            <span class="loading-text">Sedang memuat data publikasi dari server Sijillāt...</span>
+                            <span class="loading-text">Menyinkronkan data publikasi dengan database Sijillāt...</span>
                         </div>
                     </div>
 
@@ -314,10 +374,9 @@
         </a>
     </div>
 
-    <!-- JAVASCRIPT UNTUK MENGAMBIL DATA DARI GOOGLE SHEETS -->
+    <!-- JAVASCRIPT UNTUK GOOGLE SHEETS (Desain Kartu) -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ID Spreadsheet yang Anda berikan
             const sheetId = '170DRH93dE5HfOiHpJaS8Nc4otfiFLMGHCd9yGX_qGZE';
             const sheetName = encodeURIComponent('Publikasi Ilmiah');
             const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
@@ -327,23 +386,25 @@
             fetch(url)
                 .then(res => res.text())
                 .then(text => {
-                    // Membersihkan pembungkus JSON dari Google Visualization
                     const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
                     const json = JSON.parse(jsonString);
                     const rows = json.table.rows;
                     
-                    // Objek penampung berdasarkan pengelompokan
+                    // Kategori dipisah secara spesifik sesuai permintaan
                     const groups = {
                         'TERINDEKS SCOPUS': [],
-                        'SINTA 2 & SINTA 3': [],
-                        'SINTA 4 & NASIONAL': []
+                        'SINTA 2': [],
+                        'SINTA 3': [],
+                        'SINTA 4': [],
+                        'PUBLIKASI NASIONAL': []
                     };
 
                     rows.forEach(row => {
-                        // Lewati baris kosong
                         if (!row.c || !row.c[3]) return; 
                         
-                        // Menyesuaikan dengan urutan kolom (A=0, B=1, C=2, D=Judul(3), dst)
+                        // Menyesuaikan kolom berdasarkan struktur Google Sheet
+                        const authorName = row.c[1]?.v || 'ABDUL HAKIM, S.H., M.A.';
+                        const authorRole = row.c[2]?.v ? row.c[2].v.toUpperCase() : '';
                         const title = row.c[3]?.v || '';
                         const journal = row.c[4]?.v || '';
                         const vol = row.c[5]?.v || '';
@@ -351,47 +412,62 @@
                         const link = row.c[8]?.v || '#';
                         const index = row.c[9]?.v || '';
                         
-                        // Ekstraksi Tahun (4 digit dari data Tanggal)
+                        // Ambil 4 digit tahun dari string format tanggal
                         let dateVal = row.c[7]?.f || String(row.c[7]?.v || '');
                         let year = '';
                         const yearMatch = dateVal.match(/\d{4}/);
                         if(yearMatch) year = yearMatch[0];
 
-                        // Membentuk string detail jurnal (menangani jika ada data yang kosong agar rapi)
-                        let detailText = journal;
-                        if(vol) detailText += `, Vol. ${vol}`;
-                        if(no) detailText += `, No. ${no}`;
-                        if(year) detailText += `, ${year}`;
+                        // Format Volume dan Issue (No)
+                        let volText = '';
+                        if(vol) volText += `Vol. ${vol}`;
+                        if(no) volText += (vol ? `, No. ${no}` : `No. ${no}`);
 
-                        const pubItemHTML = `
-                            <li>
-                                <span class="pub-title">${title}</span>
-                                <span class="pub-detail">${detailText}.</span>
-                                <a href="${link}" target="_blank" class="pub-link">Lihat Jurnal <i class="fas fa-arrow-right"></i></a>
-                            </li>
+                        // Buat HTML Kartu
+                        const cardHTML = `
+                            <div class="pub-card">
+                                <div class="pub-card-top">
+                                    <span class="pub-author">${authorName}</span>
+                                    ${authorRole ? `<span class="pub-badge"><i class="fas fa-feather-alt"></i> ${authorRole}</span>` : ''}
+                                </div>
+                                <h4 class="pub-card-title">${title}</h4>
+                                <div class="pub-card-details">
+                                    ${journal ? `<div class="pub-detail-item"><i class="fas fa-book"></i> ${journal}</div>` : ''}
+                                    ${volText ? `<div class="pub-detail-item"><i class="fas fa-layer-group"></i> ${volText}</div>` : ''}
+                                    ${year ? `<div class="pub-detail-item"><i class="far fa-calendar-alt"></i> ${year}</div>` : ''}
+                                </div>
+                                <div class="pub-card-action">
+                                    <div class="pub-index-info">
+                                        <i class="fas fa-shield-alt"></i> ${index || 'Tidak ada data indeks'}
+                                    </div>
+                                    <a href="${link}" target="_blank" class="pub-btn">BUKA ARTIKEL <i class="fas fa-external-link-alt" style="font-size: 11px;"></i></a>
+                                </div>
+                            </div>
                         `;
 
-                        // Mengelompokkan berdasarkan isi Kolom Indeksasi Jurnal
+                        // Filter Kategorisasi (dipisah semua)
                         const indexLower = index.toLowerCase();
                         if (indexLower.includes('scopus')) {
-                            groups['TERINDEKS SCOPUS'].push(pubItemHTML);
-                        } else if (indexLower.includes('sinta 2') || indexLower.includes('sinta 3')) {
-                            groups['SINTA 2 & SINTA 3'].push(pubItemHTML);
+                            groups['TERINDEKS SCOPUS'].push(cardHTML);
+                        } else if (indexLower.includes('sinta 2')) {
+                            groups['SINTA 2'].push(cardHTML);
+                        } else if (indexLower.includes('sinta 3')) {
+                            groups['SINTA 3'].push(cardHTML);
+                        } else if (indexLower.includes('sinta 4')) {
+                            groups['SINTA 4'].push(cardHTML);
                         } else {
-                            groups['SINTA 4 & NASIONAL'].push(pubItemHTML);
+                            groups['PUBLIKASI NASIONAL'].push(cardHTML);
                         }
                     });
 
-                    // Merender HTML
+                    // Render Hasilnya ke Layar
                     let finalHTML = '';
                     for (const [category, items] of Object.entries(groups)) {
                         if (items.length > 0) {
                             finalHTML += `
                                 <div class="pub-group">
                                     <div class="pub-category">${category}</div>
-                                    <ul class="pub-list">
-                                        ${items.join('')}
-                                    </ul>
+                                    ${items.join('')}
                                 </div>
                             `;
                         }
@@ -401,7 +477,7 @@
                 })
                 .catch(err => {
                     console.error('Error:', err);
-                    pubContainer.innerHTML = '<p style="color:red; font-size:14px;">Gagal memuat data dari Spreadsheet. Pastikan pengaturan Share pada Google Sheet telah diatur ke <b>"Anyone with the link / Siapa saja yang memiliki link" -> "Viewer / Pelihat"</b>.</p>';
+                    pubContainer.innerHTML = '<p style="color:red; font-size:14px;">Gagal memuat data dari Spreadsheet. Pastikan pengaturan Share pada Google Sheet telah diatur ke <b>"Anyone with the link" -> "Viewer"</b>.</p>';
                 });
         });
     </script>
