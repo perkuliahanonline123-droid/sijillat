@@ -84,7 +84,7 @@
         .timeline-info h5 { margin: 0 0 5px 0; font-size: 16px; color: #333; font-weight: 600; }
         .timeline-info p { margin: 0; font-size: 14px; color: #666; line-height: 1.5; }
 
-        /* --- DESAIN PUBLIKASI BINGKAI PUTUS-PUTUS PENUH --- */
+        /* --- DESAIN PUBLIKASI DAFTAR SEDERHANA & ELEGAN --- */
         .pub-group { margin-bottom: 35px; }
         .pub-group:last-child { margin-bottom: 0; }
         
@@ -92,26 +92,26 @@
         .pub-category { 
             font-size: 11px; font-weight: 700; color: #4A5D43; 
             text-transform: uppercase; letter-spacing: 1px; 
-            margin-bottom: 15px; background-color: #F3F1EB; 
+            margin-bottom: 20px; background-color: #F3F1EB; 
             display: inline-block; padding: 6px 14px; border-radius: 20px;
         }
 
-        /* List Item dengan Bingkai Dashed Penuh */
+        /* List Item dengan Garis Bawah Putus-Putus yang Konsisten */
         .pub-list { list-style: none; padding: 0; margin: 0; }
         .pub-list li { 
-            margin-bottom: 15px; 
-            padding: 20px; 
-            border: 1.5px dashed #D1D8CC; /* Bingkai putus-putus penuh */
-            border-radius: 10px; /* Lengkungan sudut */
+            margin-bottom: 25px; 
+            padding-bottom: 25px; 
+            border-bottom: 1.5px dashed #D1D8CC; /* Garis lebih tegas agar konsisten */
             line-height: 1.5; 
-            background-color: #ffffff;
-            transition: border-color 0.3s;
         }
-        .pub-list li:hover { border-color: #556B4E; } /* Interaktif saat disorot */
-        .pub-list li:last-child { margin-bottom: 0; }
+        .pub-list li:last-child { 
+            margin-bottom: 0; 
+            padding-bottom: 0; 
+            border-bottom: none; /* Menghilangkan garis di item paling bawah */
+        }
         
         .pub-title { 
-            font-size: 15px; font-weight: 600; color: #222; 
+            font-size: 16px; font-weight: 700; color: #222; 
             display: block; margin-bottom: 6px; line-height: 1.4; 
         }
         .pub-detail { 
@@ -121,7 +121,7 @@
         
         /* Tautan Teks */
         .pub-link { 
-            color: #556B4E; font-weight: 600; font-size: 12px; 
+            color: #556B4E; font-weight: 600; font-size: 13px; 
             text-decoration: none; display: inline-flex; align-items: center; 
             transition: color 0.3s; 
         }
@@ -395,7 +395,7 @@
                         if(no) detailText += `, No. ${no}`;
                         if(year) detailText += `, ${year}`;
 
-                        // Buat HTML List dengan Bingkai Dashed
+                        // Buat HTML List dengan Bingkai Dashed (Clean Look)
                         const listItemHTML = `
                             <li>
                                 <span class="pub-title">${title}</span>
