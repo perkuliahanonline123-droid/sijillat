@@ -24,7 +24,6 @@
 
         .main-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 40px; flex: 1; }
 
-        /* PERBAIKAN: Pembuatan Wrapper untuk Efek Zoom pada Foto Profil */
         .profile-wrapper {
             width: 140px; 
             height: 140px; 
@@ -33,16 +32,19 @@
             margin-bottom: 20px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
             background-color: #D1D8CC;
-            overflow: hidden; /* Memotong bagian gambar yang melampaui lingkaran */
+            overflow: hidden; 
             display: inline-block;
         }
 
+        /* PERBAIKAN: Penyesuaian transform dan origin agar kepala tidak terpotong */
         .profile-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 15%; /* Menggeser fokus sedikit ke bawah pucuk kepala */
-            transform: scale(1.35); /* Zoom-in gambar sebesar 35% untuk meminimalisir ruang kosong */
+            object-position: top; /* Pastikan selalu berpatokan pada sisi atas gambar */
+            transform: scale(1.22); /* Zoom sedikit dikurangi agar proporsional */
+            transform-origin: top center; /* Pusat zoom diubah ke atas agar tidak meluber ke atas */
+            margin-top: 8px; /* Memberikan sedikit ruang bernapas (spasi) di atas kepala */
         }
 
         /* Disesuaikan untuk perataan teks kiri pada CV */
@@ -133,7 +135,7 @@
             <div class="main-content">
                 <div class="hero-section">
                     
-                    <!-- Foto Profil dengan Wrapper untuk presisi zoom -->
+                    <!-- Foto Profil -->
                     <div class="profile-wrapper">
                         <img src="fotoprofil.png" alt="Foto Profil">
                     </div>
