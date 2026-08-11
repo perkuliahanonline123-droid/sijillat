@@ -188,79 +188,93 @@
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 15mm; /* Margin standar A4 */
+                margin: 15mm; /* Backup instruksi margin ke browser */
             }
-            body {
+            
+            html, body {
                 background-color: #fff !important;
-                -webkit-print-color-adjust: exact; 
-                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                height: auto !important; /* Mencegah halaman pertama kosong karena setelan height */
+            }
+            
+            /* Sembunyikan elemen UI secara permanen tanpa menyisakan ruang kosong */
+            .navbar, .bottom-nav, .pub-link, .loader, .loading-text {
+                display: none !important;
+                height: 0 !important;
                 margin: 0 !important;
                 padding: 0 !important;
             }
             
-            /* Sembunyikan elemen yang tidak perlu di PDF */
-            .navbar, .bottom-nav, .pub-link, .loader, .loading-text {
-                display: none !important;
-            }
-            
+            /* Membuat margin cetak buatan agar atas, bawah, kiri, kanan seimbang */
             .container {
-                /* Memaksa margin internal jika browser disetel Margin: "Tidak ada" */
-                padding: 10mm 15mm !important; 
-                margin: 0 auto !important;
                 width: 100% !important;
-                box-sizing: border-box !important;
                 max-width: 100% !important;
+                padding: 15mm !important; /* Margin 1.5cm di semua sisi kertas */
+                box-sizing: border-box !important;
+                margin: 0 !important;
             }
             
-            /* Memaksa layout tetap 2 kolom, mengabaikan CSS responsif layar kecil */
+            /* Tata letak grid yang dioptimalkan untuk cetak bersambung */
             .main-layout {
                 display: grid !important;
                 grid-template-columns: 240px 1fr !important;
-                gap: 20px !important; /* Jarak antar kolom diperkecil */
-                align-items: start !important;
+                gap: 20px !important;
+                align-items: start !important; /* Penting agar elemen bisa terpotong ke halaman 2 */
             }
 
-            /* Mengatur kotak kanan agar jarak vertikalnya lebih rapat */
             .web-content {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 15px !important; /* Mengurangi jarak antar kotak konten */
+                gap: 15px !important;
             }
 
+            .sidebar, .web-content {
+                page-break-inside: auto !important; /* Mengizinkan kolom berlanjut ke halaman berikutnya */
+            }
+
+            /* Desain Kartu Cetak */
             .sidebar {
                 padding: 15px !important;
-                border: 1px solid #E5E5E5 !important; 
+                border: 1px solid #E5E5E5 !important;
+                border-radius: 12px !important;
             }
 
             .hero-section, .content-card {
-                padding: 20px !important; /* Padding dalam kotak diperkecil */
+                padding: 20px !important;
                 box-shadow: none !important;
                 border: 1px solid #E5E5E5 !important;
+                border-radius: 12px !important;
                 margin-bottom: 0 !important;
+                page-break-inside: auto !important; /* Kartu besar boleh terpotong pindah halaman */
             }
 
-            .hero-title {
-                font-size: 26px !important;
-            }
-            
-            .section-header {
-                margin-bottom: 15px !important;
-                padding-bottom: 10px !important;
+            .publikasi-full {
+                grid-column: 1 / -1 !important; /* Tetap melebar penuh di cetakan */
+                margin-top: 5px !important;
             }
 
-            /* Mencegah pemotongan elemen KECIL di tengah halaman */
-            .sidebar-wrapper, .timeline-row, .pub-list li, .pub-group {
-                page-break-inside: avoid;
-            }
-            
-            /* HAPUS page-break-inside pada .content-card agar teks bisa mengalir natural ke halaman berikutnya tanpa menyisakan ruang kosong besar */
-            .content-card {
-                page-break-inside: auto !important; 
+            /* Penyesuaian ukuran font agar lebih elegan dan hemat kertas */
+            .hero-title { font-size: 24px !important; margin-bottom: 5px !important;}
+            .hero-subtitle { font-size: 15px !important; margin-bottom: 15px !important;}
+            .hero-desc { font-size: 13px !important; line-height: 1.5 !important;}
+            .section-header { margin-bottom: 15px !important; padding-bottom: 10px !important; font-size: 18px !important;}
+            .timeline-year { width: 110px !important; font-size: 11px !important;}
+            .timeline-info h5 { font-size: 14px !important;}
+            .timeline-info p { font-size: 12px !important;}
+
+            /* Mencegah elemen KECIL terpotong jadi dua bagian di tengah teks */
+            .timeline-row, .pub-list li, .pub-group, .skill-item {
+                page-break-inside: avoid !important;
             }
 
             .footer {
-                margin-top: 15px !important;
+                margin-top: 20px !important;
                 padding: 10px 0 !important;
+                page-break-inside: avoid !important;
             }
         }
     </style>
