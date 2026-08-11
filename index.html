@@ -96,18 +96,17 @@
             display: inline-block; padding: 6px 14px; border-radius: 20px;
         }
 
-        /* List Item dengan Garis Bawah Putus-Putus yang Konsisten */
+        /* List Item dengan Garis Bawah Putus-Putus yang Konsisten di SEMUA artikel */
         .pub-list { list-style: none; padding: 0; margin: 0; }
         .pub-list li { 
             margin-bottom: 25px; 
             padding-bottom: 25px; 
-            border-bottom: 1.5px dashed #D1D8CC; /* Garis lebih tegas agar konsisten */
+            border-bottom: 1.5px dashed #D1D8CC; /* Garis tegas putus-putus */
             line-height: 1.5; 
         }
+        /* Item terakhir tetap ada garis bawahnya, hanya margin bawahnya diperkecil agar rapi */
         .pub-list li:last-child { 
-            margin-bottom: 0; 
-            padding-bottom: 0; 
-            border-bottom: none; /* Menghilangkan garis di item paling bawah */
+            margin-bottom: 10px; 
         }
         
         .pub-title { 
