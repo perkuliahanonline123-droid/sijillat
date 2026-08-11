@@ -21,8 +21,30 @@
         .nav-links a { text-decoration: none; color: #888; transition: color 0.3s; }
         .nav-links a:hover, .nav-links a.active { color: #556B4E; }
         
-        .nav-search-btn { border: 1px solid #ccc; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; background: transparent; cursor: pointer; transition: 0.3s; }
-        .nav-search-btn:hover { background: #556B4E; color: white; border-color: #556B4E; }
+        /* --- PERBAIKAN TOMBOL CETAK PDF --- */
+        .nav-search-btn { 
+            background-color: #556B4E; 
+            color: #ffffff;
+            border: none;
+            padding: 8px 18px; 
+            border-radius: 25px; 
+            font-size: 13px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease; 
+        }
+        
+        .nav-search-btn:hover { 
+            background-color: #4A5D43; 
+        }
+
+        .nav-search-btn:active {
+            background-color: #3A4A35; 
+            transform: scale(0.95); 
+        }
 
         /* TATA LETAK UTAMA WEB ELEGAN (KIRI KECIL, KANAN BESAR) */
         .main-layout { 
