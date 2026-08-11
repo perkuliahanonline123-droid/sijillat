@@ -85,16 +85,23 @@
         .timeline-info h5 { margin: 0 0 5px 0; font-size: 16px; color: #333; font-weight: 600; }
         .timeline-info p { margin: 0; font-size: 14px; color: #666; line-height: 1.5; }
 
+        /* Gaya Publikasi Terhubung Spreadsheet */
         .pub-group { margin-bottom: 25px; }
         .pub-group:last-child { margin-bottom: 0; }
-        .pub-category { font-size: 12px; font-weight: 700; color: #556B4E; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; background-color: #F3F1EB; display: inline-block; padding: 4px 12px; border-radius: 20px; }
+        .pub-category { font-size: 11px; font-weight: 700; color: #556B4E; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; background-color: #F3F1EB; display: inline-block; padding: 6px 14px; border-radius: 20px; }
         .pub-list { list-style: none; padding: 0; margin: 0; }
-        .pub-list li { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #E5E5E5; font-size: 14px; line-height: 1.6; }
+        .pub-list li { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px dashed #E5E5E5; font-size: 14px; line-height: 1.6; }
         .pub-list li:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-        .pub-title { font-weight: 600; color: #222; display: block; }
-        .pub-detail { color: #666; font-style: italic; }
-        .pub-link { color: #556B4E; font-weight: 600; font-size: 12px; text-decoration: none; margin-top: 5px; display: inline-block; }
-        .pub-link:hover { text-decoration: underline; }
+        .pub-title { font-weight: 600; color: #222; display: block; margin-bottom: 3px;}
+        .pub-detail { color: #666; font-style: italic; display: block; margin-bottom: 5px;}
+        .pub-link { color: #556B4E; font-weight: 600; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; transition: color 0.3s; }
+        .pub-link i { margin-left: 5px; font-size: 11px; }
+        .pub-link:hover { color: #3a4a35; text-decoration: underline; }
+
+        /* Loader Animation */
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #556B4E; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin-right: 10px; display: inline-block; vertical-align: middle;}
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { color: #666; font-size: 14px; font-weight: 500; }
 
         /* FOOTER & BOTTOM NAV */
         .footer { text-align: center; padding: 30px 0 10px 0; margin-top: 40px; font-size: 13px; color: #888; border-top: 1px solid #E5E5E5; }
@@ -171,7 +178,6 @@
 
                     <div class="sidebar-item">
                         <span>Identitas Akademik</span>
-                        <!-- Scopus ID yang sudah bisa di-klik -->
                         <h4>Scopus ID: <a href="http://www.scopus.com/authid/detail.uri?authorId=58409617400" target="_blank" class="id-link">58409617400</a></h4>
                         <p style="margin-top: 5px;"><a href="https://scholar.google.com/citations?user=Iesm26sAAAAJ&hl=id" target="_blank">Lihat Profil Google Scholar ↗</a></p>
                     </div>
@@ -199,6 +205,7 @@
                         Profesional akademisi yang mendedikasikan diri pada penelitian hukum Islam. Berpengalaman dalam pengelolaan program studi, pengembangan kurikulum, serta memiliki kompetensi mendalam terkait literatur Islam klasik (kitab kuning), perbandingan mazhab, dan hukum waris (faraid).
                     </p>
                 </div>              
+                
                 <!-- Pengalaman Card -->
                 <div class="content-card">
                     <h3 class="section-header"><i class="fas fa-briefcase"></i> Pengalaman Mengajar</h3>
@@ -269,65 +276,16 @@
                     </div>
                 </div>
 
-                <!-- Publikasi Card -->
+                <!-- Publikasi Card (DINAMIS DARI GOOGLE SHEETS) -->
                 <div class="content-card">
                     <h3 class="section-header"><i class="fas fa-book-open"></i> Publikasi Karya Ilmiah</h3>
                     
-                    <div class="pub-group">
-                        <div class="pub-category">Terindeks Scopus</div>
-                        <ul class="pub-list">
-                            <li>
-                                <span class="pub-title">The Distinction Between Nusyūz and Domestic Violence: The Relevance of Muhammad Sa’id Ramadhan Al-Buthi Thought...</span>
-                                <span class="pub-detail">Al-Ahwal: Jurnal Hukum Keluarga Islam, Vol. 15, No. 1, 2022.</span><br>
-                                <a href="https://ejournal.uin-suka.ac.id/syariah/Ahwal/article/view/2554" target="_blank" class="pub-link">Lihat Jurnal →</a>
-                            </li>
-                            <li>
-                                <span class="pub-title">Reasons for Polygamy and Its Impact on Muslim Family Life: Experiences of Polygamous Perpetrators in Babat...</span>
-                                <span class="pub-detail">JIL: Journal of Islamic Law, Vol. 3, No. 1, 2022.</span><br>
-                                <a href="https://e-journal.iainptk.ac.id/index.php/jil/article/view/529" target="_blank" class="pub-link">Lihat Jurnal →</a>
-                            </li>
-                            <li>
-                                <span class="pub-title">Online Marriage During the Covid-19 Pandemic: A Study of the Fatwas in Egypt, Iraq, Syria, and Saudi Arabia</span>
-                                <span class="pub-detail">Al-’Adalah, Vol. 19, No. 1, 2022.</span><br>
-                                <a href="https://ejournal.radenintan.ac.id/index.php/adalah/article/view/10720" target="_blank" class="pub-link">Lihat Jurnal →</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="pub-group">
-                        <div class="pub-category">SINTA 2 & SINTA 3</div>
-                        <ul class="pub-list">
-                            <li>
-                                <span class="pub-title">Keselamatan Non-Muslim Pedalaman dan Orang Eropa: Studi Konsep Ahl Al-Fatrah...</span>
-                                <span class="pub-detail">Al-Banjari : Jurnal Ilmiah Ilmu-Ilmu Keislaman Vol. 22, No. 1, 2023.</span>
-                            </li>
-                            <li>
-                                <span class="pub-title">مشاكل تقسيم الميراث قبل الوفاة</span>
-                                <span class="pub-detail">ULUL ALBAB: Jurnal Studi Islam, Vol. 23, No. 1, 2022.</span>
-                            </li>
-                            <li>
-                                <span class="pub-title">Adoption of Children and Its Limits in Interacting with Adoptive Parents</span>
-                                <span class="pub-detail">Al Ahkam, Vol. 20, No. 2, 2024.</span>
-                            </li>
-                            <li>
-                                <span class="pub-title">Annulment of Marriage and Khuluk in Family Law in Muslim Countries...</span>
-                                <span class="pub-detail">ALHURRIYAH: Jurnal Hukum Islam, Vol. 7, No. 2, 2022.</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="pub-group">
-                        <div class="pub-category">Buku & Karya Lainnya</div>
-                        <ul class="pub-list">
-                            <li>
-                                <span class="pub-title">Buku: إشكاليات تقسيم الميراث قبل الوفاة: دراسة على كيفية تقسيم الميراث في منطقة بابات...</span>
-                                <span class="pub-detail">204 Halaman. Penerbit: KBM Indonesia (ISBN: 978-623-6509-15-9).</span>
-                            </li>
-                            <li>
-                                <span class="pub-title">Skripsi: Konsep Poligami dan Pengaruhnya Terhadap Kesejahteraan Keluarga</span>
-                                <span class="pub-detail">93 Halaman.</span>
-                            </li>
-                        </ul>
+                    <!-- Container untuk menampung data yang diambil via JavaScript -->
+                    <div id="publikasi-container">
+                        <div style="padding: 20px 0;">
+                            <span class="loader"></span>
+                            <span class="loading-text">Sedang memuat data publikasi dari server Sijillāt...</span>
+                        </div>
                     </div>
 
                 </div>
@@ -356,5 +314,96 @@
         </a>
     </div>
 
+    <!-- JAVASCRIPT UNTUK MENGAMBIL DATA DARI GOOGLE SHEETS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ID Spreadsheet yang Anda berikan
+            const sheetId = '170DRH93dE5HfOiHpJaS8Nc4otfiFLMGHCd9yGX_qGZE';
+            const sheetName = encodeURIComponent('Publikasi Ilmiah');
+            const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+
+            const pubContainer = document.getElementById('publikasi-container');
+            
+            fetch(url)
+                .then(res => res.text())
+                .then(text => {
+                    // Membersihkan pembungkus JSON dari Google Visualization
+                    const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+                    const json = JSON.parse(jsonString);
+                    const rows = json.table.rows;
+                    
+                    // Objek penampung berdasarkan pengelompokan
+                    const groups = {
+                        'TERINDEKS SCOPUS': [],
+                        'SINTA 2 & SINTA 3': [],
+                        'SINTA 4 & NASIONAL': []
+                    };
+
+                    rows.forEach(row => {
+                        // Lewati baris kosong
+                        if (!row.c || !row.c[3]) return; 
+                        
+                        // Menyesuaikan dengan urutan kolom (A=0, B=1, C=2, D=Judul(3), dst)
+                        const title = row.c[3]?.v || '';
+                        const journal = row.c[4]?.v || '';
+                        const vol = row.c[5]?.v || '';
+                        const no = row.c[6]?.v || '';
+                        const link = row.c[8]?.v || '#';
+                        const index = row.c[9]?.v || '';
+                        
+                        // Ekstraksi Tahun (4 digit dari data Tanggal)
+                        let dateVal = row.c[7]?.f || String(row.c[7]?.v || '');
+                        let year = '';
+                        const yearMatch = dateVal.match(/\d{4}/);
+                        if(yearMatch) year = yearMatch[0];
+
+                        // Membentuk string detail jurnal (menangani jika ada data yang kosong agar rapi)
+                        let detailText = journal;
+                        if(vol) detailText += `, Vol. ${vol}`;
+                        if(no) detailText += `, No. ${no}`;
+                        if(year) detailText += `, ${year}`;
+
+                        const pubItemHTML = `
+                            <li>
+                                <span class="pub-title">${title}</span>
+                                <span class="pub-detail">${detailText}.</span>
+                                <a href="${link}" target="_blank" class="pub-link">Lihat Jurnal <i class="fas fa-arrow-right"></i></a>
+                            </li>
+                        `;
+
+                        // Mengelompokkan berdasarkan isi Kolom Indeksasi Jurnal
+                        const indexLower = index.toLowerCase();
+                        if (indexLower.includes('scopus')) {
+                            groups['TERINDEKS SCOPUS'].push(pubItemHTML);
+                        } else if (indexLower.includes('sinta 2') || indexLower.includes('sinta 3')) {
+                            groups['SINTA 2 & SINTA 3'].push(pubItemHTML);
+                        } else {
+                            groups['SINTA 4 & NASIONAL'].push(pubItemHTML);
+                        }
+                    });
+
+                    // Merender HTML
+                    let finalHTML = '';
+                    for (const [category, items] of Object.entries(groups)) {
+                        if (items.length > 0) {
+                            finalHTML += `
+                                <div class="pub-group">
+                                    <div class="pub-category">${category}</div>
+                                    <ul class="pub-list">
+                                        ${items.join('')}
+                                    </ul>
+                                </div>
+                            `;
+                        }
+                    }
+                    
+                    pubContainer.innerHTML = finalHTML;
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                    pubContainer.innerHTML = '<p style="color:red; font-size:14px;">Gagal memuat data dari Spreadsheet. Pastikan pengaturan Share pada Google Sheet telah diatur ke <b>"Anyone with the link / Siapa saja yang memiliki link" -> "Viewer / Pelihat"</b>.</p>';
+                });
+        });
+    </script>
 </body>
 </html>
