@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Meta Theme Color agar browser mobile / status bar mengikuti warna tema merah -->
     <meta name="theme-color" content="#8b1515">
     <title>Pengumuman Hasil Lomba</title>
     <style>
-        /* Reset & Base Styles */
         * { box-sizing: border-box; }
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -17,7 +15,6 @@
             color: #333;
         }
 
-        /* Tema Header Merah melengkung seperti referensi Gambar 2 */
         .header-bg {
             background: linear-gradient(135deg, #7b1313, #a91d1d);
             padding: 50px 20px 100px 20px;
@@ -39,7 +36,6 @@
             font-weight: 300;
         }
 
-        /* Container Card Putih Overlap ke Header */
         .container { 
             max-width: 1050px; 
             margin: -60px auto 40px auto; 
@@ -54,7 +50,6 @@
             overflow-x: auto;
         }
 
-        /* Modern Table Styles */
         table { 
             width: 100%; 
             border-collapse: collapse; 
@@ -80,7 +75,6 @@
         }
         tr:hover { background-color: #f9fbfd; }
 
-        /* Style untuk Peringkat (Pill Badge) */
         .badge-peringkat {
             font-weight: 700;
             padding: 6px 12px;
@@ -96,7 +90,6 @@
         .terbaik { background: #e8f5e9; color: #2e7d32; }
         .biasa { background: #f1f3f5; color: #495057; }
 
-        /* Style untuk penanda Terlambat */
         .telat { 
             color: #d32f2f; 
             font-weight: 600; 
@@ -110,7 +103,6 @@
 
         .loading { text-align: center; font-size: 16px; color: #666; margin: 40px 0; }
 
-        /* Responsif untuk layar HP */
         @media (max-width: 768px) {
             .container { padding: 15px; margin-top: -40px; }
             .header-bg { padding: 40px 15px 80px 15px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;}
@@ -122,13 +114,12 @@
 </head>
 <body>
 
-<!-- Header Background Merah -->
 <div class="header-bg">
-    <h1>Peringkat & Hasil Lomba</h1>
+    <!-- Tambahkan id="judulLomba" agar bisa diubah via Javascript -->
+    <h1 id="judulLomba">Memuat Nama Lomba...</h1>
     <p>Daftar urutan juara berdasarkan skor tertinggi dan waktu penyelesaian tercepat</p>
 </div>
 
-<!-- Main Content Card -->
 <div class="container">
     <div id="loading" class="loading">Memuat data peserta...</div>
     <div class="table-responsive">
@@ -145,7 +136,6 @@
                 </tr>
             </thead>
             <tbody id="tabelBody">
-                <!-- Data akan dimasukkan oleh Javascript di sini -->
             </tbody>
         </table>
     </div>
@@ -161,19 +151,26 @@
             const result = await response.json();
             
             if (result.status === "success") {
+                
+                // MENGUBAH JUDUL LOMBA DARI GOOGLE SHEETS
+                const judulEl = document.getElementById("judulLomba");
+                if (result.nama_lomba) {
+                    judulEl.innerText = result.nama_lomba;
+                    document.title = result.nama_lomba; // Update title browser juga
+                } else {
+                    judulEl.innerText = "Peringkat & Hasil Lomba";
+                }
+
                 const data = result.data;
                 const tbody = document.getElementById("tabelBody");
                 let html = "";
                 
                 data.forEach(p => {
-                    // Penanda terlambat
                     let badgeTelat = p.status === "Terlambat" ? `<br><span class="telat">Terlambat</span>` : "";
                     
-                    // Kapitalisasi Nama Lengkap & Asal (MENGGUNAKAN .toUpperCase())
                     let namaKapital = p.nama_lengkap ? p.nama_lengkap.toUpperCase() : "-";
                     let asalKapital = p.asal ? p.asal.toUpperCase() : "-";
                     
-                    // Logika Penamaan Peringkat & Styling CSS
                     let peringkat = parseInt(p.peringkat);
                     let teksPeringkat = "";
                     let kelasPeringkat = "biasa";
@@ -194,7 +191,6 @@
                         teksPeringkat = "PERINGKAT " + peringkat;
                     }
                     
-                    // Kolom No saya gantikan posisi pertamanya dengan kolom Peringkat agar terlihat lebih menonjol
                     html += `
                         <tr>
                             <td><span class="badge-peringkat ${kelasPeringkat}">${teksPeringkat}</span></td>
@@ -218,7 +214,6 @@
         }
     }
 
-    // Jalankan fungsi saat halaman dimuat
     window.onload = fetchDataLomba;
 </script>
 
