@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengumuman Hasil Lomba</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+        th, td { padding: 12px 15px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .telat { color: #dc3545; font-weight: bold; font-size: 12px;}
+        .loading { text-align: center; font-size: 18px; color: #666; margin: 40px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🏆 Peringkat & Hasil Lomba</h2>
+    <div id="loading" class="loading">Memuat data peserta...</div>
+    <div style="overflow-x:auto;">
+        <table id="tabelLomba" style="display:none;">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Nama Lengkap</th>
+                    <th>Asal Kota/Lembaga</th>
+                    <th>Skor</th>
+                    <th>Predikat</th>
+                    <th>Waktu Submit</th>
+                    <th>Durasi Pengerjaan</th>
+                    <th>Peringkat</th>
+                </tr>
+            </thead>
+            <tbody id="tabelBody">
+                <!-- Data akan dimasukkan oleh Javascript di sini -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // GANTI LINK DI BAWAH DENGAN URL WEB APP DARI GOOGLE APPS SCRIPT ANDA
+    const API_URL = 'https://script.google.com/macros/s/GANTI_DENGAN_URL_ANDA/exec';
+
+    async function fetchDataLomba() {
+        try {
+            const response = await fetch(API_URL);
+            const result = await response.json();
+            
+            if (result.status === "success") {
+                const data = result.data;
+                const tbody = document.getElementById("tabelBody");
+                let html = "";
+                
+                data.forEach(p => {
+                    // Menambahkan penanda jika statusnya terlambat
+                    let badgeTelat = p.status === "Terlambat" ? `<br><span class="telat">(Terlambat)</span>` : "";
+                    
+                    html += `
+                        <tr>
+                            <td>${p.no}</td>
+                            <td>${p.nama_lengkap}</td>
+                            <td>${p.asal}</td>
+                            <td><strong>${p.skor}</strong></td>
+                            <td>${p.predikat}</td>
+                            <td>${p.waktu_submit}</td>
+                            <td>${p.durasi_pengerjaan} ${badgeTelat}</td>
+                            <td><strong>${p.peringkat}</strong></td>
+                        </tr>
+                    `;
+                });
+                
+                tbody.innerHTML = html;
+                document.getElementById("loading").style.display = "none";
+                document.getElementById("tabelLomba").style.display = "table";
+            }
+        } catch (error) {
+            document.getElementById("loading").innerHTML = "Gagal memuat data. Silakan refresh halaman.";
+            console.error("Error fetching data:", error);
+        }
+    }
+
+    // Jalankan fungsi saat halaman dimuat
+    window.onload = fetchDataLomba;
+</script>
+
+</body>
+</html>
