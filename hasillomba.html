@@ -46,10 +46,10 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
         }
 
-        /* CONTAINER CARD (Diperlebar agar tidak perlu scroll) */
+        /* CONTAINER CARD */
         .container { 
-            max-width: 1400px; /* Diubah dari 1100px menjadi 1400px */
-            width: 96%; /* Diperlebar dari 95% menjadi 96% */
+            max-width: 1400px; 
+            width: 96%; 
             margin: -70px auto 50px auto; 
             background: #ffffff; 
             padding: 30px 40px; 
@@ -59,8 +59,68 @@
             z-index: 10;
         }
 
+        /* KONTROL PENCARIAN & CETAK */
+        .controls-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .search-container {
+            flex: 1;
+            position: relative;
+            min-width: 250px;
+            max-width: 400px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid #e0e6ed;
+            border-radius: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+            color: #2c3e50;
+        }
+        .search-input:focus {
+            border-color: #8b1515;
+            box-shadow: 0 0 0 3px rgba(139, 21, 21, 0.1);
+        }
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #95a5a6;
+            font-size: 16px;
+        }
+        .btn-print {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(44, 62, 80, 0.2);
+        }
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(44, 62, 80, 0.3);
+        }
+
         .table-responsive {
-            overflow-x: auto; /* Tetap ada untuk jaga-jaga jika dibuka di HP */
+            overflow-x: auto; 
             padding-bottom: 20px;
         }
 
@@ -82,7 +142,7 @@
             font-weight: 700;
             letter-spacing: 1px;
             border: none;
-            white-space: nowrap; /* Mencegah judul kolom turun ke bawah */
+            white-space: nowrap; 
         }
 
         /* BARIS TABEL TIMBUL */
@@ -100,7 +160,7 @@
         }
 
         td { 
-            padding: 16px 15px; /* Sedikit dirapatkan agar muat sempurna */
+            padding: 16px 15px; 
             vertical-align: middle;
             color: #34495e;
             font-weight: 500;
@@ -134,78 +194,34 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             letter-spacing: 0.5px;
         }
-        .juara-1 { 
-            background: linear-gradient(135deg, #F9D423 0%, #FF4E50 100%); 
-            color: white; 
-            text-shadow: 0px 1px 2px rgba(0,0,0,0.2);
-        }
-        .juara-2 { 
-            background: linear-gradient(135deg, #e0e0e0 0%, #9e9e9e 100%); 
-            color: white; 
-            text-shadow: 0px 1px 2px rgba(0,0,0,0.2);
-        }
-        .juara-3 { 
-            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); 
-            color: white; 
-            text-shadow: 0px 1px 2px rgba(0,0,0,0.2);
-        }
-        .terbaik { 
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); 
-            color: white; 
-            text-shadow: 0px 1px 2px rgba(0,0,0,0.2);
-        }
-        .biasa { 
-            background: #f8f9fa; 
-            color: #7f8c8d; 
-            border: 1px solid #dfe6e9; 
-            box-shadow: none; 
-        }
+        .juara-1 { background: linear-gradient(135deg, #F9D423 0%, #FF4E50 100%); color: white; text-shadow: 0px 1px 2px rgba(0,0,0,0.2); }
+        .juara-2 { background: linear-gradient(135deg, #e0e0e0 0%, #9e9e9e 100%); color: white; text-shadow: 0px 1px 2px rgba(0,0,0,0.2); }
+        .juara-3 { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: white; text-shadow: 0px 1px 2px rgba(0,0,0,0.2); }
+        .terbaik { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; text-shadow: 0px 1px 2px rgba(0,0,0,0.2); }
+        .biasa { background: #f8f9fa; color: #7f8c8d; border: 1px solid #dfe6e9; box-shadow: none; }
 
         /* TEKS SKOR */
-        .skor-text {
-            font-size: 18px;
-            color: #a91d1d;
-            font-weight: 800;
-        }
+        .skor-text { font-size: 18px; color: #a91d1d; font-weight: 800; }
 
         /* BADGE TERLAMBAT */
         .telat { 
-            color: #e74c3c; 
-            font-weight: 600; 
-            font-size: 11px;
-            background: #fadbd8;
-            padding: 4px 10px;
-            border-radius: 12px;
-            display: inline-block;
-            margin-top: 6px;
-            box-shadow: 0 2px 5px rgba(231, 76, 60, 0.2);
+            color: #e74c3c; font-weight: 600; font-size: 11px; background: #fadbd8;
+            padding: 4px 10px; border-radius: 12px; display: inline-block;
+            margin-top: 6px; box-shadow: 0 2px 5px rgba(231, 76, 60, 0.2);
         }
 
         /* ANIMASI LOADING */
-        .loading-container { 
-            text-align: center; 
-            padding: 50px 20px; 
-            color: #7f8c8d; 
-        }
+        .loading-container { text-align: center; padding: 50px 20px; color: #7f8c8d; }
         .spinner {
-            width: 44px;
-            height: 44px;
-            border: 4px solid #f1f2f6;
-            border-top: 4px solid #8b1515;
-            border-radius: 50%;
-            margin: 0 auto 16px auto;
-            animation: spin 0.9s linear infinite;
+            width: 44px; height: 44px; border: 4px solid #f1f2f6;
+            border-top: 4px solid #8b1515; border-radius: 50%;
+            margin: 0 auto 16px auto; animation: spin 0.9s linear infinite;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .loading-text {
-            font-size: 15px;
-            font-weight: 500;
-            color: #7f8c8d;
-            letter-spacing: 0.3px;
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { font-size: 15px; font-weight: 500; color: #7f8c8d; letter-spacing: 0.3px; }
+
+        /* PESAN TIDAK DITEMUKAN */
+        .no-data-msg { text-align: center; padding: 30px; font-weight: 600; color: #e74c3c; display: none; }
 
         /* RESPONSIVE LAYOUT HP */
         @media (max-width: 992px) {
@@ -218,6 +234,56 @@
             th, td { padding: 12px 10px; font-size: 13px; }
             .badge-peringkat { padding: 6px 12px; font-size: 11px; }
             .skor-text { font-size: 16px; }
+            .controls-wrapper { flex-direction: column; align-items: stretch; }
+            .search-container { max-width: none; }
+        }
+
+        /* =========================================================
+           ATURAN CETAK PDF (NATIVE PRINT BROWSER)
+           ========================================================= */
+        @media print {
+            body { background-color: #ffffff; }
+            
+            /* Sederhanakan Header agar hemat tinta & rapi di PDF */
+            .header-bg { 
+                background: white !important; 
+                padding: 10px 0 20px 0 !important; 
+                border-radius: 0 !important; 
+                box-shadow: none !important;
+                border-bottom: 3px solid #8b1515;
+            }
+            .header-bg h1 { color: #8b1515 !important; text-shadow: none !important; font-size: 24px; }
+            .header-bg p { color: #333 !important; text-shadow: none !important; }
+
+            /* Sembunyikan elemen yang tidak perlu dicetak */
+            .controls-wrapper, .loader { display: none !important; }
+
+            /* Normalisasi Container & Tabel */
+            .container { 
+                box-shadow: none !important; 
+                margin: 0 !important; 
+                padding: 20px 0 !important; 
+                width: 100% !important; 
+                max-width: none !important; 
+            }
+            .table-responsive { overflow-x: visible !important; }
+            
+            /* Buat tabel menjadi format garis standar agar jelas di kertas */
+            table { border-collapse: collapse !important; border-spacing: 0 !important; margin-top: 0 !important; }
+            th, td { 
+                padding: 8px 10px !important; 
+                font-size: 11px !important; 
+                border: 1px solid #bdc3c7 !important; 
+                border-radius: 0 !important; 
+            }
+            th { background-color: #f1f2f6 !important; color: #2c3e50 !important; }
+            tbody tr { filter: none !important; transform: none !important; box-shadow: none !important; }
+            
+            /* Memaksa browser mencetak warna background pada badge/label */
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            
+            /* Pengaturan margin kertas A4 Landscape/Portrait */
+            @page { margin: 1cm; size: landscape; }
         }
     </style>
 </head>
@@ -234,23 +300,40 @@
         <div class="loading-text">Memuat data peringkat...</div>
     </div>
 
-    <div class="table-responsive">
-        <table id="tabelLomba" style="display:none;">
-            <thead>
-                <tr>
-                    <th>Peringkat</th>
-                    <th>Nama Lengkap</th>
-                    <th>Asal Kota/Lembaga</th>
-                    <th>Skor</th>
-                    <th>Predikat</th>
-                    <th>Waktu Submit</th>
-                    <th>Durasi Pengerjaan</th>
-                </tr>
-            </thead>
-            <tbody id="tabelBody">
-                <!-- Data dimasukkan via Javascript -->
-            </tbody>
-        </table>
+    <!-- WRAPPER UNTUK KONTEN UTAMA (Sembunyi saat loading) -->
+    <div id="mainContent" style="display: none;">
+        
+        <!-- KONTROL PENCARIAN & CETAK PDF -->
+        <div class="controls-wrapper">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="Cari nama peserta..." onkeyup="cariNama()">
+            </div>
+            <button class="btn-print" onclick="window.print()">
+                🖨️ Cetak PDF
+            </button>
+        </div>
+
+        <div id="noDataMsg" class="no-data-msg">Nama peserta tidak ditemukan.</div>
+
+        <div class="table-responsive">
+            <table id="tabelLomba">
+                <thead>
+                    <tr>
+                        <th>Peringkat</th>
+                        <th>Nama Lengkap</th>
+                        <th>Asal Kota/Lembaga</th>
+                        <th>Skor</th>
+                        <th>Predikat</th>
+                        <th>Waktu Submit</th>
+                        <th>Durasi Pengerjaan</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelBody">
+                    <!-- Data dimasukkan via Javascript -->
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -305,9 +388,9 @@
                     }
                     
                     html += `
-                        <tr>
+                        <tr class="data-row">
                             <td><span class="badge-peringkat ${kelasPeringkat}">${teksPeringkat}</span></td>
-                            <td><strong>${namaKapital}</strong></td>
+                            <td class="nama-kolom"><strong>${namaKapital}</strong></td>
                             <td>${asalKapital}</td>
                             <td class="skor-text">${p.skor}</td>
                             <td><strong>${p.predikat}</strong></td>
@@ -318,12 +401,48 @@
                 });
                 
                 tbody.innerHTML = html;
+                
+                // Hilangkan Loading, Tampilkan Konten
                 document.getElementById("loading").style.display = "none";
-                document.getElementById("tabelLomba").style.display = "table";
+                document.getElementById("mainContent").style.display = "block";
             }
         } catch (error) {
             document.getElementById("loading").innerHTML = '<div class="loading-text" style="color: #e74c3c;">Gagal memuat data. Silakan refresh halaman.</div>';
             console.error("Error fetching data:", error);
+        }
+    }
+
+    // FUNGSI PENCARIAN NAMA PESERTA
+    function cariNama() {
+        const input = document.getElementById("searchInput");
+        const filter = input.value.toUpperCase();
+        const table = document.getElementById("tabelLomba");
+        const tr = table.getElementsByClassName("data-row");
+        let dataFound = false;
+
+        // Looping semua baris data
+        for (let i = 0; i < tr.length; i++) {
+            // Ambil teks dari kolom ke-2 (Nama Lengkap)
+            let td = tr[i].getElementsByClassName("nama-kolom")[0]; 
+            if (td) {
+                let txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = ""; // Tampilkan jika cocok
+                    dataFound = true;
+                } else {
+                    tr[i].style.display = "none"; // Sembunyikan jika tidak cocok
+                }
+            }       
+        }
+
+        // Tampilkan pesan jika nama tidak ditemukan
+        const noDataMsg = document.getElementById("noDataMsg");
+        if (!dataFound) {
+            noDataMsg.style.display = "block";
+            table.style.display = "none";
+        } else {
+            noDataMsg.style.display = "none";
+            table.style.display = "table";
         }
     }
 
