@@ -261,11 +261,15 @@
 
         function prosesDataJurnal(dataMentah) {
             let rekap = {};
-            const indexSemester = [4, 68];
-            const indexMatkul = [5, 26, 42, 54, 69, 85, 103, 113];
+            
+            // Perbaikan Indeks Kolom sesuai Spreadsheet aktual:
+            // 0 = Tanggal Perkuliahan | 1 = Metode | 2 = Program Studi | 3 = Mata Kuliah | 4 = Semester
+            const indexSemester = [4]; // Indeks Kolom E
+            const indexMatkul = [3];   // Indeks Kolom D
 
             dataMentah.forEach((row) => {
-                let tanggalStr = row[1] ? row[1].toString().trim() : "";
+                // Kolom Tanggal Perkuliahan (Indeks 0)
+                let tanggalStr = row[0] ? row[0].toString().trim() : "";
                 let isGanjil = false;
                 let isGenap = false;
                 
@@ -274,6 +278,7 @@
                     if (sep !== "") {
                         let parts = tanggalStr.split(sep); 
                         if (parts.length >= 2) {
+                            // Mendeteksi bulan dari kolom tanggal (biasanya pada indeks 1 jika format YYYY-MM-DD atau DD-MM-YYYY)
                             let bulan = parseInt(parts[1], 10); 
                             if (bulan >= 8 || bulan === 1) isGanjil = true;
                             else if (bulan >= 2 && bulan <= 7) isGenap = true;
@@ -281,21 +286,15 @@
                     }
                 }
 
+                // Kolom Tanggal (Indeks 0) untuk Sorting Data Terbaru
                 let timestampAsli = row[0] ? row[0].toString().trim() : "";
                 let waktuInput = 0;
                 if (timestampAsli !== "") {
-                    let parts = timestampAsli.split(" ");
-                    let tglParts = parts[0].split("/"); 
-                    
-                    if (tglParts.length === 3) {
-                        let jamParts = parts[1] ? parts[1].split(":") : [0, 0, 0];
-                        waktuInput = new Date(tglParts[2], tglParts[1] - 1, tglParts[0], jamParts[0], jamParts[1], jamParts[2] || 0).getTime();
-                    } else {
-                        waktuInput = new Date(timestampAsli).getTime() || 0;
-                    }
+                    waktuInput = new Date(timestampAsli).getTime() || 0;
                 }
 
-                let program = row[3] ? row[3].toString().trim() : "Umum";
+                // Kolom Program Studi (Indeks 2)
+                let program = row[2] ? row[2].toString().trim() : "Umum";
                 let kelas = "-";
                 
                 for (let i = 0; i < indexSemester.length; i++) {
