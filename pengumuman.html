@@ -396,8 +396,12 @@
                 htmlString += `
                     <tr>
                         <td>
-                            <strong style="font-size: 15px; color: #333;">${item.matkul}</strong><br>
-                            <span class="badge-semester ${badgeClass}">Semester ${item.tipeSemester}</span>
+                            <!-- Membungkus nama matkul dan badge dalam satu baris menggunakan Flexbox -->
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px; flex-wrap: wrap;">
+                                <strong style="font-size: 15px; color: #333;">${item.matkul}</strong>
+                                <span class="badge-semester ${badgeClass}" style="margin-top: 0;">Semester ${item.tipeSemester}</span>
+                            </div>
+                            
                             <div class="kelas-info">
                                 <span class="info-tag"><i class="fas fa-layer-group"></i> ${item.program}</span>
                                 <span class="info-tag"><i class="fas fa-chalkboard"></i> Kelas ${item.kelas}</span>
