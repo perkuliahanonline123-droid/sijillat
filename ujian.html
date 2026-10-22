@@ -249,8 +249,15 @@
         // FUNGSI LOGIKA TIMER & WAKTU
         // =====================================
         
-        // Helper untuk mengubah tanggal "5 November 2026" menjadi Object Date Javascript
         function parseIndonesianDate(dateStr) {
+            // Jika formatnya ternyata dd/mm/yyyy (seperti 23/10/2026)
+            if (dateStr.includes("/")) {
+                let parts = dateStr.split("/");
+                // Format Date(tahun, bulan (mulai dari 0), tanggal)
+                return new Date(parts[2], parseInt(parts[1]) - 1, parts[0]);
+            }
+            
+            // Jika formatnya teks biasa (misal: "23 Oktober 2026")
             const months = {
                 "Januari": "January", "Februari": "February", "Maret": "March",
                 "April": "April", "Mei": "May", "Juni": "June",
