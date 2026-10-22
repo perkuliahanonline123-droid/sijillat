@@ -270,26 +270,40 @@
                 .then(result => {
                     document.getElementById('pageLoadingIndicator').style.display = 'none';
 
-                    if(result.status === "success" && result.data && result.data.length > 1) {
-                        let bukaStr = result.data[1][0]; // Kolom A
-                        let tutupStr = result.data[1][1]; // Kolom B
-                        
-                        let bukaDate = parseIndonesianDate(bukaStr);
-                        let tutupDate = parseIndonesianDate(tutupStr);
-                        // Atur jam penutupan menjadi akhir hari (23:59:59)
-                        tutupDate.setHours(23, 59, 59, 999);
+                    // Hanya buka timer jika status dari Apps Script benar-benar "success"
+                    if(result.status === "success") {
+                        if (result.data && result.data.length > 1) {
+                            let bukaStr = result.data[1][0]; // Kolom A
+                            let tutupStr = result.data[1][1]; // Kolom B
+                            
+                            let bukaDate = parseIndonesianDate(bukaStr);
+                            let tutupDate = parseIndonesianDate(tutupStr);
+                            tutupDate.setHours(23, 59, 59, 999);
 
-                        checkTimeStatus(bukaDate, tutupDate, bukaStr, tutupStr);
+                            checkTimeStatus(bukaDate, tutupDate, bukaStr, tutupStr);
+                        } else {
+                            // Jika tabel di sheet "Admin Aplikasi" sengaja dikosongkan, langsung buka ujian
+                            tampilkanPortalUjian();
+                        }
                     } else {
-                        // Fallback jika tidak ada jadwal terisi, langsung buka portal
-                        tampilkanPortalUjian();
+                        // JIKA SCRIPT BELUM DI-DEPLOY / ERROR DARI API
+                        let timerMsg = document.getElementById('timerMessage');
+                        timerMsg.innerHTML = `<span style="color:#EF4444; font-weight:bold;">Error API: ${result.message || 'Aksi tidak dikenali'}</span><br>Pastikan Google Script sudah di-Deploy ke Versi Baru.`;
+                        document.getElementById('countdownWrapper').style.display = 'none';
+                        document.getElementById('closedButtonWrapper').style.display = 'none';
+                        document.getElementById('timerSection').style.display = 'flex';
                     }
                 })
                 .catch(error => {
                     console.error("Error fetching timer:", error);
-                    // Fallback jika API gagal, tetap tampilkan portal
                     document.getElementById('pageLoadingIndicator').style.display = 'none';
-                    tampilkanPortalUjian();
+                    
+                    // JIKA KONEKSI TERPUTUS / INTERNET MATI
+                    let timerMsg = document.getElementById('timerMessage');
+                    timerMsg.innerHTML = `<span style="color:#EF4444; font-weight:bold;">Gagal Menghubungi Server</span><br>Periksa koneksi internet Anda atau coba muat ulang halaman.`;
+                    document.getElementById('countdownWrapper').style.display = 'none';
+                    document.getElementById('closedButtonWrapper').style.display = 'none';
+                    document.getElementById('timerSection').style.display = 'flex';
                 });
         }
 
