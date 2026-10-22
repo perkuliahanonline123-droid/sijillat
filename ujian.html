@@ -270,25 +270,36 @@
                 .then(result => {
                     document.getElementById('pageLoadingIndicator').style.display = 'none';
 
-                    // Hanya buka timer jika status dari Apps Script benar-benar "success"
                     if(result.status === "success") {
                         if (result.data && result.data.length > 1) {
-                            let bukaStr = result.data[1][0]; // Kolom A
-                            let tutupStr = result.data[1][1]; // Kolom B
+                            let bukaStr = result.data[1][0]; // Kolom A: 5 November 2026
+                            let tutupStr = result.data[1][1]; // Kolom B: 7 November 2026
                             
+                            // Logika parsing tanggal yang lebih aman
                             let bukaDate = parseIndonesianDate(bukaStr);
                             let tutupDate = parseIndonesianDate(tutupStr);
-                            tutupDate.setHours(23, 59, 59, 999);
+                            
+                            // Jika format tanggal di Sheets GAGAL dibaca oleh JavaScript (Invalid Date)
+                            if (isNaN(bukaDate.getTime()) || isNaN(tutupDate.getTime())) {
+                                console.error("Format tanggal di Sheets tidak bisa dibaca oleh Javascript. Tanggal Buka:", bukaStr, "Tanggal Tutup:", tutupStr);
+                                let timerMsg = document.getElementById('timerMessage');
+                                timerMsg.innerHTML = `<span style="color:#EF4444; font-weight:bold;">Format Tanggal Salah</span><br>Pastikan format tanggal di Sheets adalah "5 November 2026".`;
+                                document.getElementById('countdownWrapper').style.display = 'none';
+                                document.getElementById('closedButtonWrapper').style.display = 'none';
+                                document.getElementById('timerSection').style.display = 'flex';
+                                return;
+                            }
 
+                            tutupDate.setHours(23, 59, 59, 999);
                             checkTimeStatus(bukaDate, tutupDate, bukaStr, tutupStr);
                         } else {
-                            // Jika tabel di sheet "Admin Aplikasi" sengaja dikosongkan, langsung buka ujian
+                            // Jika tabel di sheet kosong
                             tampilkanPortalUjian();
                         }
                     } else {
                         // JIKA SCRIPT BELUM DI-DEPLOY / ERROR DARI API
                         let timerMsg = document.getElementById('timerMessage');
-                        timerMsg.innerHTML = `<span style="color:#EF4444; font-weight:bold;">Error API: ${result.message || 'Aksi tidak dikenali'}</span><br>Pastikan Google Script sudah di-Deploy ke Versi Baru.`;
+                        timerMsg.innerHTML = `<span style="color:#EF4444; font-weight:bold;">Error API: ${result.message || 'Gagal memuat jadwal'}</span><br>Silakan coba beberapa saat lagi.`;
                         document.getElementById('countdownWrapper').style.display = 'none';
                         document.getElementById('closedButtonWrapper').style.display = 'none';
                         document.getElementById('timerSection').style.display = 'flex';
@@ -297,8 +308,6 @@
                 .catch(error => {
                     console.error("Error fetching timer:", error);
                     document.getElementById('pageLoadingIndicator').style.display = 'none';
-                    
-                    // JIKA KONEKSI TERPUTUS / INTERNET MATI
                     let timerMsg = document.getElementById('timerMessage');
                     timerMsg.innerHTML = `<span style="color:#EF4444; font-weight:bold;">Gagal Menghubungi Server</span><br>Periksa koneksi internet Anda atau coba muat ulang halaman.`;
                     document.getElementById('countdownWrapper').style.display = 'none';
@@ -319,7 +328,10 @@
                 let countdownWrap = document.getElementById('countdownWrapper');
                 let closedBtnWrap = document.getElementById('closedButtonWrapper');
 
-                if (now < start) {
+                // TAMBAHAN LOGIKA KEAMANAN: Memastikan hitungan mundur tidak bernilai minus
+                let distance = start - now;
+
+                if (distance > 0) {
                     // BELUM DIBUKA
                     sectionTimer.style.display = 'flex';
                     sectionUtama.style.display = 'none';
@@ -328,8 +340,6 @@
                     countdownWrap.style.display = 'flex';
                     closedBtnWrap.style.display = 'none';
 
-                    // Hitung mundur
-                    let distance = start - now;
                     document.getElementById('cdHari').innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
                     document.getElementById('cdJam').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
                     document.getElementById('cdMenit').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
