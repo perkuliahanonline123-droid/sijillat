@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sijillāt | Portal Ujian</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         html { scroll-behavior: smooth; }
@@ -62,10 +62,30 @@
 
         .footer { text-align: center; padding: 30px 0 10px 0; margin-top: 40px; font-size: 13px; color: #888; border-top: 1px solid #E5E5E5; }
 
-        /* KODE CSS WAJIB UNTUK MENU BAWAH */
+        /* KODE CSS MENU BAWAH */
         .bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-top: 1px solid #E5E5E5; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); border-top-left-radius: 24px; border-top-right-radius: 24px; z-index: 9999; padding: 10px 5px 20px 5px; justify-content: space-around; align-items: center; }
         .bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #A0AAB2; text-decoration: none; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; flex: 1; padding: 10px 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
         .bottom-nav-item i { font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; }
+
+        /* =========================================
+           KODE CSS BARU UNTUK HALAMAN TIMER / LOCK
+           ========================================= */
+        #timerSection { display: flex; justify-content: center; align-items: center; padding: 40px 20px; flex: 1; background-image: radial-gradient(#e5e7eb 1px, transparent 1px); background-size: 20px 20px; border-radius: 16px; margin-bottom: 20px; }
+        .timer-card { background-color: #FFFFFF; border-radius: 24px; padding: 50px 40px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.04); max-width: 550px; width: 100%; }
+        .lock-icon-container { width: 70px; height: 70px; background-color: #FEE2E2; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 25px auto; color: #EF4444; font-size: 28px; }
+        .timer-title { font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 700; color: #1F2937; margin: 0 0 15px 0; letter-spacing: -0.5px; }
+        .timer-subtitle { font-size: 15px; color: #4B5563; line-height: 1.6; margin: 0 0 30px 0; }
+        .timer-subtitle strong { color: #1F2937; }
+        
+        .countdown-wrapper { display: flex; justify-content: center; align-items: flex-start; gap: 10px; }
+        .cd-box { display: flex; flex-direction: column; align-items: center; width: 70px; }
+        .cd-value { background-color: #FEF2F2; color: #EF4444; font-size: 26px; font-weight: 700; padding: 15px 0; width: 100%; border-radius: 12px; text-align: center; box-shadow: inset 0 2px 4px rgba(239, 68, 68, 0.05); }
+        .cd-label { font-size: 10px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; margin-top: 10px; letter-spacing: 1px; }
+        .cd-colon { font-size: 24px; color: #E5E7EB; font-weight: 700; padding-top: 12px; }
+
+        .btn-closed { background-color: #F3F4F6; color: #6B7280; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; border: 1px solid #E5E7EB; cursor: not-allowed; margin-top: 10px; }
+
+        #pageLoadingIndicator { text-align: center; padding: 100px 20px; font-size: 16px; color: #6B7280; flex: 1; }
 
         @media (max-width: 900px) {
             body { padding-bottom: 90px; } 
@@ -81,6 +101,11 @@
             .sidebar { padding: 20px; }
             .newsletter-box { gap: 15px; }
             .footer { padding-bottom: 30px; }
+            
+            .timer-card { padding: 40px 20px; }
+            .countdown-wrapper { gap: 5px; }
+            .cd-box { width: 55px; }
+            .cd-value { font-size: 20px; padding: 12px 0; }
         }
     </style>
 </head>
@@ -101,7 +126,43 @@
             <button class="nav-search-btn">CARI INFORMASI</button>
         </div>
 
-        <div class="main-grid">
+        <!-- Indikator Loading Awal -->
+        <div id="pageLoadingIndicator">
+            <i class="fas fa-circle-notch fa-spin fa-2x" style="color: #4A5D43; margin-bottom: 15px; display: block;"></i>
+            Memeriksa jadwal akses portal...
+        </div>
+
+        <!-- SECTION TIMER / LOCK SCREEN -->
+        <div id="timerSection" style="display: none;">
+            <div class="timer-card">
+                <div class="lock-icon-container">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h2 class="timer-title">Jadwal Ujian</h2>
+                
+                <!-- Pesan dinamis akan dimasukkan ke sini melalui JavaScript -->
+                <p class="timer-subtitle" id="timerMessage"></p>
+                
+                <!-- Wrapper Countdown (Akan disembunyikan jika sudah ditutup) -->
+                <div class="countdown-wrapper" id="countdownWrapper">
+                    <div class="cd-box"><div class="cd-value" id="cdHari">00</div><div class="cd-label">Hari</div></div>
+                    <div class="cd-colon">:</div>
+                    <div class="cd-box"><div class="cd-value" id="cdJam">00</div><div class="cd-label">Jam</div></div>
+                    <div class="cd-colon">:</div>
+                    <div class="cd-box"><div class="cd-value" id="cdMenit">00</div><div class="cd-label">Menit</div></div>
+                    <div class="cd-colon">:</div>
+                    <div class="cd-box"><div class="cd-value" id="cdDetik">00</div><div class="cd-label">Detik</div></div>
+                </div>
+
+                <!-- Tombol Ditutup (Akan ditampilkan jika masa ujian lewat) -->
+                <div id="closedButtonWrapper" style="display: none;">
+                    <button class="btn-closed"><i class="fas fa-ban"></i> Portal Ujian Ditutup</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN GRID (Data Ujian, Disembunyikan secara default sampai validasi waktu selesai) -->
+        <div class="main-grid" id="mainGridArea" style="display: none;">
             <div class="main-content">
                 <div class="hero-section">
                     <span class="hero-tag">Layanan Akademik</span>
@@ -177,9 +238,123 @@
         // URL API Google Web App Anda
         const API_URL = "https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec";
         let globalDataUjian = [];
+        let countdownInterval;
 
         window.onload = function() {
-            // Memanggil API via Fetch
+            // Pertama, ambil data timer jadwal ujian
+            fetchTimerSchedule();
+        };
+
+        // =====================================
+        // FUNGSI LOGIKA TIMER & WAKTU
+        // =====================================
+        
+        // Helper untuk mengubah tanggal "5 November 2026" menjadi Object Date Javascript
+        function parseIndonesianDate(dateStr) {
+            const months = {
+                "Januari": "January", "Februari": "February", "Maret": "March",
+                "April": "April", "Mei": "May", "Juni": "June",
+                "Juli": "July", "Agustus": "August", "September": "September",
+                "Oktober": "October", "November": "November", "Desember": "December"
+            };
+            let engDateStr = dateStr;
+            for (let id in months) {
+                engDateStr = engDateStr.replace(new RegExp(id, 'g'), months[id]);
+            }
+            return new Date(engDateStr);
+        }
+
+        function fetchTimerSchedule() {
+            fetch(`${API_URL}?action=ambilDataTimer`, { method: "GET", redirect: "follow" })
+                .then(response => response.json())
+                .then(result => {
+                    document.getElementById('pageLoadingIndicator').style.display = 'none';
+
+                    if(result.status === "success" && result.data && result.data.length > 1) {
+                        let bukaStr = result.data[1][0]; // Kolom A
+                        let tutupStr = result.data[1][1]; // Kolom B
+                        
+                        let bukaDate = parseIndonesianDate(bukaStr);
+                        let tutupDate = parseIndonesianDate(tutupStr);
+                        // Atur jam penutupan menjadi akhir hari (23:59:59)
+                        tutupDate.setHours(23, 59, 59, 999);
+
+                        checkTimeStatus(bukaDate, tutupDate, bukaStr, tutupStr);
+                    } else {
+                        // Fallback jika tidak ada jadwal terisi, langsung buka portal
+                        tampilkanPortalUjian();
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching timer:", error);
+                    // Fallback jika API gagal, tetap tampilkan portal
+                    document.getElementById('pageLoadingIndicator').style.display = 'none';
+                    tampilkanPortalUjian();
+                });
+        }
+
+        function checkTimeStatus(bukaDate, tutupDate, bukaStr, tutupStr) {
+            function update() {
+                let now = new Date().getTime();
+                let start = bukaDate.getTime();
+                let end = tutupDate.getTime();
+
+                let sectionTimer = document.getElementById('timerSection');
+                let sectionUtama = document.getElementById('mainGridArea');
+                let timerMessage = document.getElementById('timerMessage');
+                let countdownWrap = document.getElementById('countdownWrapper');
+                let closedBtnWrap = document.getElementById('closedButtonWrapper');
+
+                if (now < start) {
+                    // BELUM DIBUKA
+                    sectionTimer.style.display = 'flex';
+                    sectionUtama.style.display = 'none';
+                    
+                    timerMessage.innerHTML = `Portal ujian belum dibuka.<br>Jadwal akses dimulai pada <strong>${bukaStr}</strong>.`;
+                    countdownWrap.style.display = 'flex';
+                    closedBtnWrap.style.display = 'none';
+
+                    // Hitung mundur
+                    let distance = start - now;
+                    document.getElementById('cdHari').innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                    document.getElementById('cdJam').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                    document.getElementById('cdMenit').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                    document.getElementById('cdDetik').innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+                } 
+                else if (now >= start && now <= end) {
+                    // SEDANG DIBUKA
+                    if(countdownInterval) clearInterval(countdownInterval);
+                    sectionTimer.style.display = 'none';
+                    tampilkanPortalUjian();
+                } 
+                else {
+                    // SUDAH DITUTUP
+                    if(countdownInterval) clearInterval(countdownInterval);
+                    sectionTimer.style.display = 'flex';
+                    sectionUtama.style.display = 'none';
+                    
+                    timerMessage.innerHTML = `Mohon maaf, portal telah ditutup<br>sejak tanggal <strong>${tutupStr}</strong>.`;
+                    countdownWrap.style.display = 'none';
+                    closedBtnWrap.style.display = 'block';
+                }
+            }
+
+            update();
+            countdownInterval = setInterval(update, 1000);
+        }
+
+        // =====================================
+        // FUNGSI MEMUAT DATA TABEL UJIAN
+        // =====================================
+        
+        let isDataFetched = false;
+        function tampilkanPortalUjian() {
+            document.getElementById('mainGridArea').style.display = 'grid';
+            
+            // Cegah pemuatan berulang jika timer melewati waktu mulai
+            if(isDataFetched) return;
+            isDataFetched = true;
+
             fetch(`${API_URL}?action=ambilSemuaDataUjian`, { method: "GET", redirect: "follow" })
                 .then(response => response.json())
                 .then(result => {
@@ -199,7 +374,7 @@
                     document.getElementById("loading").innerHTML = "Terjadi kesalahan jaringan saat mengambil jadwal ujian.";
                     console.error("Error fetching exams:", error);
                 });
-        };
+        }
 
         function urutkanDataUjian(data) {
             let dataTersaring = data.filter(function(row) {
