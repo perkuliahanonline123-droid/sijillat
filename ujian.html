@@ -363,7 +363,7 @@
                     document.getElementById('timerSection').style.display = 'flex';
                     document.getElementById('mainGridArea').style.display = 'none';
                     
-                    document.getElementById('timerMessage').innerHTML = `Portal ujian belum dibuka.<br>Jadwal akses dimulai pada <strong>${bukaStr}</strong>.`;
+                    document.getElementById('timerMessage').innerHTML = `Portal ujian belum dibuka.<br>Jadwal akses: <strong>${bukaStr}</strong> s.d. <strong>${tutupStr}</strong>.`;
                     
                     const distance = targetTime - now;
                     
@@ -409,7 +409,7 @@
                     document.getElementById('timerSection').style.display = 'flex';
                     document.getElementById('mainGridArea').style.display = 'none';
                     
-                    document.getElementById('timerMessage').innerHTML = `Mohon maaf, portal telah ditutup<br>sejak tanggal <strong>${tutupStr}</strong>.`;
+                    document.getElementById('timerMessage').innerHTML = `Mohon maaf, portal telah ditutup.<br>Periode akses: <strong>${bukaStr}</strong> s.d. <strong>${tutupStr}</strong>.`;
                     
                     container.innerHTML = `
                         <div class="badge-closed">
