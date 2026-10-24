@@ -68,8 +68,8 @@
         .bottom-nav-item i { font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; }
 
         /* =========================================
-           KODE CSS TIMER GAYA BARU (Meniru SPMB Tailwind)
-           ========================================= */
+            KODE CSS TIMER GAYA BARU (Meniru SPMB Tailwind)
+            ========================================= */
         #timerSection { display: flex; justify-content: center; align-items: center; padding: 40px 20px; flex: 1; margin-bottom: 20px; }
         .timer-card { background-color: #FFFFFF; border-radius: 24px; padding: 50px 40px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #F3F4F6; max-width: 550px; width: 100%; }
         
@@ -228,8 +228,43 @@
         let globalDataUjian = [];
         let countdownInterval;
 
+        // ==========================================
+        // KONSTANTA & FUNGSI CACHE (30 HARI / 1 BULAN)
+        // ==========================================
+        const CACHE_DURATION = 30 * 24 * 60 * 60 * 1000;
+
+        function getCachedData(key) {
+            const cachedItem = localStorage.getItem(key);
+            if (!cachedItem) return null;
+
+            try {
+                const parsed = JSON.parse(cachedItem);
+                const now = new Date().getTime();
+                if (now - parsed.timestamp > CACHE_DURATION) {
+                    localStorage.removeItem(key);
+                    return null;
+                }
+                return parsed.data;
+            } catch (e) {
+                localStorage.removeItem(key);
+                return null;
+            }
+        }
+
+        function setCachedData(key, data) {
+            const cacheObj = {
+                timestamp: new Date().getTime(),
+                data: data
+            };
+            try {
+                localStorage.setItem(key, JSON.stringify(cacheObj));
+            } catch (e) {
+                console.error("Gagal menyimpan cache:", e);
+            }
+        }
+
         window.onload = function() {
-            fetchTimerSchedule();
+            fetchTimerScheduleWithCache();
         };
 
         // FUNGSI PARSING TANGGAL INDONESIA YANG LEBIH AMAN
@@ -262,45 +297,59 @@
             return new Date(engDateStr);
         }
 
-        // FUNGSI MEMUAT JADWAL DARI SPREADSHEET
-        function fetchTimerSchedule() {
-            fetch(`${API_URL}?action=ambilDataTimer`, { method: "GET", redirect: "follow" })
-                .then(response => response.json())
-                .then(result => {
-                    document.getElementById('pageLoadingIndicator').style.display = 'none';
+        // FUNGSI MEMUAT JADWAL DENGAN PENGECEKAN CACHE
+        function fetchTimerScheduleWithCache() {
+            const cacheKey = "sijillat_timer_schedule_cache";
+            const cachedResult = getCachedData(cacheKey);
 
-                    if(result.status === "success") {
-                        if (result.data && result.data.length > 1) {
-                            let bukaStr = result.data[1][0]; 
-                            let tutupStr = result.data[1][1]; 
-                            
-                            let bukaDate = parseIndonesianDateTimer(bukaStr);
-                            let tutupDate = parseIndonesianDateTimer(tutupStr);
-                            
-                            if (isNaN(bukaDate.getTime()) || isNaN(tutupDate.getTime())) {
-                                document.getElementById('timerSection').style.display = 'flex';
-                                document.getElementById('timerMessage').innerHTML = `<span style="color:#EF4444;">Format tanggal tidak dikenali.</span>`;
-                                return;
-                            }
-
-                            tutupDate.setHours(23, 59, 59, 999);
-                            checkTimeStatus(bukaDate, tutupDate, bukaStr, tutupStr);
-                        } else {
-                            tampilkanPortalUjian();
+            if (cachedResult) {
+                processTimerResult(cachedResult);
+            } else {
+                fetch(`${API_URL}?action=ambilDataTimer`, { method: "GET", redirect: "follow" })
+                    .then(response => response.json())
+                    .then(result => {
+                        if(result.status === "success") {
+                            setCachedData(cacheKey, result);
                         }
-                    } else {
+                        processTimerResult(result);
+                    })
+                    .catch(error => {
+                        document.getElementById('pageLoadingIndicator').style.display = 'none';
                         document.getElementById('timerSection').style.display = 'flex';
-                        document.getElementById('timerMessage').innerHTML = `<span style="color:#EF4444;">Error API: Pastikan Script di-Deploy Ulang.</span>`;
-                    }
-                })
-                .catch(error => {
-                    document.getElementById('pageLoadingIndicator').style.display = 'none';
-                    document.getElementById('timerSection').style.display = 'flex';
-                    document.getElementById('timerMessage').innerHTML = `<span style="color:#EF4444;">Gagal menghubungi server. Periksa koneksi Anda.</span>`;
-                });
+                        document.getElementById('timerMessage').innerHTML = `<span style="color:#EF4444;">Gagal menghubungi server. Periksa koneksi Anda.</span>`;
+                    });
+            }
         }
 
-        // FUNGSI LOGIKA WAKTU DAN HITUNG MUNDUR (Mirip dengan SPMB)
+        function processTimerResult(result) {
+            document.getElementById('pageLoadingIndicator').style.display = 'none';
+
+            if(result.status === "success") {
+                if (result.data && result.data.length > 1) {
+                    let bukaStr = result.data[1][0]; 
+                    let tutupStr = result.data[1][1]; 
+                    
+                    let bukaDate = parseIndonesianDateTimer(bukaStr);
+                    let tutupDate = parseIndonesianDateTimer(tutupStr);
+                    
+                    if (isNaN(bukaDate.getTime()) || isNaN(tutupDate.getTime())) {
+                        document.getElementById('timerSection').style.display = 'flex';
+                        document.getElementById('timerMessage').innerHTML = `<span style="color:#EF4444;">Format tanggal tidak dikenali.</span>`;
+                        return;
+                    }
+
+                    tutupDate.setHours(23, 59, 59, 999);
+                    checkTimeStatus(bukaDate, tutupDate, bukaStr, tutupStr);
+                } else {
+                    tampilkanPortalUjian();
+                }
+            } else {
+                document.getElementById('timerSection').style.display = 'flex';
+                document.getElementById('timerMessage').innerHTML = `<span style="color:#EF4444;">Error API: Pastikan Script di-Deploy Ulang.</span>`;
+            }
+        }
+
+        // FUNGSI LOGIKA WAKTU DAN HITUNG MUNDUR
         function checkTimeStatus(bukaDate, tutupDate, bukaStr, tutupStr) {
             const container = document.getElementById('countdownContainer');
             const targetTime = bukaDate.getTime();
@@ -318,7 +367,6 @@
                     
                     const distance = targetTime - now;
                     
-                    // Struktur HTML Timer meniru gaya merah Tailwind di SPMB
                     container.innerHTML = `
                         <div class="countdown-wrapper">
                             <div class="cd-box"><div class="cd-value" id="cdHari">00</div><div class="cd-label">Hari</div></div>
@@ -345,17 +393,13 @@
                 else if (now >= targetTime && now <= endTime) {
                     if(countdownInterval) clearInterval(countdownInterval);
                     
-                    // Jika layar saat ini menunjuk ke timer, ganti ke tombol muat ulang
                     if(document.getElementById('timerSection').style.display !== 'none') {
                         container.innerHTML = `
                             <button onclick="location.reload()" class="btn-reload">
                                 <i class="fas fa-sync-alt"></i> Portal Telah Dibuka! Klik Untuk Muat Ulang
                             </button>
                         `;
-                        // Kita biarkan user klik tombol untuk masuk agar transisinya halus
-                    }
-                    // Namun jika sejak awal dibuka sudah masuk waktu ujian, langsung tampilkan
-                    else {
+                    } else {
                         tampilkanPortalUjian();
                     }
                 } 
@@ -378,7 +422,6 @@
             update();
             countdownInterval = setInterval(update, 1000);
             
-            // Cek langsung saat pertama dimuat jika sudah dalam rentang buka
             const currentNow = new Date().getTime();
             if (currentNow >= targetTime && currentNow <= endTime) {
                  document.getElementById('timerSection').style.display = 'none';
@@ -387,7 +430,7 @@
         }
 
         // =====================================
-        // FUNGSI MEMUAT DATA TABEL UJIAN
+        // FUNGSI MEMUAT DATA TABEL UJIAN DENGAN CACHE
         // =====================================
         let isDataFetched = false;
         function tampilkanPortalUjian() {
@@ -396,24 +439,40 @@
             if(isDataFetched) return;
             isDataFetched = true;
 
-            fetch(`${API_URL}?action=ambilSemuaDataUjian`, { method: "GET", redirect: "follow" })
-                .then(response => response.json())
-                .then(result => {
-                    if(result.status === "success" && result.data) {
-                        globalDataUjian = urutkanDataUjian(result.data);
-                        susunTabel(globalDataUjian); 
-                    } else {
-                        if (Array.isArray(result)) {
-                            globalDataUjian = urutkanDataUjian(result);
-                            susunTabel(globalDataUjian); 
-                        } else {
-                            document.getElementById("loading").innerHTML = "Gagal memuat jadwal ujian.";
+            const cacheKey = "sijillat_exam_data_cache";
+            const cachedResult = getCachedData(cacheKey);
+
+            if (cachedResult) {
+                handleExamDataResult(cachedResult);
+            } else {
+                fetch(`${API_URL}?action=ambilSemuaDataUjian`, { method: "GET", redirect: "follow" })
+                    .then(response => response.json())
+                    .then(result => {
+                        if(result.status === "success" && result.data) {
+                            setCachedData(cacheKey, result);
+                        } else if (Array.isArray(result)) {
+                            setCachedData(cacheKey, { status: "success", data: result });
                         }
-                    }
-                })
-                .catch(error => {
-                    document.getElementById("loading").innerHTML = "Terjadi kesalahan jaringan saat mengambil jadwal ujian.";
-                });
+                        handleExamDataResult(result);
+                    })
+                    .catch(error => {
+                        document.getElementById("loading").innerHTML = "Terjadi kesalahan jaringan saat mengambil jadwal ujian.";
+                    });
+            }
+        }
+
+        function handleExamDataResult(result) {
+            if(result.status === "success" && result.data) {
+                globalDataUjian = urutkanDataUjian(result.data);
+                susunTabel(globalDataUjian); 
+            } else {
+                if (Array.isArray(result)) {
+                    globalDataUjian = urutkanDataUjian(result);
+                    susunTabel(globalDataUjian); 
+                } else {
+                    document.getElementById("loading").innerHTML = "Gagal memuat jadwal ujian.";
+                }
+            }
         }
 
         function urutkanDataUjian(data) {
@@ -497,7 +556,7 @@
                                     <span style='font-size:13px; color:#888; display: inline-block; margin-top: 2px;'>${dosen}</span>
                                 </td>
                                 <td><div class='btn-wrapper'>${btnUTS} ${btnUAS}</div></td>
-                             </tr>`;
+                               </tr>`;
             });
             
             tbody.innerHTML = htmlHTML;
