@@ -20,7 +20,23 @@
         .nav-links a { text-decoration: none; color: #888; transition: color 0.3s; }
         .nav-links a:hover, .nav-links a.active { color: #556B4E; }
         
-        .nav-search-btn { border: 1px solid #ccc; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; background: transparent; cursor: pointer; }
+        .nav-actions { display: flex; align-items: center; gap: 10px; }
+        .nav-search-btn { border: 1px solid #ccc; padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; background: transparent; cursor: pointer; transition: all 0.2s; }
+        .nav-search-btn:hover { border-color: #556B4E; color: #556B4E; }
+
+        /* TOMBOL PERBARUI DATA DARI SERVER */
+        .btn-refresh-server { width: 38px; height: 38px; border-radius: 50%; border: 1px solid #D1D8CC; background-color: #FFFFFF; color: #556B4E; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+        .btn-refresh-server:hover { background-color: #556B4E; color: #FFFFFF; border-color: #556B4E; transform: rotate(180deg); }
+        .btn-refresh-server:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        /* TOAST NOTIFICATION */
+        #toast-container { position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 400px; }
+        .toast-item { background: #FFFFFF; border-radius: 14px; padding: 14px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); border: 1px solid #E5E7EB; display: flex; align-items: center; gap: 12px; pointer-events: auto; transition: all 0.3s ease; opacity: 0; transform: translateY(-15px); }
+        .toast-item.show { opacity: 1; transform: translateY(0); }
+        .toast-icon { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px; }
+        .toast-success { background-color: #ECFDF5; color: #059669; }
+        .toast-error { background-color: #FEF2F2; color: #DC2626; }
+        .toast-text { font-size: 13px; font-weight: 600; color: #334155; line-height: 1.4; flex: 1; }
 
         .main-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 40px; flex: 1; }
 
@@ -98,7 +114,7 @@
             .nav-links { display: none; }
             .nav-search-btn { display: none; }
             .main-grid { grid-template-columns: 1fr; gap: 25px; }
-            .navbar { padding: 15px 0; margin-bottom: 20px; justify-content: center;}
+            .navbar { padding: 15px 0; margin-bottom: 20px; justify-content: space-between; }
             .hero-section { padding: 30px 20px; }
             .hero-title { font-size: 32px; }
             .hero-desc { max-width: 100%; font-size: 14px; }
@@ -116,6 +132,9 @@
 </head>
 <body>
 
+    <!-- WADAH NOTIFIKASI TOAST -->
+    <div id="toast-container"></div>
+
     <div class="container">
         <div class="navbar">
             <a href="index.html" class="logo-area">
@@ -128,7 +147,12 @@
                 <a href="pengumuman.html">Pengumuman</a>
                 <a href="spmb.html">INFO SPMB</a>
             </div>
-            <button class="nav-search-btn">CARI INFORMASI</button>
+            <div class="nav-actions">
+                <button id="btnRefresh" onclick="refreshData()" class="btn-refresh-server" title="Perbarui Data dari Server (Berlaku untuk Semua Perangkat)">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="nav-search-btn">CARI INFORMASI</button>
+            </div>
         </div>
 
         <!-- Indikator Loading Awal -->
@@ -227,11 +251,37 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec";
         let globalDataUjian = [];
         let countdownInterval;
+        let isDataFetched = false;
 
         // ==========================================
-        // KONSTANTA & FUNGSI CACHE (30 HARI / 1 BULAN)
+        // KONSTANTA & FUNGSI CACHE (1 TAHUN & GLOBAL VERSION)
         // ==========================================
-        const CACHE_DURATION = 30 * 24 * 60 * 60 * 1000;
+        const CACHE_DURATION = 365 * 24 * 60 * 60 * 1000; // 1 Tahun
+        const KEY_TIMER_CACHE = "sijillat_timer_schedule_cache";
+        const KEY_EXAM_CACHE = "sijillat_exam_data_cache";
+        const KEY_GLOBAL_VERSION = "sijillat_global_cache_version";
+
+        function showToast(type, message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast-item';
+            const iconClass = type === 'success' ? 'fa-check' : 'fa-exclamation-circle';
+            const statusClass = type === 'success' ? 'toast-success' : 'toast-error';
+
+            toast.innerHTML = `
+                <div class="toast-icon ${statusClass}">
+                    <i class="fas ${iconClass}"></i>
+                </div>
+                <div class="toast-text">${message}</div>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
 
         function getCachedData(key) {
             const cachedItem = localStorage.getItem(key);
@@ -251,21 +301,129 @@
             }
         }
 
-        function setCachedData(key, data) {
+        function setCachedData(key, data, versionOverride = null) {
             const cacheObj = {
                 timestamp: new Date().getTime(),
                 data: data
             };
             try {
                 localStorage.setItem(key, JSON.stringify(cacheObj));
+                const versionToSave = versionOverride || (data && data.cacheVersion);
+                if (versionToSave) {
+                    localStorage.setItem(KEY_GLOBAL_VERSION, versionToSave.toString());
+                }
             } catch (e) {
                 console.error("Gagal menyimpan cache:", e);
+            }
+        }
+
+        function hapusSemuaCacheLokal() {
+            localStorage.removeItem(KEY_TIMER_CACHE);
+            localStorage.removeItem(KEY_EXAM_CACHE);
+            localStorage.removeItem(KEY_GLOBAL_VERSION);
+        }
+
+        // ==========================================
+        // FUNGSI TOMBOL PERBARUI DATA DARI SERVER (SEMUA PERANGKAT)
+        // ==========================================
+        async function refreshData() {
+            const btn = document.getElementById('btnRefresh');
+            const icon = btn.querySelector('i');
+            
+            icon.classList.add('fa-spin');
+            btn.disabled = true;
+
+            try {
+                // 1. Hapus cache lama di perangkat ini
+                hapusSemuaCacheLokal();
+                isDataFetched = false;
+
+                // 2. Panggil API dengan forceRefresh=true untuk mereset versi cache di server & semua perangkat
+                const timestamp = new Date().getTime();
+                const timerResponse = await fetch(`${API_URL}?action=ambilDataTimer&forceRefresh=true&t=${timestamp}`, {
+                    method: "GET",
+                    redirect: "follow",
+                    cache: "no-store"
+                });
+                const timerResult = await timerResponse.json();
+
+                if (timerResult.status === "success") {
+                    setCachedData(KEY_TIMER_CACHE, timerResult, timerResult.cacheVersion);
+
+                    // 3. Tarik juga data ujian terbaru dari server dan simpan ke cache
+                    const examResponse = await fetch(`${API_URL}?action=ambilSemuaDataUjian&t=${timestamp}`, {
+                        method: "GET",
+                        redirect: "follow",
+                        cache: "no-store"
+                    });
+                    const examResult = await examResponse.json();
+                    if (examResult.status === "success") {
+                        setCachedData(KEY_EXAM_CACHE, examResult, timerResult.cacheVersion);
+                    }
+
+                    // 4. Render ulang tampilan dengan data terbaru
+                    processTimerResult(timerResult);
+                    showToast('success', 'Data berhasil diperbarui dari server dan berlaku untuk semua perangkat!');
+                } else {
+                    showToast('error', 'Gagal memperbarui data: ' + (timerResult.message || 'Error Server'));
+                }
+            } catch (error) {
+                showToast('error', 'Gagal menghubungi server. Periksa koneksi internet Anda.');
+            } finally {
+                icon.classList.remove('fa-spin');
+                btn.disabled = false;
+            }
+        }
+
+        // ==========================================
+        // FUNGSI SINKRONISASI VERSI CACHE OTOMATIS ANTARPERANGKAT
+        // ==========================================
+        async function cekSinkronisasiServer() {
+            const localVersion = localStorage.getItem(KEY_GLOBAL_VERSION);
+            if (!localVersion) return;
+
+            try {
+                const res = await fetch(`${API_URL}?action=cek_versi&t=${new Date().getTime()}`, {
+                    method: "GET",
+                    redirect: "follow",
+                    cache: "no-store"
+                });
+                const info = await res.json();
+
+                // Jika versi di server sudah berubah karena perangkat lain menekan tombol Refresh
+                if (info.status === "success" && info.cacheVersion && info.cacheVersion.toString() !== localVersion.toString()) {
+                    hapusSemuaCacheLokal();
+                    isDataFetched = false;
+
+                    const timestamp = new Date().getTime();
+                    const timerResponse = await fetch(`${API_URL}?action=ambilDataTimer&t=${timestamp}`, {
+                        method: "GET",
+                        redirect: "follow",
+                        cache: "no-store"
+                    });
+                    const timerResult = await timerResponse.json();
+
+                    if (timerResult.status === "success") {
+                        setCachedData(KEY_TIMER_CACHE, timerResult, info.cacheVersion);
+                        processTimerResult(timerResult);
+                        showToast('success', 'Data otomatis diperbarui mengikuti pembaruan terbaru dari server!');
+                    }
+                }
+            } catch (e) {
+                // Abaikan jika perangkat sedang gangguan jaringan, tetap gunakan cache yang ada
             }
         }
 
         window.onload = function() {
             fetchTimerScheduleWithCache();
         };
+
+        // Cek pembaruan otomatis saat pengguna kembali membuka tab/aplikasi
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                cekSinkronisasiServer();
+            }
+        });
 
         // FUNGSI PARSING TANGGAL INDONESIA YANG LEBIH AMAN
         function parseIndonesianDateTimer(dateStr) {
@@ -299,17 +457,18 @@
 
         // FUNGSI MEMUAT JADWAL DENGAN PENGECEKAN CACHE
         function fetchTimerScheduleWithCache() {
-            const cacheKey = "sijillat_timer_schedule_cache";
-            const cachedResult = getCachedData(cacheKey);
+            const cachedResult = getCachedData(KEY_TIMER_CACHE);
 
             if (cachedResult) {
                 processTimerResult(cachedResult);
+                // Validasi di latar belakang apakah ada versi cache baru di server
+                cekSinkronisasiServer();
             } else {
-                fetch(`${API_URL}?action=ambilDataTimer`, { method: "GET", redirect: "follow" })
+                fetch(`${API_URL}?action=ambilDataTimer&t=${new Date().getTime()}`, { method: "GET", redirect: "follow", cache: "no-store" })
                     .then(response => response.json())
                     .then(result => {
                         if(result.status === "success") {
-                            setCachedData(cacheKey, result);
+                            setCachedData(KEY_TIMER_CACHE, result);
                         }
                         processTimerResult(result);
                     })
@@ -351,6 +510,8 @@
 
         // FUNGSI LOGIKA WAKTU DAN HITUNG MUNDUR
         function checkTimeStatus(bukaDate, tutupDate, bukaStr, tutupStr) {
+            if (countdownInterval) clearInterval(countdownInterval);
+
             const container = document.getElementById('countdownContainer');
             const targetTime = bukaDate.getTime();
             const endTime = tutupDate.getTime();
@@ -432,26 +593,25 @@
         // =====================================
         // FUNGSI MEMUAT DATA TABEL UJIAN DENGAN CACHE
         // =====================================
-        let isDataFetched = false;
         function tampilkanPortalUjian() {
             document.getElementById('mainGridArea').style.display = 'grid';
             
             if(isDataFetched) return;
             isDataFetched = true;
 
-            const cacheKey = "sijillat_exam_data_cache";
-            const cachedResult = getCachedData(cacheKey);
+            const cachedResult = getCachedData(KEY_EXAM_CACHE);
 
             if (cachedResult) {
                 handleExamDataResult(cachedResult);
             } else {
-                fetch(`${API_URL}?action=ambilSemuaDataUjian`, { method: "GET", redirect: "follow" })
+                document.getElementById("loading").style.display = "block";
+                fetch(`${API_URL}?action=ambilSemuaDataUjian&t=${new Date().getTime()}`, { method: "GET", redirect: "follow", cache: "no-store" })
                     .then(response => response.json())
                     .then(result => {
                         if(result.status === "success" && result.data) {
-                            setCachedData(cacheKey, result);
+                            setCachedData(KEY_EXAM_CACHE, result);
                         } else if (Array.isArray(result)) {
-                            setCachedData(cacheKey, { status: "success", data: result });
+                            setCachedData(KEY_EXAM_CACHE, { status: "success", data: result });
                         }
                         handleExamDataResult(result);
                     })
