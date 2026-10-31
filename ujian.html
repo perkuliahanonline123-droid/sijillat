@@ -52,15 +52,33 @@
         .table-responsive::-webkit-scrollbar { height: 6px; }
         .table-responsive::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; display: none; min-width: 700px; }
-        th, td { padding: 20px 15px; text-align: left; border-bottom: 1px solid #F0F0F0; vertical-align: middle; }
+        th, td { padding: 18px 15px; text-align: left; border-bottom: 1px solid #F0F0F0; vertical-align: middle; }
         th { color: #888; font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
+        tr:last-child td { border-bottom: none; }
         tr:hover { background-color: #FAFAF7; }
         
         .btn-wrapper { display: flex; gap: 8px; flex-wrap: wrap; }
         .btn-download { padding: 8px 16px; background-color: #FFFFFF; color: #556B4E; border: 1px solid #556B4E; text-decoration: none; border-radius: 4px; font-size: 12px; font-weight: 600; transition: all 0.3s; white-space: nowrap; text-align: center; }
         .btn-download:hover { background-color: #556B4E; color: #FFFFFF; }
         .btn-disabled { background-color: #F8F9FA; border: 1px solid #E5E7EB; color: #9CA3AF; padding: 8px 16px; border-radius: 4px; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: not-allowed; text-align: center; }
+
+        /* KODE CSS KARTU SEMESTER (ACCORDION) */
+        .semester-card { border: 1px solid #E5E7EB; border-radius: 12px; margin-bottom: 16px; background-color: #FFFFFF; overflow: hidden; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+        .semester-card:last-child { margin-bottom: 0; }
+        .semester-card:hover { border-color: #556B4E; }
+        .semester-header { padding: 18px 24px; background-color: #FAFAF7; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; transition: background-color 0.2s; }
+        .semester-header:hover { background-color: #F3F1EB; }
+        .semester-card.active .semester-header { background-color: #556B4E; color: #FFFFFF; }
+        .semester-title-wrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .semester-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: #333; margin: 0; }
+        .semester-card.active .semester-title { color: #FFFFFF; }
+        .semester-badge { background-color: #E0E5DC; color: #4A5D43; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+        .semester-card.active .semester-badge { background-color: rgba(255,255,255,0.2); color: #FFFFFF; }
+        .semester-icon { color: #556B4E; font-size: 16px; transition: transform 0.3s ease; }
+        .semester-card.active .semester-icon { transform: rotate(180deg); color: #FFFFFF; }
+        .semester-body { display: none; padding: 0 20px 15px 20px; border-top: 1px solid #F0F0F0; }
+        .semester-card.active .semester-body { display: block; }
+        .semester-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; min-width: 650px; }
         
         #loading { text-align: center; font-style: italic; color: #777; padding: 20px; font-size: 14px; }
         #emptyState { text-align: center; color: #888; font-size: 14px; margin-top: 10px; display: none; }
@@ -83,9 +101,7 @@
         .bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #A0AAB2; text-decoration: none; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; flex: 1; padding: 10px 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
         .bottom-nav-item i { font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; }
 
-        /* =========================================
-            KODE CSS TIMER GAYA BARU (Meniru SPMB Tailwind)
-            ========================================= */
+        /* KODE CSS TIMER GAYA BARU */
         #timerSection { display: flex; justify-content: center; align-items: center; padding: 40px 20px; flex: 1; margin-bottom: 20px; }
         .timer-card { background-color: #FFFFFF; border-radius: 24px; padding: 50px 40px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #F3F4F6; max-width: 550px; width: 100%; }
         
@@ -119,6 +135,8 @@
             .hero-title { font-size: 32px; }
             .hero-desc { max-width: 100%; font-size: 14px; }
             .data-section { padding: 20px 15px; }
+            .semester-header { padding: 15px 18px; }
+            .semester-title { font-size: 18px; }
             .sidebar { padding: 20px; }
             .newsletter-box { gap: 15px; }
             .footer { padding-bottom: 30px; }
@@ -171,9 +189,7 @@
                 
                 <p class="timer-subtitle" id="timerMessage"></p>
                 
-                <div id="countdownContainer">
-                    <!-- Elemen Hitung Mundur / Status Tutup akan diinjeksi di sini via JS -->
-                </div>
+                <div id="countdownContainer"></div>
             </div>
         </div>
 
@@ -183,25 +199,14 @@
                 <div class="hero-section">
                     <span class="hero-tag">Layanan Akademik</span>
                     <h1 class="hero-title">Portal Tautan Ujian</h1>
-                    <p class="hero-desc">Temukan tautan ujian Anda di bawah ini, atau gunakan kolom pencarian untuk mempersempit berdasarkan Mata Kuliah atau Dosen.</p>
+                    <p class="hero-desc">Pilih kartu semester di bawah ini untuk melihat daftar mata kuliah dan tautan ujian, atau gunakan kolom pencarian untuk mencari Mata Kuliah dan Dosen.</p>
                     
-                    <input type="text" id="searchInput" class="search-box" placeholder="Ketik Mata Kuliah atau Dosen..." oninput="filterTableClient()">
+                    <input type="text" id="searchInput" class="search-box" placeholder="Ketik Mata Kuliah, Dosen, atau Prodi..." oninput="filterTableClient()">
                 </div>
 
                 <div class="data-section" id="areaTabel">
-                    <div class="table-responsive">
-                        <table id="dataTable">
-                            <thead>
-                                <tr>
-                                    <th>Mata Kuliah</th>
-                                    <th>Program Studi & Dosen</th>
-                                    <th>Link Pengerjaan</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableBody">
-                            </tbody>
-                        </table>
-                    </div>
+                    <!-- Wadah Kartu per Semester -->
+                    <div id="semesterContainer"></div>
                     <div id="loading"><i class="fas fa-spinner fa-spin"></i> Memuat jadwal ujian...</div>
                     <div id="emptyState">Jadwal ujian saat ini belum tersedia.</div>
                 </div>
@@ -247,16 +252,12 @@
     </div>
 
     <script>
-        // URL API Google Web App Anda
         const API_URL = "https://script.google.com/macros/s/AKfycbzX-omkJmVOYz5anNk0UJ6rhh4Kv5eJ8KCfpMsT0DNN5C6lzT5m1qVM5lazwKa7u84dcQ/exec";
         let globalDataUjian = [];
         let countdownInterval;
         let isDataFetched = false;
 
-        // ==========================================
-        // KONSTANTA & FUNGSI CACHE (1 TAHUN & GLOBAL VERSION)
-        // ==========================================
-        const CACHE_DURATION = 365 * 24 * 60 * 60 * 1000; // 1 Tahun
+        const CACHE_DURATION = 365 * 24 * 60 * 60 * 1000;
         const KEY_TIMER_CACHE = "sijillat_timer_schedule_cache";
         const KEY_EXAM_CACHE = "sijillat_exam_data_cache";
         const KEY_GLOBAL_VERSION = "sijillat_global_cache_version";
@@ -323,9 +324,6 @@
             localStorage.removeItem(KEY_GLOBAL_VERSION);
         }
 
-        // ==========================================
-        // FUNGSI TOMBOL PERBARUI DATA DARI SERVER (SEMUA PERANGKAT)
-        // ==========================================
         async function refreshData() {
             const btn = document.getElementById('btnRefresh');
             const icon = btn.querySelector('i');
@@ -334,11 +332,9 @@
             btn.disabled = true;
 
             try {
-                // 1. Hapus cache lama di perangkat ini
                 hapusSemuaCacheLokal();
                 isDataFetched = false;
 
-                // 2. Panggil API dengan forceRefresh=true untuk mereset versi cache di server & semua perangkat
                 const timestamp = new Date().getTime();
                 const timerResponse = await fetch(`${API_URL}?action=ambilDataTimer&forceRefresh=true&t=${timestamp}`, {
                     method: "GET",
@@ -350,7 +346,6 @@
                 if (timerResult.status === "success") {
                     setCachedData(KEY_TIMER_CACHE, timerResult, timerResult.cacheVersion);
 
-                    // 3. Tarik juga data ujian terbaru dari server dan simpan ke cache
                     const examResponse = await fetch(`${API_URL}?action=ambilSemuaDataUjian&t=${timestamp}`, {
                         method: "GET",
                         redirect: "follow",
@@ -361,7 +356,6 @@
                         setCachedData(KEY_EXAM_CACHE, examResult, timerResult.cacheVersion);
                     }
 
-                    // 4. Render ulang tampilan dengan data terbaru
                     processTimerResult(timerResult);
                     showToast('success', 'Data berhasil diperbarui dari server dan berlaku untuk semua perangkat!');
                 } else {
@@ -375,9 +369,6 @@
             }
         }
 
-        // ==========================================
-        // FUNGSI SINKRONISASI VERSI CACHE OTOMATIS ANTARPERANGKAT
-        // ==========================================
         async function cekSinkronisasiServer() {
             const localVersion = localStorage.getItem(KEY_GLOBAL_VERSION);
             if (!localVersion) return;
@@ -390,7 +381,6 @@
                 });
                 const info = await res.json();
 
-                // Jika versi di server sudah berubah karena perangkat lain menekan tombol Refresh
                 if (info.status === "success" && info.cacheVersion && info.cacheVersion.toString() !== localVersion.toString()) {
                     hapusSemuaCacheLokal();
                     isDataFetched = false;
@@ -409,23 +399,19 @@
                         showToast('success', 'Data otomatis diperbarui mengikuti pembaruan terbaru dari server!');
                     }
                 }
-            } catch (e) {
-                // Abaikan jika perangkat sedang gangguan jaringan, tetap gunakan cache yang ada
-            }
+            } catch (e) {}
         }
 
         window.onload = function() {
             fetchTimerScheduleWithCache();
         };
 
-        // Cek pembaruan otomatis saat pengguna kembali membuka tab/aplikasi
         document.addEventListener('visibilitychange', function() {
             if (document.visibilityState === 'visible') {
                 cekSinkronisasiServer();
             }
         });
 
-        // FUNGSI PARSING TANGGAL INDONESIA YANG LEBIH AMAN
         function parseIndonesianDateTimer(dateStr) {
             if (!dateStr || typeof dateStr !== 'string') return new Date(NaN); 
 
@@ -455,13 +441,11 @@
             return new Date(engDateStr);
         }
 
-        // FUNGSI MEMUAT JADWAL DENGAN PENGECEKAN CACHE
         function fetchTimerScheduleWithCache() {
             const cachedResult = getCachedData(KEY_TIMER_CACHE);
 
             if (cachedResult) {
                 processTimerResult(cachedResult);
-                // Validasi di latar belakang apakah ada versi cache baru di server
                 cekSinkronisasiServer();
             } else {
                 fetch(`${API_URL}?action=ambilDataTimer&t=${new Date().getTime()}`, { method: "GET", redirect: "follow", cache: "no-store" })
@@ -508,7 +492,6 @@
             }
         }
 
-        // FUNGSI LOGIKA WAKTU DAN HITUNG MUNDUR
         function checkTimeStatus(bukaDate, tutupDate, bukaStr, tutupStr) {
             if (countdownInterval) clearInterval(countdownInterval);
 
@@ -519,7 +502,6 @@
             function update() {
                 const now = new Date().getTime();
                 
-                // JIKA BELUM DIBUKA
                 if (now < targetTime) {
                     document.getElementById('timerSection').style.display = 'flex';
                     document.getElementById('mainGridArea').style.display = 'none';
@@ -550,7 +532,6 @@
                     document.getElementById('cdMenit').innerText = m.toString().padStart(2, '0');
                     document.getElementById('cdDetik').innerText = s.toString().padStart(2, '0');
                 } 
-                // JIKA SEDANG DIBUKA
                 else if (now >= targetTime && now <= endTime) {
                     if(countdownInterval) clearInterval(countdownInterval);
                     
@@ -564,7 +545,6 @@
                         tampilkanPortalUjian();
                     }
                 } 
-                // JIKA SUDAH DITUTUP
                 else {
                     if(countdownInterval) clearInterval(countdownInterval);
                     document.getElementById('timerSection').style.display = 'flex';
@@ -590,9 +570,6 @@
             }
         }
 
-        // =====================================
-        // FUNGSI MEMUAT DATA TABEL UJIAN DENGAN CACHE
-        // =====================================
         function tampilkanPortalUjian() {
             document.getElementById('mainGridArea').style.display = 'grid';
             
@@ -624,11 +601,11 @@
         function handleExamDataResult(result) {
             if(result.status === "success" && result.data) {
                 globalDataUjian = urutkanDataUjian(result.data);
-                susunTabel(globalDataUjian); 
+                susunTabel(globalDataUjian, false); 
             } else {
                 if (Array.isArray(result)) {
                     globalDataUjian = urutkanDataUjian(result);
-                    susunTabel(globalDataUjian); 
+                    susunTabel(globalDataUjian, false); 
                 } else {
                     document.getElementById("loading").innerHTML = "Gagal memuat jadwal ujian.";
                 }
@@ -666,62 +643,113 @@
             let kataKunci = document.getElementById("searchInput").value.toLowerCase().trim();
             
             if (kataKunci === "") {
-                susunTabel(globalDataUjian);
+                susunTabel(globalDataUjian, false);
                 return;
             }
 
             let hasilFilter = globalDataUjian.filter(function(row) {
                 let matkul = row[2] ? row[2].toString().toLowerCase() : "";
                 let dosen = row[5] ? row[5].toString().toLowerCase() : "";
-                return matkul.includes(kataKunci) || dosen.includes(kataKunci);
+                let prodi = row[7] ? row[7].toString().toLowerCase() : "";
+                return matkul.includes(kataKunci) || dosen.includes(kataKunci) || prodi.includes(kataKunci);
             });
 
-            susunTabel(hasilFilter);
+            susunTabel(hasilFilter, true);
         }
 
-        function susunTabel(dataArray) {
-            let table = document.getElementById("dataTable");
+        function toggleSemester(headerElement) {
+            const card = headerElement.parentElement;
+            card.classList.toggle("active");
+        }
+
+        function susunTabel(dataArray, isSearch = false) {
+            let container = document.getElementById("semesterContainer");
             let emptyState = document.getElementById("emptyState");
             let loadingText = document.getElementById("loading");
-            let tbody = document.getElementById("tableBody");
 
             loadingText.style.display = "none";
-            tbody.innerHTML = ""; 
+            container.innerHTML = ""; 
 
             if (!dataArray || dataArray.length === 0) {
                 emptyState.style.display = "block";
-                table.style.display = "none";
                 return;
             }
 
-            let htmlHTML = "";
+            emptyState.style.display = "none";
+
+            // Kelompokkan data per Semester
+            let grupSemester = {};
             dataArray.forEach(function(row) {
-                let matkul = row[2] ? row[2].toString() : "-";
-                let semester = row[4] ? row[4].toString() : "-"; 
-                let dosen = row[5] ? row[5].toString() : "-";
-                let prodi = row[7] ? row[7].toString() : "-";
-                let linkUTS = row[9] ? row[9].toString() : "";
-                let linkUAS = row[10] ? row[10].toString() : "";
+                let semRaw = row[4] ? row[4].toString().trim() : "Lainnya";
+                let matchNum = semRaw.match(/\d+/);
+                let labelSemester = matchNum ? `Semester ${matchNum[0]}` : (semRaw.toLowerCase().includes("semester") ? semRaw : `Semester ${semRaw}`);
+                
+                if (!grupSemester[labelSemester]) {
+                    grupSemester[labelSemester] = [];
+                }
+                grupSemester[labelSemester].push(row);
+            });
 
-                let btnUTS = (linkUTS !== "" && linkUTS !== "#N/A") ? `<a href="${linkUTS}" class="btn-download" target="_blank">Soal UTS</a>` : `<span class="btn-disabled">UTS Belum Ada</span>`;
-                let btnUAS = (linkUAS !== "" && linkUAS !== "#N/A") ? `<a href="${linkUAS}" class="btn-download" target="_blank">Soal UAS</a>` : `<span class="btn-disabled">UAS Belum Ada</span>`;
+            let htmlCards = "";
+            Object.keys(grupSemester).forEach(function(namaSemester) {
+                let daftarMatkul = grupSemester[namaSemester];
+                let activeClass = isSearch ? "active" : "";
 
-                htmlHTML += `<tr>
-                                <td>
-                                    <strong style="font-size: 15px; color: #333;">${matkul}</strong><br>
-                                    <span style="font-size: 12px; color: #888; display: inline-block; margin-top: 4px;">Semester ${semester}</span>
-                                </td>
-                                <td>
-                                    <span style='color:#556B4E; font-size:13px; font-weight:700;'>${prodi}</span><br>
-                                    <span style='font-size:13px; color:#888; display: inline-block; margin-top: 2px;'>${dosen}</span>
-                                </td>
-                                <td><div class='btn-wrapper'>${btnUTS} ${btnUAS}</div></td>
-                               </tr>`;
+                let rowsHTML = "";
+                daftarMatkul.forEach(function(row) {
+                    let matkul = row[2] ? row[2].toString() : "-";
+                    let dosen = row[5] ? row[5].toString() : "-";
+                    let prodi = row[7] ? row[7].toString() : "-";
+                    let linkUTS = row[9] ? row[9].toString().trim() : "";
+                    let linkUAS = row[10] ? row[10].toString().trim() : "";
+
+                    let btnUTS = (linkUTS !== "" && linkUTS !== "#N/A") ? `<a href="${linkUTS}" class="btn-download" target="_blank">Soal UTS</a>` : `<span class="btn-disabled">UTS Belum Ada</span>`;
+                    let btnUAS = (linkUAS !== "" && linkUAS !== "#N/A") ? `<a href="${linkUAS}" class="btn-download" target="_blank">Soal UAS</a>` : `<span class="btn-disabled">UAS Belum Ada</span>`;
+
+                    rowsHTML += `
+                        <tr>
+                            <td>
+                                <strong style="font-size: 15px; color: #333;">${matkul}</strong>
+                            </td>
+                            <td>
+                                <span style="color:#556B4E; font-size:13px; font-weight:700;">${prodi}</span><br>
+                                <span style="font-size:13px; color:#888; display: inline-block; margin-top: 2px;">${dosen}</span>
+                            </td>
+                            <td><div class="btn-wrapper">${btnUTS} ${btnUAS}</div></td>
+                        </tr>
+                    `;
+                });
+
+                htmlCards += `
+                    <div class="semester-card ${activeClass}">
+                        <div class="semester-header" onclick="toggleSemester(this)">
+                            <div class="semester-title-wrap">
+                                <h3 class="semester-title">${namaSemester}</h3>
+                                <span class="semester-badge">${daftarMatkul.length} Mata Kuliah</span>
+                            </div>
+                            <i class="fas fa-chevron-down semester-icon"></i>
+                        </div>
+                        <div class="semester-body">
+                            <div class="table-responsive">
+                                <table class="semester-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Mata Kuliah</th>
+                                            <th>Program Studi & Dosen</th>
+                                            <th>Link Pengerjaan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${rowsHTML}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
             
-            tbody.innerHTML = htmlHTML;
-            table.style.display = "table";
-            emptyState.style.display = "none";
+            container.innerHTML = htmlCards;
         }
     </script>
 </body>
