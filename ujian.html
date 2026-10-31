@@ -7,8 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background-color: #FAFAF7; color: #333; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #FAFAF7; color: #333; margin: 0; padding: 0; overflow-x: hidden; width: 100%; }
         .container { max-width: 100%; padding: 20px 3%; box-sizing: border-box; margin: 0 auto; display: flex; flex-direction: column; min-height: 100vh; }
         
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #E5E5E5; margin-bottom: 40px; }
@@ -47,7 +47,7 @@
         
         .search-box { width: 100%; padding: 16px 20px; border: none; border-radius: 8px; font-size: 16px; font-family: 'Inter', sans-serif; box-sizing: border-box; outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 
-        .data-section { background-color: #FFFFFF; border-radius: 16px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #EBEBEB; }
+        .data-section { background-color: #FFFFFF; border-radius: 16px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #EBEBEB; box-sizing: border-box; max-width: 100%; }
         .table-responsive { width: 100%; overflow-x: auto; }
         .table-responsive::-webkit-scrollbar { height: 6px; }
         .table-responsive::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -62,6 +62,10 @@
         .btn-download:hover { background-color: #556B4E; color: #FFFFFF; }
         .btn-disabled { background-color: #F8F9FA; border: 1px solid #E5E7EB; color: #9CA3AF; padding: 8px 16px; border-radius: 4px; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: not-allowed; text-align: center; }
 
+        /* Meta info khusus tampilan HP (disembunyikan di desktop) */
+        .matkul-name { font-size: 15px; font-weight: 700; color: #222; }
+        .mobile-meta { display: none; }
+
         /* =========================================
            DESAIN KARTU SEMESTER & PRODI TERPISAH
            ========================================= */
@@ -73,6 +77,8 @@
             overflow: hidden;
             transition: all 0.25s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            max-width: 100%;
+            box-sizing: border-box;
         }
         .semester-card:last-child {
             margin-bottom: 0;
@@ -87,12 +93,13 @@
             gap: 16px;
             user-select: none;
             transition: all 0.25s ease;
+            box-sizing: border-box;
         }
         .semester-left {
             display: flex;
             align-items: center;
             gap: 16px;
-            flex-wrap: wrap;
+            min-width: 0;
         }
         .semester-grad-icon {
             width: 44px;
@@ -129,6 +136,7 @@
             color: #1A1A1A;
             margin: 0;
             line-height: 1.3;
+            white-space: nowrap;
             transition: color 0.25s ease;
         }
         .semester-right {
@@ -242,6 +250,7 @@
             padding: 4px 24px 18px 24px;
             background-color: #FFFFFF;
             border-top: 1px solid #EAEAEA;
+            box-sizing: border-box;
         }
         .semester-card.active .semester-body {
             display: block;
@@ -298,6 +307,9 @@
 
         #pageLoadingIndicator { text-align: center; padding: 100px 20px; font-size: 16px; color: #6B7280; flex: 1; }
 
+        /* =========================================
+           RESPONSIVE TABLET & HP
+           ========================================= */
         @media (max-width: 900px) {
             body { padding-bottom: 90px; } 
             .bottom-nav { display: flex; }
@@ -308,15 +320,7 @@
             .hero-section { padding: 30px 20px; }
             .hero-title { font-size: 32px; }
             .hero-desc { max-width: 100%; font-size: 14px; }
-            .data-section { padding: 20px 15px; }
-            .semester-header { padding: 14px 16px; gap: 12px; }
-            .semester-left { gap: 10px; }
-            .semester-grad-icon { width: 38px; height: 38px; font-size: 15px; }
-            .semester-pill { font-size: 15px; padding: 6px 14px; }
-            .semester-divider { height: 22px; }
-            .prodi-title { font-size: 16px; }
-            .matkul-count-badge { font-size: 12px; padding: 6px 12px; }
-            .semester-body { padding: 4px 16px 14px 16px; }
+            .data-section { padding: 16px 14px; }
             .sidebar { padding: 20px; }
             .newsletter-box { gap: 15px; }
             .footer { padding-bottom: 30px; }
@@ -327,9 +331,138 @@
             .cd-colon { font-size: 24px; }
         }
 
-        @media (max-width: 540px) {
-            .semester-divider { display: none; }
-            .prodi-title { width: 100%; margin-top: 2px; }
+        /* TAMPILAN KHUSUS HP (GAMBAR 1 & GAMBAR 2) */
+        @media (max-width: 768px) {
+            /* --- GAMBAR 1: Header Kartu (Kiri: Semester di atas Prodi 1 baris, Kanan: Jumlah Matkul) --- */
+            .semester-header {
+                padding: 14px 16px;
+                gap: 10px;
+                flex-wrap: nowrap;
+            }
+            .semester-grad-icon,
+            .semester-divider {
+                display: none;
+            }
+            .semester-left {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+                flex: 1;
+                min-width: 0;
+            }
+            .semester-pill {
+                font-size: 13px;
+                padding: 4px 12px;
+            }
+            .prodi-title {
+                font-size: 15px;
+                white-space: nowrap;
+                line-height: 1.25;
+            }
+            .semester-right {
+                gap: 8px;
+                flex-shrink: 0;
+            }
+            .matkul-count-badge {
+                font-size: 12px;
+                padding: 6px 11px;
+            }
+            .semester-icon {
+                font-size: 15px;
+            }
+
+            /* --- GAMBAR 2: Isi Kartu Dikunci Lebarnya (Kiri: Matkul, Prodi, Dosen | Kanan: UTS & UAS) --- */
+            .semester-body {
+                padding: 2px 14px 10px 14px;
+            }
+            .table-responsive {
+                overflow-x: hidden;
+                width: 100%;
+            }
+            .semester-table {
+                min-width: 0 !important;
+                width: 100% !important;
+                display: block;
+                margin-top: 0;
+            }
+            .semester-table thead {
+                display: none;
+            }
+            .semester-table tbody {
+                display: block;
+                width: 100%;
+            }
+            .semester-table tr {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                padding: 14px 0;
+                border-bottom: 1px solid #F0F0F0;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .semester-table tr:last-child {
+                border-bottom: none;
+            }
+            .semester-table td {
+                padding: 0;
+                border: none;
+            }
+            .semester-table td.col-matkul {
+                flex: 1;
+                min-width: 0;
+            }
+            .semester-table td.col-prodi-dosen {
+                display: none;
+            }
+            .semester-table td.col-aksi {
+                flex-shrink: 0;
+                width: 112px;
+            }
+
+            /* Kiri: Bahasa Indonesia (agak besar & gelap), Prodi & Dosen (kecil & kurang gelap) */
+            .matkul-name {
+                font-size: 15px;
+                font-weight: 700;
+                color: #1E293B;
+                line-height: 1.35;
+                word-wrap: break-word;
+            }
+            .mobile-meta {
+                display: block;
+                margin-top: 4px;
+            }
+            .mobile-prodi {
+                font-size: 12px;
+                font-weight: 500;
+                color: #64748B;
+                line-height: 1.35;
+            }
+            .mobile-dosen {
+                font-size: 12px;
+                font-weight: 400;
+                color: #64748B;
+                line-height: 1.35;
+                margin-top: 1px;
+            }
+
+            /* Kanan: Tombol Soal UTS di atas & Soal UAS di bawah */
+            .semester-table td.col-aksi .btn-wrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                width: 100%;
+            }
+            .semester-table td.col-aksi .btn-download,
+            .semester-table td.col-aksi .btn-disabled {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 7px 8px;
+                font-size: 11.5px;
+            }
         }
     </style>
 </head>
@@ -930,14 +1063,20 @@
 
                     rowsHTML += `
                         <tr>
-                            <td>
-                                <strong style="font-size: 15px; color: #333;">${matkul}</strong>
+                            <td class="col-matkul">
+                                <div class="matkul-name">${matkul}</div>
+                                <div class="mobile-meta">
+                                    <div class="mobile-prodi">${prodi}</div>
+                                    <div class="mobile-dosen">${dosen}</div>
+                                </div>
                             </td>
-                            <td>
+                            <td class="col-prodi-dosen">
                                 <span style="color:${prodiColor}; font-size:13px; font-weight:700;">${prodi}</span><br>
                                 <span style="font-size:13px; color:#888; display: inline-block; margin-top: 2px;">${dosen}</span>
                             </td>
-                            <td><div class="btn-wrapper">${btnUTS} ${btnUAS}</div></td>
+                            <td class="col-aksi">
+                                <div class="btn-wrapper">${btnUTS} ${btnUAS}</div>
+                            </td>
                         </tr>
                     `;
                 });
