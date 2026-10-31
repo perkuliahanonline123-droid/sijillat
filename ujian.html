@@ -77,10 +77,6 @@
         .semester-card:last-child {
             margin-bottom: 0;
         }
-        .semester-card:hover {
-            border-color: #C5D1C0;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-        }
         .semester-header {
             padding: 16px 24px;
             background-color: #FFFFFF;
@@ -90,10 +86,7 @@
             align-items: center;
             gap: 16px;
             user-select: none;
-            transition: background-color 0.2s ease;
-        }
-        .semester-header:hover {
-            background-color: #FAFBF9;
+            transition: all 0.25s ease;
         }
         .semester-left {
             display: flex;
@@ -105,17 +98,14 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background-color: #E6EFE3;
-            color: #385E30;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 18px;
             flex-shrink: 0;
+            transition: all 0.25s ease;
         }
         .semester-pill {
-            background-color: #E6EFE3;
-            color: #1A1A1A;
             font-family: 'Playfair Display', serif;
             font-size: 17px;
             font-weight: 700;
@@ -123,12 +113,14 @@
             border-radius: 999px;
             line-height: 1.2;
             white-space: nowrap;
+            transition: all 0.25s ease;
         }
         .semester-divider {
             width: 1.5px;
             height: 28px;
             background-color: #C4C9C2;
             flex-shrink: 0;
+            transition: background-color 0.25s ease;
         }
         .prodi-title {
             font-family: 'Playfair Display', serif;
@@ -137,6 +129,7 @@
             color: #1A1A1A;
             margin: 0;
             line-height: 1.3;
+            transition: color 0.25s ease;
         }
         .semester-right {
             display: flex;
@@ -145,31 +138,110 @@
             flex-shrink: 0;
         }
         .matkul-count-badge {
-            background-color: #E6EFE3;
-            color: #2E5727;
             font-family: 'Inter', sans-serif;
             font-size: 14px;
             font-weight: 600;
             padding: 8px 18px;
             border-radius: 999px;
             white-space: nowrap;
+            transition: all 0.25s ease;
         }
         .semester-icon {
-            color: #2E5727;
             font-size: 18px;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, color 0.25s ease;
         }
-        .semester-card.active .semester-header {
-            background-color: #F8FAF7;
-            border-bottom: 1px solid #EAEAEA;
+
+        /* TEMA 1: PENDIDIKAN BAHASA ARAB (HIJAU SAGE) */
+        .semester-card.theme-pba:hover {
+            border-color: #556B4E;
+            box-shadow: 0 4px 14px rgba(85, 107, 78, 0.1);
+        }
+        .semester-card.theme-pba .semester-header:hover {
+            background-color: #F6F9F5;
+        }
+        .semester-card.theme-pba .semester-grad-icon {
+            background-color: #E6EFE3;
+            color: #385E30;
+        }
+        .semester-card.theme-pba .semester-pill {
+            background-color: #E6EFE3;
+            color: #1A1A1A;
+        }
+        .semester-card.theme-pba .matkul-count-badge {
+            background-color: #E6EFE3;
+            color: #2E5727;
+        }
+        .semester-card.theme-pba .semester-icon {
+            color: #2E5727;
+        }
+        /* Saat Kartu PBA Diklik (Gelap) */
+        .semester-card.theme-pba.active {
+            border-color: #556B4E;
+        }
+        .semester-card.theme-pba.active .semester-header {
+            background-color: #556B4E;
+        }
+
+        /* TEMA 2: AHWAL AL-SYAKHSHIYYAH (BIRU SLATE TEAL) */
+        .semester-card.theme-as:hover {
+            border-color: #2B4C5E;
+            box-shadow: 0 4px 14px rgba(43, 76, 94, 0.1);
+        }
+        .semester-card.theme-as .semester-header:hover {
+            background-color: #F4F8FA;
+        }
+        .semester-card.theme-as .semester-grad-icon {
+            background-color: #E3EEF2;
+            color: #1F4354;
+        }
+        .semester-card.theme-as .semester-pill {
+            background-color: #E3EEF2;
+            color: #1A1A1A;
+        }
+        .semester-card.theme-as .matkul-count-badge {
+            background-color: #E3EEF2;
+            color: #1F4354;
+        }
+        .semester-card.theme-as .semester-icon {
+            color: #1F4354;
+        }
+        /* Saat Kartu AS Diklik (Gelap) */
+        .semester-card.theme-as.active {
+            border-color: #2B4C5E;
+        }
+        .semester-card.theme-as.active .semester-header {
+            background-color: #2B4C5E;
+        }
+
+        /* ELEMEN HEADER SAAT KARTU AKTIF (DIKLIK) */
+        .semester-card.active .semester-grad-icon {
+            background-color: rgba(255, 255, 255, 0.18);
+            color: #FFFFFF;
+        }
+        .semester-card.active .semester-pill {
+            background-color: rgba(255, 255, 255, 0.18);
+            color: #FFFFFF;
+        }
+        .semester-card.active .semester-divider {
+            background-color: rgba(255, 255, 255, 0.35);
+        }
+        .semester-card.active .prodi-title {
+            color: #FFFFFF;
+        }
+        .semester-card.active .matkul-count-badge {
+            background-color: rgba(255, 255, 255, 0.18);
+            color: #FFFFFF;
         }
         .semester-card.active .semester-icon {
+            color: #FFFFFF;
             transform: rotate(180deg);
         }
+
         .semester-body {
             display: none;
             padding: 4px 24px 18px 24px;
             background-color: #FFFFFF;
+            border-top: 1px solid #EAEAEA;
         }
         .semester-card.active .semester-body {
             display: block;
@@ -840,6 +912,11 @@
                 let daftarMatkul = grup.items;
                 let activeClass = isSearch ? "active" : "";
 
+                // Bedakan tema warna antara Ahwal Al-Syakhshiyyah (theme-as) dan Pendidikan Bahasa Arab (theme-pba)
+                let isAhwal = grup.prodi.toLowerCase().includes("ahwal");
+                let themeClass = isAhwal ? "theme-as" : "theme-pba";
+                let prodiColor = isAhwal ? "#2B4C5E" : "#556B4E";
+
                 let rowsHTML = "";
                 daftarMatkul.forEach(function(row) {
                     let matkul = row[2] ? row[2].toString() : "-";
@@ -857,7 +934,7 @@
                                 <strong style="font-size: 15px; color: #333;">${matkul}</strong>
                             </td>
                             <td>
-                                <span style="color:#556B4E; font-size:13px; font-weight:700;">${prodi}</span><br>
+                                <span style="color:${prodiColor}; font-size:13px; font-weight:700;">${prodi}</span><br>
                                 <span style="font-size:13px; color:#888; display: inline-block; margin-top: 2px;">${dosen}</span>
                             </td>
                             <td><div class="btn-wrapper">${btnUTS} ${btnUAS}</div></td>
@@ -866,7 +943,7 @@
                 });
 
                 htmlCards += `
-                    <div class="semester-card ${activeClass}">
+                    <div class="semester-card ${themeClass} ${activeClass}">
                         <div class="semester-header" onclick="toggleSemester(this)">
                             <div class="semester-left">
                                 <div class="semester-grad-icon">
