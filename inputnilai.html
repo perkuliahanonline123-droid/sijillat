@@ -329,7 +329,7 @@
             wrapper.innerHTML = `
                 <div class="flex items-center justify-between bg-white/90 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border border-slate-200/80 shadow-sm">
                     <div class="flex items-center gap-2.5 sm:gap-3"><i class="${iconClass} text-sm sm:text-base"></i><h4 class="text-xs sm:text-sm md:text-base font-extrabold text-slate-800 uppercase tracking-wide">${title}</h4></div>
-                    <span class="text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 rounded-full border ${badgeStyle}">${badgeText} (${coursesArray.length} MK)</span>
+                    <span class="text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 rounded-full border ${badgeStyle}">${badgeText} (${coursesArray.length} Mata Kuliah)</span>
                 </div>`;
             
             const cardsStack = document.createElement('div');
@@ -349,7 +349,7 @@
             if (!dosenName || !appData) { sectionCourses.classList.add('hidden'); return; }
 
             const filteredCourses = appData.courses.filter(c => c.dosen === dosenName);
-            document.getElementById('courseCountBadge').textContent = `${filteredCourses.length} MK`;
+            document.getElementById('courseCountBadge').textContent = `${filteredCourses.length} Mata Kuliah`;
 
             if (filteredCourses.length === 0) {
                 listContainer.innerHTML = `<div class="bg-white rounded-3xl p-8 text-center border border-slate-100 text-slate-500 font-medium shadow-sm">Tidak ada mata kuliah untuk dosen ini.</div>`;
