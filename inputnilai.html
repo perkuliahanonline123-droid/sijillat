@@ -9,7 +9,6 @@
 <body class="bg-slate-100 min-h-screen p-4 md:p-8">
 
   <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
-    <!-- Header -->
     <div class="bg-emerald-700 p-6 text-white text-center">
       <h1 class="text-2xl font-bold">Portal Input Nilai Dosen</h1>
       <p class="text-sm opacity-90 mt-1">Pilih Dosen & Mata Kuliah untuk Mengisi Nilai Mahasiswa</p>
@@ -28,9 +27,7 @@
       <!-- Step 2: Kartu Mata Kuliah -->
       <div id="sectionCourses" class="hidden space-y-3">
         <label class="block text-sm font-bold text-slate-700">2. Pilih Mata Kuliah (Klik Kartu)</label>
-        <div id="courseCardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Kartu MK akan muncul di sini secara dinamis -->
-        </div>
+        <div id="courseCardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
       </div>
 
       <!-- Step 3: Tabel Input Nilai Mahasiswa -->
@@ -59,9 +56,7 @@
                   <th class="p-3 text-center w-28">Nilai Akhir</th>
                 </tr>
               </thead>
-              <tbody id="studentTableBody" class="divide-y text-sm">
-                <!-- Daftar mahasiswa terisi otomatis -->
-              </tbody>
+              <tbody id="studentTableBody" class="divide-y text-sm"></tbody>
             </table>
           </div>
 
@@ -79,13 +74,11 @@
   </div>
 
   <script>
-    // URL Web App Apps Script Anda sudah terpasang permanen di sini:
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTozvvshKZGbj27fEg-LBb6FI2c1rWIXtl0qtoHhUO3jlOFblbtWiGSdt6hFZ8cN_t0g/exec";
 
     let appData = null;
     let selectedCourse = null;
 
-    // Load data saat halaman dibuka
     window.addEventListener('DOMContentLoaded', async () => {
       try {
         let res = await fetch(SCRIPT_URL);
@@ -101,11 +94,10 @@
           selectDosen.appendChild(opt);
         });
       } catch (err) {
-        alert("Gagal memuat data dari Spreadsheet. Periksa koneksi atau pastikan Web App sudah di-deploy ulang dengan benar.");
+        alert("Gagal memuat data dari Spreadsheet.");
       }
     });
 
-    // Ketika Dosen dipilih -> Tampilkan Kartu Mata Kuliah
     document.getElementById('selectDosen').addEventListener('change', function() {
       let dosenName = this.value;
       let grid = document.getElementById('courseCardsGrid');
@@ -130,7 +122,7 @@
             <div>
               <div class="flex justify-between items-start mb-2">
                 <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">${c.prodi}</span>
-                <span class="text-xs text-slate-500 font-medium">SKS: ${c.sks} | Sem: ${c.semester}</span>
+                <span class="text-xs text-slate-500 font-medium">SKS: ${c.sks} | ${c.semester}</span>
               </div>
               <h3 class="font-bold text-slate-800 text-base mb-1">${c.mataKuliah}</h3>
               <p class="text-xs text-slate-500">Kode MK: ${c.kodeMk}</p>
@@ -147,21 +139,34 @@
       sectionCourses.classList.remove('hidden');
     });
 
-    // Ketika Kartu Mata Kuliah diklik -> Munculkan Tabel Mahasiswa Otomatis
     function selectCourse(course) {
       selectedCourse = course;
       document.getElementById('sectionCourses').classList.add('hidden');
       document.getElementById('selectDosen').closest('.bg-slate-50').classList.add('hidden');
       
       document.getElementById('activeCourseTitle').textContent = `${course.mataKuliah} (${course.prodi})`;
-      document.getElementById('activeCourseMeta').textContent = `Dosen: ${course.dosen} | TA: ${course.ta} | Semester: ${course.semester}`;
+      document.getElementById('activeCourseMeta').textContent = `Dosen: ${course.dosen} | TA: ${course.ta} | ${course.semester}`;
       
-      let studentList = course.prodi.toLowerCase().includes('hki') ? appData.studentsHKI : appData.studentsPBA;
+      // Tentukan kolom mahasiswa berdasarkan prodi & semester matkul
+      let semText = course.semester.toLowerCase();
+      let prodiText = course.prodi.toLowerCase();
+      let key = "sem1_hki";
+
+      let isPba = prodiText.includes('pasa') || prodiText.includes('bahasa arab') || prodiText.includes('pba');
+      let prefix = isPba ? "pba" : "hki";
+
+      if (semText.includes('1') || semText.includes('2')) key = `sem1_${prefix}`;
+      else if (semText.includes('3') || semText.includes('4')) key = `sem3_${prefix}`;
+      else if (semText.includes('5') || semText.includes('6')) key = `sem5_${prefix}`;
+      else if (semText.includes('7') || semText.includes('8')) key = `sem7_${prefix}`;
+
+      // Fallback jika key tidak pas
+      let studentList = appData.studentsMap[key] || appData.studentsMap["sem1_hki"];
       let tbody = document.getElementById('studentTableBody');
       tbody.innerHTML = '';
 
       if (studentList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">Tidak ada daftar mahasiswa ditemukan untuk prodi ${course.prodi}. Pastikan sheet Nilai HKI / Nilai PBA terisi.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">Tidak ada daftar mahasiswa ditemukan pada kolom prodi/semester ini.</td></tr>`;
       } else {
         studentList.forEach((namaMhs, idx) => {
           let tr = document.createElement('tr');
@@ -182,7 +187,6 @@
       document.getElementById('sectionInputNilai').classList.remove('hidden');
     }
 
-    // Hitung otomatis Nilai Akhir per baris saat diketik
     function calculateTotal(input) {
       let row = input.closest('tr');
       let keaktifan = parseFloat(row.querySelector('.input-keaktifan').value) || 0;
@@ -200,7 +204,6 @@
       document.getElementById('selectDosen').closest('.bg-slate-50').classList.remove('hidden');
     }
 
-    // Kirim data nilai massal ke Spreadsheet (Database Nilai)
     document.getElementById('formBatchNilai').addEventListener('submit', async function(e) {
       e.preventDefault();
       let btn = document.getElementById('btnSubmitAll');
