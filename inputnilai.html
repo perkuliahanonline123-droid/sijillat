@@ -3,230 +3,407 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Input Nilai Dosen - STAIIS</title>
+  <title>Portal Input Nilai Dosen - STAI Imam Syafi'i Cianjur</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f8fafc;
+      background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+  </style>
 </head>
-<body class="bg-slate-100 min-h-screen p-4 md:p-8">
+<body class="min-h-screen flex flex-col text-slate-800">
 
-  <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
-    <div class="bg-emerald-700 p-6 text-white text-center">
-      <h1 class="text-2xl font-bold">Portal Input Nilai Dosen</h1>
-      <p class="text-sm opacity-90 mt-1">Pilih Dosen & Mata Kuliah untuk Mengisi Nilai Mahasiswa</p>
+  <!-- Top Navbar ala Portal Akademik STAIIS -->
+  <header class="bg-white border-b border-slate-100 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-full bg-emerald-900 flex items-center justify-center text-white shadow-md ring-4 ring-emerald-50">
+          <!-- Ikon Topi Akademik -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M12 14l9-5-9-5-9 5 9 5z" />
+            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-emerald-950 leading-none">PORTAL AKADEMIK</h1>
+          <p class="text-[11px] sm:text-xs font-semibold tracking-widest text-emerald-600 uppercase mt-1">STAI IMAM SYAFI'I CIANJUR</p>
+        </div>
+      </div>
+
+      <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-500 bg-slate-100 px-3.5 py-2 rounded-full">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        Sistem Input Nilai Dosen
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- Hero Title Section -->
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <div class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/60 text-emerald-700 text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+        </svg>
+        PORTAL DOSEN
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Selamat Datang di Portal Input Nilai</h2>
+      <p class="text-slate-500 text-sm sm:text-base mt-3 leading-relaxed">
+        Pilih nama dosen pengampu di bawah ini untuk menampilkan daftar mata kuliah yang diampu serta mengisi nilai perkuliahan mahasiswa secara instan.
+      </p>
     </div>
 
-    <div class="p-6 md:p-8 space-y-6">
-      
-      <!-- Step 1: Pilih Dosen -->
-      <div class="bg-slate-50 p-4 rounded-xl border">
-        <label class="block text-sm font-bold text-slate-700 mb-2">1. Pilih Nama Dosen Pengampu</label>
-        <select id="selectDosen" class="w-full px-4 py-2.5 border rounded-lg bg-white focus:ring-2 focus:ring-emerald-500 font-medium">
+    <!-- Step 1: Card Pilih Dosen -->
+    <div id="cardPilihDosen" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 mb-8 transition-all">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold shadow-sm shadow-emerald-200">
+          1
+        </div>
+        <div>
+          <label for="selectDosen" class="block text-base font-bold text-slate-800">Pilih Nama Dosen Pengampu</label>
+          <p class="text-xs text-slate-500">Data diambil langsung dari Kolom M Sheet Dosen Pengampu dan Mahasiswa</p>
+        </div>
+      </div>
+
+      <div class="relative">
+        <select id="selectDosen" class="w-full appearance-none px-4 py-3.5 pr-10 border-2 border-slate-200 rounded-2xl bg-slate-50/70 hover:bg-white focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 font-semibold text-slate-700 transition outline-none cursor-pointer">
           <option value="">-- Memuat Data Dosen... --</option>
         </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </div>
       </div>
+    </div>
 
-      <!-- Step 2: Kartu Mata Kuliah -->
-      <div id="sectionCourses" class="hidden space-y-3">
-        <label class="block text-sm font-bold text-slate-700">2. Pilih Mata Kuliah (Klik Kartu)</label>
-        <div id="courseCardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-      </div>
-
-      <!-- Step 3: Tabel Input Nilai Mahasiswa -->
-      <div id="sectionInputNilai" class="hidden space-y-4 border-t pt-6">
-        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-          <div>
-            <h2 id="activeCourseTitle" class="text-lg font-bold text-emerald-900"></h2>
-            <p id="activeCourseMeta" class="text-xs text-emerald-700 mt-0.5"></p>
+    <!-- Step 2: Daftar Kartu Mata Kuliah (Memanjang Penuh ke Bawah) -->
+    <div id="sectionCourses" class="hidden space-y-4">
+      <div class="flex items-center justify-between px-1">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-sm">
+            2
           </div>
-          <button type="button" onclick="resetSelection()" class="text-xs bg-white border border-emerald-300 text-emerald-700 px-3 py-1.5 rounded-lg hover:bg-emerald-100 font-semibold">
-            ← Ganti Mata Kuliah
-          </button>
+          <h3 class="text-base sm:text-lg font-bold text-slate-800">Pilih Mata Kuliah yang Diampu</h3>
+        </div>
+        <span id="courseCountBadge" class="text-xs font-bold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full"></span>
+      </div>
+
+      <!-- Kontainer Kartu Memanjang Penuh (1 Kolom Vertikal ke Bawah) -->
+      <div id="courseCardsList" class="flex flex-col space-y-4"></div>
+    </div>
+
+    <!-- Step 3: Tabel Input Nilai Mahasiswa -->
+    <div id="sectionInputNilai" class="hidden space-y-6">
+      <!-- Info Mata Kuliah Aktif -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-100">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <span id="activeCourseProdiBadge" class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full"></span>
+              <span id="activeCourseKodeBadge" class="text-xs font-semibold bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full"></span>
+            </div>
+            <h2 id="activeCourseTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900"></h2>
+            <p id="activeCourseMeta" class="text-xs sm:text-sm text-slate-500 mt-1 font-medium"></p>
+          </div>
         </div>
 
-        <form id="formBatchNilai">
-          <div class="overflow-x-auto border rounded-xl">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="bg-slate-200 text-slate-700 text-xs uppercase tracking-wider">
-                  <th class="p-3 text-center w-12">No</th>
-                  <th class="p-3">Nama Mahasiswa</th>
-                  <th class="p-3 text-center w-28">Keaktifan (15)</th>
-                  <th class="p-3 text-center w-28">Tugas (35)</th>
-                  <th class="p-3 text-center w-28">UTS (15)</th>
-                  <th class="p-3 text-center w-28">UAS (35)</th>
-                  <th class="p-3 text-center w-28">Nilai Akhir</th>
-                </tr>
-              </thead>
-              <tbody id="studentTableBody" class="divide-y text-sm"></tbody>
-            </table>
-          </div>
-
-          <div class="mt-6">
-            <button type="submit" id="btnSubmitAll" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition duration-200">
-              Simpan Semua Nilai ke Database Nilai
-            </button>
-          </div>
-        </form>
+        <button type="button" onclick="resetSelection()" class="inline-flex items-center gap-2 text-xs sm:text-sm bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 hover:border-emerald-300 px-4 py-2.5 rounded-xl font-bold transition shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Ganti Mata Kuliah
+        </button>
       </div>
 
-      <div id="alertBox" class="hidden p-4 rounded-xl text-center text-sm font-semibold"></div>
+      <!-- Tabel Form Input Nilai -->
+      <form id="formBatchNilai" class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+        <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h3 class="text-base font-bold text-slate-800">Daftar Mahasiswa & Komponen Penilaian</h3>
+            <p class="text-xs text-slate-500">Masukkan nilai sesuai bobot maksimum masing-masing komponen</p>
+          </div>
+          <span id="studentCountBadge" class="text-xs font-bold bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-full self-start sm:self-auto"></span>
+        </div>
 
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs font-bold uppercase tracking-wider">
+                <th class="py-3.5 px-4 text-center w-14">No</th>
+                <th class="py-3.5 px-4 min-w-[220px]">Nama Mahasiswa</th>
+                <th class="py-3.5 px-3 text-center w-32">Keaktifan <span class="text-emerald-600">(15)</span></th>
+                <th class="py-3.5 px-3 text-center w-32">Tugas <span class="text-emerald-600">(35)</span></th>
+                <th class="py-3.5 px-3 text-center w-32">UTS <span class="text-emerald-600">(15)</span></th>
+                <th class="py-3.5 px-3 text-center w-32">UAS <span class="text-emerald-600">(35)</span></th>
+                <th class="py-3.5 px-4 text-center w-32">Nilai Akhir</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody" class="divide-y divide-slate-100 text-sm"></tbody>
+          </table>
+        </div>
+
+        <div class="p-6 bg-slate-50/60 border-t border-slate-100">
+          <button type="submit" id="btnSubmitAll" class="w-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold py-4 rounded-2xl shadow-lg shadow-emerald-600/20 transition duration-200 flex items-center justify-center gap-2 text-base">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Simpan Semua Nilai ke Database Nilai</span>
+          </button>
+        </div>
+      </form>
     </div>
-  </div>
+
+    <!-- Alert Notifikasi -->
+    <div id="alertBox" class="hidden mt-6 p-4 rounded-2xl text-center text-sm font-bold shadow-sm"></div>
+
+  </main>
 
   <script>
+    // Pastikan URL Web App Google Apps Script Anda sudah di-deploy dengan versi terbaru
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTozvvshKZGbj27fEg-LBb6FI2c1rWIXtl0qtoHhUO3jlOFblbtWiGSdt6hFZ8cN_t0g/exec";
 
     let appData = null;
     let selectedCourse = null;
 
+    // Muat data saat halaman dibuka
     window.addEventListener('DOMContentLoaded', async () => {
+      const selectDosen = document.getElementById('selectDosen');
       try {
-        let res = await fetch(SCRIPT_URL);
+        const res = await fetch(SCRIPT_URL);
         appData = await res.json();
         
-        let selectDosen = document.getElementById('selectDosen');
-        selectDosen.innerHTML = '<option value="">-- Pilih Nama Anda --</option>';
+        selectDosen.innerHTML = '<option value="">-- Pilih Nama Dosen Pengampu --</option>';
         
-        appData.dosenList.forEach(dosen => {
-          let opt = document.createElement('option');
-          opt.value = dosen;
-          opt.textContent = dosen;
-          selectDosen.appendChild(opt);
-        });
+        if (appData.dosenList && appData.dosenList.length > 0) {
+          appData.dosenList.forEach(dosen => {
+            const opt = document.createElement('option');
+            opt.value = dosen;
+            opt.textContent = dosen;
+            selectDosen.appendChild(opt);
+          });
+        } else {
+          selectDosen.innerHTML = '<option value="">-- Data Dosen Kosong --</option>';
+        }
       } catch (err) {
-        alert("Gagal memuat data dari Spreadsheet.");
+        console.error(err);
+        selectDosen.innerHTML = '<option value="">-- Gagal Memuat Data dari Spreadsheet --</option>';
+        alert("Gagal memuat data dari Spreadsheet. Pastikan Web App Google Apps Script telah di-deploy dengan akses 'Anyone' (Siapa saja).");
       }
     });
 
+    // Ketika dosen dipilih dari dropdown
     document.getElementById('selectDosen').addEventListener('change', function() {
-      let dosenName = this.value;
-      let grid = document.getElementById('courseCardsGrid');
-      let sectionCourses = document.getElementById('sectionCourses');
-      document.getElementById('sectionInputNilai').classList.add('hidden');
+      const dosenName = this.value;
+      const listContainer = document.getElementById('courseCardsList');
+      const sectionCourses = document.getElementById('sectionCourses');
+      const countBadge = document.getElementById('courseCountBadge');
       
-      grid.innerHTML = '';
-      if (!dosenName) {
+      document.getElementById('sectionInputNilai').classList.add('hidden');
+      document.getElementById('alertBox').classList.add('hidden');
+      listContainer.innerHTML = '';
+
+      if (!dosenName || !appData) {
         sectionCourses.classList.add('hidden');
         return;
       }
 
-      let filteredCourses = appData.courses.filter(c => c.dosen === dosenName);
-      
+      const filteredCourses = appData.courses.filter(c => c.dosen === dosenName);
+      countBadge.textContent = `${filteredCourses.length} Mata Kuliah`;
+
       if (filteredCourses.length === 0) {
-        grid.innerHTML = '<p class="text-sm text-slate-500 col-span-2">Tidak ada mata kuliah ditemukan untuk dosen ini.</p>';
+        listContainer.innerHTML = `
+          <div class="bg-white rounded-2xl p-8 text-center border border-slate-200 text-slate-500">
+            Tidak ada mata kuliah yang ditemukan untuk dosen ini.
+          </div>
+        `;
       } else {
-        filteredCourses.forEach(c => {
-          let card = document.createElement('div');
-          card.className = "bg-white border-2 border-slate-200 hover:border-emerald-500 p-4 rounded-xl shadow-sm cursor-pointer transition hover:shadow-md flex flex-col justify-between";
+        filteredCourses.forEach((c, index) => {
+          const isPba = String(c.prodi).toLowerCase().includes('arab') || String(c.prodi).toLowerCase().includes('pba');
+          const iconBg = isPba ? 'bg-indigo-600 shadow-indigo-100' : 'bg-emerald-500 shadow-emerald-100';
+          const badgeStyle = isPba ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200';
+
+          // Kartu memanjang penuh (w-full) tersusun ke bawah
+          const card = document.createElement('div');
+          card.className = "w-full bg-white hover:bg-emerald-50/20 border border-slate-200/90 hover:border-emerald-500 rounded-3xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4 group";
+          
           card.innerHTML = `
-            <div>
-              <div class="flex justify-between items-start mb-2">
-                <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">${c.prodi}</span>
-                <span class="text-xs text-slate-500 font-medium">SKS: ${c.sks} | ${c.semester}</span>
+            <div class="flex items-start sm:items-center gap-4">
+              <div class="w-12 h-12 rounded-2xl ${iconBg} text-white flex items-center justify-center font-extrabold text-base shrink-0 shadow-md">
+                ${index + 1}
               </div>
-              <h3 class="font-bold text-slate-800 text-base mb-1">${c.mataKuliah}</h3>
-              <p class="text-xs text-slate-500">Kode MK: ${c.kodeMk}</p>
+              <div class="space-y-1.5">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="text-xs font-bold px-2.5 py-0.5 rounded-full border ${badgeStyle}">
+                    ${c.prodi}
+                  </span>
+                  <span class="text-xs font-semibold bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full">
+                    Kode MK: ${c.kodeMk}
+                  </span>
+                  <span class="text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 px-2.5 py-0.5 rounded-full">
+                    Semester ${c.semester} • ${c.sks} SKS ${c.kelas ? '• Kelas ' + c.kelas : ''}
+                  </span>
+                </div>
+                <h4 class="text-lg sm:text-xl font-extrabold text-slate-900 group-hover:text-emerald-800 transition-colors">
+                  ${c.mataKuliah}
+                </h4>
+                <p class="text-xs text-slate-500 font-medium">
+                  Tahun Akademik: <span class="text-slate-700 font-semibold">${c.ta}</span>
+                </p>
+              </div>
             </div>
-            <div class="mt-4 pt-3 border-t flex justify-between items-center text-xs text-slate-600">
-              <span>TA: ${c.ta}</span>
-              <span class="font-semibold text-emerald-600 flex items-center gap-1">Input Nilai →</span>
+
+            <div class="flex sm:flex-col items-center sm:items-end justify-between border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-100 shrink-0">
+              <span class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-700 bg-emerald-50 group-hover:bg-emerald-600 group-hover:text-white px-4 py-2.5 rounded-xl transition-all">
+                Input Nilai Mahasiswa
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </span>
             </div>
           `;
+
           card.onclick = () => selectCourse(c);
-          grid.appendChild(card);
+          listContainer.appendChild(card);
         });
       }
+
       sectionCourses.classList.remove('hidden');
     });
 
+    // Ketika salah satu kartu mata kuliah diklik
     function selectCourse(course) {
       selectedCourse = course;
       document.getElementById('sectionCourses').classList.add('hidden');
-      document.getElementById('selectDosen').closest('.bg-slate-50').classList.add('hidden');
-      
-      document.getElementById('activeCourseTitle').textContent = `${course.mataKuliah} (${course.prodi})`;
-      document.getElementById('activeCourseMeta').textContent = `Dosen: ${course.dosen} | TA: ${course.ta} | ${course.semester}`;
-      
-      // Tentukan kolom mahasiswa berdasarkan prodi & semester matkul
-      let semText = course.semester.toLowerCase();
-      let prodiText = course.prodi.toLowerCase();
-      let key = "sem1_hki";
+      document.getElementById('cardPilihDosen').classList.add('hidden');
+      document.getElementById('alertBox').classList.add('hidden');
 
-      let isPba = prodiText.includes('pasa') || prodiText.includes('bahasa arab') || prodiText.includes('pba');
-      let prefix = isPba ? "pba" : "hki";
+      document.getElementById('activeCourseProdiBadge').textContent = course.prodi;
+      document.getElementById('activeCourseKodeBadge').textContent = `Kode: ${course.kodeMk}`;
+      document.getElementById('activeCourseTitle').textContent = course.mataKuliah;
+      document.getElementById('activeCourseMeta').textContent = `Dosen: ${course.dosen} • Semester ${course.semester} (${course.sks} SKS) • ${course.ta}`;
 
-      if (semText.includes('1') || semText.includes('2')) key = `sem1_${prefix}`;
-      else if (semText.includes('3') || semText.includes('4')) key = `sem3_${prefix}`;
-      else if (semText.includes('5') || semText.includes('6')) key = `sem5_${prefix}`;
-      else if (semText.includes('7') || semText.includes('8')) key = `sem7_${prefix}`;
+      // Konversi ke string agar aman ketika dicek
+      const semStr = String(course.semester).trim().toLowerCase();
+      const prodiStr = String(course.prodi).trim().toLowerCase();
 
-      // Fallback jika key tidak pas
-      let studentList = appData.studentsMap[key] || appData.studentsMap["sem1_hki"];
-      let tbody = document.getElementById('studentTableBody');
+      // Tentukan Prodi: PBA (Kolom E-H) atau Ahwal Al-Syakhshiyyah / HKI (Kolom A-D)
+      const isPba = prodiStr.includes('arab') || prodiStr.includes('pba');
+      const prefix = isPba ? 'pba' : 'hki';
+
+      // Tentukan kelompok semester (1&2, 3&4, 5&6, atau 7&8)
+      let semGroup = 'sem1';
+      if (semStr.includes('1') || semStr.includes('2')) semGroup = 'sem1';
+      else if (semStr.includes('3') || semStr.includes('4')) semGroup = 'sem3';
+      else if (semStr.includes('5') || semStr.includes('6')) semGroup = 'sem5';
+      else if (semStr.includes('7') || semStr.includes('8')) semGroup = 'sem7';
+
+      const key = `${semGroup}_${prefix}`;
+      const studentsMap = appData.studentsMap || {};
+      const studentList = studentsMap[key] || [];
+
+      document.getElementById('studentCountBadge').textContent = `${studentList.length} Mahasiswa (Semester ${course.semester} - ${course.prodi})`;
+
+      const tbody = document.getElementById('studentTableBody');
       tbody.innerHTML = '';
 
       if (studentList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">Tidak ada daftar mahasiswa ditemukan pada kolom prodi/semester ini.</td></tr>`;
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="p-8 text-center text-slate-500 font-medium">
+              Tidak ada data mahasiswa untuk ${course.prodi} Semester ${course.semester} pada Kolom A-H.
+            </td>
+          </tr>
+        `;
       } else {
         studentList.forEach((namaMhs, idx) => {
-          let tr = document.createElement('tr');
-          tr.className = "hover:bg-slate-50 transition";
+          const tr = document.createElement('tr');
+          tr.className = "hover:bg-emerald-50/30 transition";
           tr.innerHTML = `
-            <td class="p-3 text-center text-slate-500 font-medium">${idx + 1}</td>
-            <td class="p-3 font-semibold text-slate-800 student-name">${namaMhs}</td>
-            <td class="p-2"><input type="number" step="0.1" min="0" max="15" class="input-grade input-keaktifan w-full p-2 border rounded text-center focus:ring-2 focus:ring-emerald-500" placeholder="0-15" oninput="calculateTotal(this)"></td>
-            <td class="p-2"><input type="number" step="0.1" min="0" max="35" class="input-grade input-tugas w-full p-2 border rounded text-center focus:ring-2 focus:ring-emerald-500" placeholder="0-35" oninput="calculateTotal(this)"></td>
-            <td class="p-2"><input type="number" step="0.1" min="0" max="15" class="input-grade input-uts w-full p-2 border rounded text-center focus:ring-2 focus:ring-emerald-500" placeholder="0-15" oninput="calculateTotal(this)"></td>
-            <td class="p-2"><input type="number" step="0.1" min="0" max="35" class="input-grade input-uas w-full p-2 border rounded text-center focus:ring-2 focus:ring-emerald-500" placeholder="0-35" oninput="calculateTotal(this)"></td>
-            <td class="p-3 text-center font-bold text-emerald-700 total-score">0.0</td>
+            <td class="py-3 px-4 text-center text-slate-400 font-bold">${idx + 1}</td>
+            <td class="py-3 px-4 font-bold text-slate-800 student-name">${namaMhs}</td>
+            <td class="py-2.5 px-3">
+              <input type="number" step="0.1" min="0" max="15" class="input-keaktifan w-full p-2.5 border border-slate-200 rounded-xl text-center font-semibold focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" placeholder="0 - 15" oninput="calculateTotal(this)">
+            </td>
+            <td class="py-2.5 px-3">
+              <input type="number" step="0.1" min="0" max="35" class="input-tugas w-full p-2.5 border border-slate-200 rounded-xl text-center font-semibold focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" placeholder="0 - 35" oninput="calculateTotal(this)">
+            </td>
+            <td class="py-2.5 px-3">
+              <input type="number" step="0.1" min="0" max="15" class="input-uts w-full p-2.5 border border-slate-200 rounded-xl text-center font-semibold focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" placeholder="0 - 15" oninput="calculateTotal(this)">
+            </td>
+            <td class="py-2.5 px-3">
+              <input type="number" step="0.1" min="0" max="35" class="input-uas w-full p-2.5 border border-slate-200 rounded-xl text-center font-semibold focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" placeholder="0 - 35" oninput="calculateTotal(this)">
+            </td>
+            <td class="py-3 px-4 text-center">
+              <span class="inline-block min-w-[3.5rem] py-1 px-2.5 rounded-lg bg-emerald-50 text-emerald-700 font-extrabold total-score">0.0</span>
+            </td>
           `;
           tbody.appendChild(tr);
         });
       }
 
       document.getElementById('sectionInputNilai').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Hitung otomatis Nilai Akhir per baris mahasiswa
     function calculateTotal(input) {
-      let row = input.closest('tr');
-      let keaktifan = parseFloat(row.querySelector('.input-keaktifan').value) || 0;
-      let tugas = parseFloat(row.querySelector('.input-tugas').value) || 0;
-      let uts = parseFloat(row.querySelector('.input-uts').value) || 0;
-      let uas = parseFloat(row.querySelector('.input-uas').value) || 0;
+      const row = input.closest('tr');
+      const keaktifan = parseFloat(row.querySelector('.input-keaktifan').value) || 0;
+      const tugas = parseFloat(row.querySelector('.input-tugas').value) || 0;
+      const uts = parseFloat(row.querySelector('.input-uts').value) || 0;
+      const uas = parseFloat(row.querySelector('.input-uas').value) || 0;
       
-      let total = keaktifan + tugas + uts + uas;
+      const total = keaktifan + tugas + uts + uas;
       row.querySelector('.total-score').textContent = total.toFixed(1);
     }
 
+    // Kembali ke daftar mata kuliah
     function resetSelection() {
       document.getElementById('sectionInputNilai').classList.add('hidden');
+      document.getElementById('alertBox').classList.add('hidden');
+      document.getElementById('cardPilihDosen').classList.remove('hidden');
       document.getElementById('sectionCourses').classList.remove('hidden');
-      document.getElementById('selectDosen').closest('.bg-slate-50').classList.remove('hidden');
     }
 
+    // Simpan nilai ke sheet "Database Nilai"
     document.getElementById('formBatchNilai').addEventListener('submit', async function(e) {
       e.preventDefault();
-      let btn = document.getElementById('btnSubmitAll');
-      let alertBox = document.getElementById('alertBox');
+      const btn = document.getElementById('btnSubmitAll');
+      const alertBox = document.getElementById('alertBox');
       
       btn.disabled = true;
-      btn.textContent = 'Menyimpan ke Database...';
+      btn.innerHTML = '<span>Menyimpan ke Database...</span>';
       alertBox.classList.add('hidden');
 
-      let rows = document.querySelectorAll('#studentTableBody tr');
-      let gradesData = [];
+      const rows = document.querySelectorAll('#studentTableBody tr');
+      const gradesData = [];
 
       rows.forEach(row => {
-        let nama = row.querySelector('.student-name').textContent;
-        let keaktifan = row.querySelector('.input-keaktifan').value;
-        let tugas = row.querySelector('.input-tugas').value;
-        let uts = row.querySelector('.input-uts').value;
-        let uas = row.querySelector('.input-uas').value;
+        const nameEl = row.querySelector('.student-name');
+        if (!nameEl) return;
+
+        const nama = nameEl.textContent;
+        const keaktifan = row.querySelector('.input-keaktifan').value;
+        const tugas = row.querySelector('.input-tugas').value;
+        const uts = row.querySelector('.input-uts').value;
+        const uas = row.querySelector('.input-uas').value;
 
         gradesData.push({ nama, keaktifan, tugas, uts, uas });
       });
 
-      let payload = {
+      const payload = {
         dosen: selectedCourse.dosen,
         kodeMk: selectedCourse.kodeMk,
         mataKuliah: selectedCourse.mataKuliah,
@@ -237,23 +414,29 @@
       };
 
       try {
-        let res = await fetch(SCRIPT_URL, {
+        await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
 
-        alertBox.className = "p-4 rounded-xl text-center text-sm font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300";
-        alertBox.textContent = "Berhasil! Semua nilai mahasiswa telah tersimpan ke tab 'Database Nilai'.";
+        alertBox.className = "mt-6 p-4 rounded-2xl text-center text-sm font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
+        alertBox.textContent = "Berhasil! Semua nilai mahasiswa telah disimpan ke sheet 'Database Nilai'.";
         alertBox.classList.remove('hidden');
+        alertBox.scrollIntoView({ behavior: 'smooth' });
       } catch (err) {
-        alertBox.className = "p-4 rounded-xl text-center text-sm font-semibold bg-red-100 text-red-800 border border-red-300";
+        alertBox.className = "mt-6 p-4 rounded-2xl text-center text-sm font-bold bg-red-100 text-red-800 border border-red-300";
         alertBox.textContent = "Gagal menyimpan data. Periksa koneksi internet Anda.";
         alertBox.classList.remove('hidden');
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Simpan Semua Nilai ke Database Nilai';
+        btn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Simpan Semua Nilai ke Database Nilai</span>
+        `;
       }
     });
   </script>
