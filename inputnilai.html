@@ -362,8 +362,8 @@
                 const sortSem = (a, b) => (parseInt(a.semester, 10) || 0) - (parseInt(b.semester, 10) || 0);
                 ganjil.sort(sortSem); genap.sort(sortSem);
 
-                if (ganjil.length > 0) listContainer.appendChild(createSemesterGroupBlock("Semester Ganjil", "fa-solid fa-sun text-emerald-600", "bg-emerald-50 text-[#045844] border-emerald-200", ganjil));
-                if (genap.length > 0) listContainer.appendChild(createSemesterGroupBlock("Semester Genap", "fa-solid fa-moon text-indigo-600", "bg-indigo-50 text-indigo-700 border-indigo-200", genap));
+                if (ganjil.length > 0) listContainer.appendChild(createSemesterGroupBlock("Semester Ganjil", "Smt 1,3,5,7", "fa-solid fa-sun text-emerald-600", "bg-emerald-50 text-[#045844] border-emerald-200", ganjil));
+                if (genap.length > 0) listContainer.appendChild(createSemesterGroupBlock("Semester Genap", "Smt 2,4,6,8", "fa-solid fa-moon text-indigo-600", "bg-indigo-50 text-indigo-700 border-indigo-200", genap));
             }
             sectionCourses.classList.remove('hidden');
         }
