@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Input Nilai Dosen</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4 py-10">
+
+  <div class="bg-white rounded-xl shadow-xl p-6 md:p-8 max-w-xl w-full">
+    <!-- Header App -->
+    <div class="bg-emerald-600 -mx-6 -mt-6 md:-mx-8 md:-mt-8 p-6 rounded-t-xl text-white text-center mb-6">
+      <h1 class="text-2xl font-bold">Portal Input Nilai Dosen</h1>
+      <p class="text-sm opacity-90 mt-1">Integrasi Real-time ke Google Sheets</p>
+    </div>
+
+    <form id="formNilai" class="space-y-4">
+      
+      <!-- Pilihan Prodi & Mata Kuliah -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Program Studi</label>
+          <select id="prodi" required class="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-emerald-500 bg-white">
+            <option value="PBA">PBA (Pendidikan Bahasa Arab)</option>
+            <option value="HKI">HKI (Hukum Keluarga Islam)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Mata Kuliah</label>
+          <input type="text" id="mataKuliah" value="Bahasa Indonesia" required
+            class="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-emerald-500 bg-white">
+        </div>
+      </div>
+
+      <!-- Pilihan Tahun Ajaran & Semester -->
+      <div class="grid grid-cols-2 gap-4 bg-slate-50 p-3 rounded-lg border">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Tahun Ajaran</label>
+          <select id="tahunAjaran" required class="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-emerald-500 bg-white">
+            <option value="2024-2025">2024 / 2025</option>
+            <option value="2025-2026" selected>2025 / 2026</option>
+            <option value="2026-2027">2026 / 2027</option>
+            <option value="2027-2028">2027 / 2028</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Semester</label>
+          <select id="semester" required class="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-emerald-500 bg-white">
+            <option value="Ganjil">Ganjil</option>
+            <option value="Genap">Genap</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Input Nama Dosen -->
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Nama Dosen Pengampu</label>
+        <input type="text" id="dosen" value="Ahmad Kholiludin, S.H.I., M.H." required
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+      </div>
+
+      <!-- Input Nama Mahasiswa -->
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Nama Mahasiswa</label>
+        <input type="text" id="nama" required placeholder="Masukkan nama lengkap mahasiswa"
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+      </div>
+
+      <!-- Input Nilai Komponen -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Keaktifan (15)</label>
+          <input type="number" step="0.1" max="15" min="0" id="keaktifan" required placeholder="0 - 15"
+            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Tugas (35)</label>
+          <input type="number" step="0.1" max="35" min="0" id="tugas" required placeholder="0 - 35"
+            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">UTS (15)</label>
+          <input type="number" step="0.1" max="15" min="0" id="uts" required placeholder="0 - 15"
+            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">UAS (35)</label>
+          <input type="number" step="0.1" max="35" min="0" id="uas" required placeholder="0 - 35"
+            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" id="btnSubmit"
+        class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition duration-200 shadow-md">
+        Simpan ke Spreadsheet
+      </button>
+    </form>
+
+    <div id="alertBox" class="mt-4 hidden p-3 rounded-lg text-center text-sm font-medium"></div>
+  </div>
+
+  <script>
+    // MASUKKAN URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI
+    const SCRIPT_URL = "GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT_ANDA";
+
+    document.getElementById('formNilai').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmit');
+      const alertBox = document.getElementById('alertBox');
+
+      btn.disabled = true;
+      btn.textContent = 'Menyimpan...';
+      alertBox.classList.add('hidden');
+
+      const payload = {
+        prodi: document.getElementById('prodi').value,
+        mataKuliah: document.getElementById('mataKuliah').value,
+        tahunAjaran: document.getElementById('tahunAjaran').value,
+        semester: document.getElementById('semester').value,
+        dosen: document.getElementById('dosen').value,
+        nama: document.getElementById('nama').value,
+        keaktifan: document.getElementById('keaktifan').value,
+        tugas: document.getElementById('tugas').value,
+        uts: document.getElementById('uts').value,
+        uas: document.getElementById('uas').value
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        alertBox.className = "mt-4 p-3 rounded-lg text-center text-sm font-medium bg-green-100 text-green-700 border border-green-300";
+        alertBox.textContent = `Data nilai ${payload.nama} berhasil disimpan ke Tab ${payload.prodi}_${payload.tahunAjaran}_${payload.semester}!`;
+        alertBox.classList.remove('hidden');
+
+        // Reset form nama dan nilai setelah submit
+        document.getElementById('nama').value = '';
+        document.getElementById('keaktifan').value = '';
+        document.getElementById('tugas').value = '';
+        document.getElementById('uts').value = '';
+        document.getElementById('uas').value = '';
+      } catch (err) {
+        alertBox.className = "mt-4 p-3 rounded-lg text-center text-sm font-medium bg-red-100 text-red-700 border border-red-300";
+        alertBox.textContent = "Gagal mengirim data. Periksa koneksi internet Anda.";
+        alertBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Simpan ke Spreadsheet';
+      }
+    });
+  </script>
+</body>
+</html>
