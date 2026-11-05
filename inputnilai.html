@@ -6,96 +6,35 @@
     <title>Portal Input Nilai Prodi - STAIIS</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+        body { margin: 0; padding: 0; background-color: #f8fafc; background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 24px 24px; color: #333; min-height: 100vh; display: flex; flex-direction: column; }
+        .animate-fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .delay-100 { animation-delay: 100ms; } .delay-200 { animation-delay: 200ms; }
+        .glass-header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(226, 232, 240, 0.8); }
         
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f8fafc;
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-            background-size: 24px 24px;
-            color: #333;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Animasi Kustom */
-        .animate-fade-in-up {
-            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-
-        .glass-header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-        }
-
-        /* Notifikasi Melayang di Atas ala WhatsApp */
-        #waToast {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
-        }
-        #waToast.toast-hidden {
-            transform: translate(-50%, -140%);
-            opacity: 0;
-            pointer-events: none;
-        }
-        #waToast.toast-visible {
-            transform: translate(-50%, 0);
-            opacity: 1;
-        }
-
-        /* Hilangkan panah spinner default pada input number */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
+        #waToast { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease; }
+        #waToast.toast-hidden { transform: translate(-50%, -140%); opacity: 0; pointer-events: none; }
+        #waToast.toast-visible { transform: translate(-50%, 0); opacity: 1; }
+        
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
 
         /* Styling sticky kolom nama untuk mobile */
-        .sticky-col {
-            position: sticky;
-            left: 0;
-            background-color: white;
-            z-index: 10;
-        }
-        tr:hover .sticky-col {
-            background-color: #ecfdf5; /* Warna hijau sangat muda saat dihover menyesuaikan baris */
-        }
+        .sticky-col { position: sticky; left: 0; z-index: 10; }
+        .history-row:hover .sticky-col-body { background-color: #f1f5f9; } /* Hover sync in history */
+        tr:hover .sticky-col-input { background-color: #ecfdf5; }
     </style>
 </head>
 <body class="relative overflow-x-hidden">
 
-    <!-- Notifikasi Popup Atas ala WhatsApp -->
     <div id="waToast" class="fixed top-5 left-1/2 z-[200] toast-hidden max-w-md w-[92%] sm:w-auto">
         <div id="waToastBox" class="flex items-center gap-3.5 px-5 py-3.5 rounded-2xl bg-[#045844] text-white shadow-[0_12px_30px_-4px_rgba(4,88,68,0.45)] border border-emerald-400/30 backdrop-blur-md">
-            <div id="waToastIcon" class="w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-inner text-lg">
-                <i class="fa-solid fa-check"></i>
-            </div>
+            <div id="waToastIcon" class="w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-inner text-lg"><i class="fa-solid fa-check"></i></div>
             <div class="text-left pr-2">
                 <p id="waToastTitle" class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-200 leading-none mb-1">Berhasil</p>
                 <p id="waToastMessage" class="text-xs sm:text-sm font-bold leading-snug">Semua nilai mahasiswa telah tersimpan ke tab 'Database Nilai'.</p>
@@ -103,10 +42,8 @@
         </div>
     </div>
 
-    <!-- Efek Cahaya Latar Belakang -->
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none -z-10"></div>
 
-    <!-- Header Resmi STAIIS -->
     <header class="glass-header sticky top-0 z-50 w-full px-4 sm:px-6 py-4 flex justify-center">
         <div class="max-w-5xl w-full flex items-center justify-between gap-3 sm:gap-4">
             <div class="flex items-center gap-3 sm:gap-4">
@@ -116,69 +53,89 @@
                     <p class="text-[9px] sm:text-[10px] font-bold text-emerald-600 uppercase tracking-[0.1em] sm:tracking-[0.2em]">STAI Imam Syafi'i Cianjur</p>
                 </div>
             </div>
-
-            <!-- Tombol Refresh yang memperbarui Cache Server -->
             <button type="button" id="btnRefreshCache" onclick="refreshServerCache()" class="inline-flex items-center justify-center w-10 h-10 sm:w-auto sm:h-auto sm:px-3.5 sm:py-2 rounded-xl bg-white hover:bg-emerald-50 text-[#0ba97b] sm:text-slate-700 sm:hover:text-[#045844] border border-slate-200 hover:border-emerald-200 text-xs font-bold shadow-sm transition-all active:scale-95 shrink-0">
-                <i id="iconRefresh" class="fa-solid fa-arrows-rotate text-lg sm:text-sm"></i>
-                <span class="hidden sm:inline sm:ml-2">Refresh</span>
+                <i id="iconRefresh" class="fa-solid fa-arrows-rotate text-lg sm:text-sm"></i><span class="hidden sm:inline sm:ml-2">Refresh</span>
             </button>
         </div>
     </header>
 
-    <!-- Konten Utama -->
     <main class="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 md:py-14">
         
         <!-- Pilih Nama Dosen -->
         <div id="cardPilihDosen" class="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] mb-8 animate-fade-in-up delay-100 relative overflow-hidden mt-2">
             <div class="absolute top-0 right-0 w-40 h-40 bg-[#045844]/5 rounded-full blur-3xl pointer-events-none -mr-10 -mt-10"></div>
-            
             <div class="flex items-center gap-4 mb-5 relative z-10">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0ba97b] to-[#045844] text-white flex items-center justify-center text-xl shadow-lg shadow-[#045844]/25 shrink-0">
-                    <i class="fa-solid fa-user-tie"></i>
-                </div>
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0ba97b] to-[#045844] text-white flex items-center justify-center text-xl shadow-lg shadow-[#045844]/25 shrink-0"><i class="fa-solid fa-user-tie"></i></div>
                 <div>
                     <label for="selectDosen" class="block text-lg font-extrabold text-slate-800">Dosen Pengampu</label>
                     <p class="text-xs font-medium text-slate-500">Pilih nama Anda untuk memuat daftar mata kuliah yang diampu</p>
                 </div>
             </div>
-
             <div class="relative z-10">
-                <select id="selectDosen" class="w-full appearance-none px-5 py-4 pr-12 border-2 border-slate-200 rounded-2xl bg-slate-50/80 hover:bg-white focus:bg-white focus:border-[#0ba97b] focus:ring-4 focus:ring-[#0ba97b]/15 font-bold text-slate-700 text-sm md:text-base transition-all outline-none cursor-pointer">
+                <select id="selectDosen" class="w-full appearance-none px-5 py-4 pr-12 border-2 border-slate-200 rounded-2xl bg-slate-50/80 hover:bg-white focus:bg-white focus:border-[#0ba97b] font-bold text-slate-700 text-sm md:text-base transition-all outline-none cursor-pointer">
                     <option value="">-- Memuat Data Dosen... --</option>
                 </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-500">
-                    <i class="fa-solid fa-chevron-down text-sm"></i>
-                </div>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-500"><i class="fa-solid fa-chevron-down text-sm"></i></div>
             </div>
         </div>
 
-        <!-- Daftar Kartu Mata Kuliah (Dikelompokkan Ganjil & Genap) -->
+        <!-- Daftar Mata Kuliah & Kartu Riwayat -->
         <div id="sectionCourses" class="hidden space-y-6 animate-fade-in-up delay-200">
-            <div class="flex items-center justify-between px-2">
+            
+            <!-- KARTU RIWAYAT INPUT (Klik untuk realtime) -->
+            <div onclick="fetchAndShowHistory()" class="group w-full bg-gradient-to-r from-[#2563eb] to-[#4338ca] rounded-3xl p-5 sm:p-6 md:p-8 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-1.5 transition-all duration-300 cursor-pointer relative overflow-hidden flex items-center justify-between">
+                <div class="relative z-10 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-white text-xl backdrop-blur-sm border border-white/20"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div>
+                        <h3 class="text-white font-black text-lg sm:text-xl">Riwayat Input Nilai</h3>
+                        <p class="text-blue-100 text-xs sm:text-sm font-medium">Klik untuk melihat data tersimpan realtime di database</p>
+                    </div>
+                </div>
+                <div class="relative z-10 text-white opacity-80 group-hover:opacity-100 group-hover:translate-x-1 transition-all"><i class="fa-solid fa-chevron-right text-xl"></i></div>
+                <div class="absolute right-0 top-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+            </div>
+
+            <div class="flex items-center justify-between px-2 pt-4">
                 <div class="flex items-center gap-2.5">
-                    <span class="w-8 h-8 rounded-xl bg-[#045844] text-white flex items-center justify-center text-xs font-extrabold shadow-sm">
-                        <i class="fa-solid fa-layer-group"></i>
-                    </span>
+                    <span class="w-8 h-8 rounded-xl bg-[#045844] text-white flex items-center justify-center text-xs font-extrabold shadow-sm"><i class="fa-solid fa-layer-group"></i></span>
                     <h3 class="text-base md:text-lg font-extrabold text-slate-800">Pilih Mata Kuliah</h3>
                 </div>
                 <span id="courseCountBadge" class="text-xs font-bold bg-emerald-50 border border-emerald-200 text-[#045844] px-3.5 py-1.5 rounded-full"></span>
             </div>
 
-            <!-- Wadah Kartu Mata Kuliah (Ganjil & Genap) -->
             <div id="courseCardsList" class="space-y-8"></div>
         </div>
 
-        <!-- Form Tabel Input Nilai Mahasiswa -->
+        <!-- SECTION RIWAYAT NILAI (Muncul saat kartu riwayat diklik) -->
+        <div id="sectionHistory" class="hidden space-y-6 animate-fade-in-up">
+            <div class="bg-white rounded-3xl p-5 sm:p-6 md:p-8 border border-slate-100 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-5 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-44 h-44 bg-blue-50 rounded-full blur-3xl pointer-events-none -mr-12 -mt-12"></div>
+                <div class="flex items-center gap-4 relative z-10">
+                    <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-database"></i></div>
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-black text-slate-800">Database Nilai Realtime</h2>
+                        <p id="historyDosenLabel" class="text-xs md:text-sm font-medium text-slate-500"></p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeHistory()" class="relative z-10 w-full md:w-auto flex justify-center items-center gap-2 text-xs md:text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-bold transition-all shrink-0">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Menu
+                </button>
+            </div>
+
+            <div id="historyLoader" class="hidden py-16 flex flex-col items-center justify-center space-y-4">
+                <i class="fa-solid fa-circle-notch fa-spin text-4xl text-blue-600"></i>
+                <p class="text-slate-500 font-bold text-sm">Mensinkronkan dari Database Spreadsheet...</p>
+            </div>
+
+            <div id="historyContainer" class="space-y-8 pb-10"></div>
+        </div>
+
+        <!-- Form Tabel Input Nilai Mahasiswa (Tetap Seperti Sebelumnya) -->
         <div id="sectionInputNilai" class="hidden space-y-6 animate-fade-in-up">
-            
-            <!-- Header Info Mata Kuliah Aktif -->
             <div class="bg-white rounded-3xl p-5 sm:p-6 md:p-8 border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] flex flex-col md:flex-row justify-between items-start md:items-center gap-5 relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-44 h-44 bg-emerald-50 rounded-full blur-3xl pointer-events-none -mr-12 -mt-12"></div>
-
                 <div class="flex items-start gap-4 relative z-10 w-full md:w-auto">
-                    <div id="activeCourseIconBox" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-[#0ba97b] to-[#045844] text-white flex items-center justify-center text-xl sm:text-2xl shadow-lg shadow-[#045844]/30 shrink-0">
-                        <i class="fa-solid fa-book-open"></i>
-                    </div>
+                    <div id="activeCourseIconBox" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-[#0ba97b] to-[#045844] text-white flex items-center justify-center text-xl sm:text-2xl shadow-lg shrink-0"><i class="fa-solid fa-book-open"></i></div>
                     <div class="flex-1">
                         <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5">
                             <span id="activeCourseProdiBadge" class="text-[10px] sm:text-xs font-bold bg-emerald-50 border border-emerald-200 text-[#045844] px-2 sm:px-3 py-0.5 rounded-full"></span>
@@ -188,13 +145,9 @@
                         <p id="activeCourseMeta" class="text-[11px] sm:text-xs md:text-sm font-medium text-slate-500 mt-1"></p>
                     </div>
                 </div>
-
-                <button type="button" onclick="resetSelection()" class="relative z-10 w-full md:w-auto flex justify-center items-center gap-2 text-xs md:text-sm bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-[#045844] border border-slate-200 hover:border-emerald-200 px-4 py-2.5 rounded-xl font-bold transition-all shrink-0">
-                    <i class="fa-solid fa-arrow-left"></i> Ganti MK
-                </button>
+                <button type="button" onclick="resetSelection()" class="relative z-10 w-full md:w-auto flex justify-center items-center gap-2 text-xs md:text-sm bg-slate-100 hover:bg-emerald-50 text-slate-700 px-4 py-2.5 rounded-xl font-bold transition-all shrink-0"><i class="fa-solid fa-arrow-left"></i> Ganti MK</button>
             </div>
 
-            <!-- Tabel Input Nilai -->
             <form id="formBatchNilai" class="bg-white rounded-3xl border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] overflow-hidden">
                 <div class="p-5 sm:p-6 md:px-8 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
@@ -203,13 +156,12 @@
                     </div>
                     <span id="studentCountBadge" class="text-[11px] sm:text-xs font-bold bg-blue-50 border border-blue-100 text-blue-700 px-3 py-1.5 rounded-full self-start sm:self-auto"></span>
                 </div>
-
                 <div class="overflow-x-auto pb-4">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 text-[10px] sm:text-xs font-extrabold uppercase tracking-wide">
                                 <th class="py-3 px-2 sm:px-4 text-center w-10 sm:w-14">No</th>
-                                <th class="py-3 px-2 sm:px-4 min-w-[140px] sm:min-w-[200px] sticky-col shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] bg-slate-50/95 backdrop-blur-sm">Nama Mahasiswa</th>
+                                <th class="py-3 px-2 sm:px-4 min-w-[140px] sm:min-w-[200px] sticky-col sticky-col-input shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] bg-slate-50/95 backdrop-blur-sm">Nama Mahasiswa</th>
                                 <th class="py-3 px-1 sm:px-3 text-center min-w-[70px]">KEAKTIFAN <br><span class="text-[#0ba97b]">(15)</span></th>
                                 <th class="py-3 px-1 sm:px-3 text-center min-w-[70px]">TUGAS <br><span class="text-[#0ba97b]">(35)</span></th>
                                 <th class="py-3 px-1 sm:px-3 text-center min-w-[70px]">UTS <br><span class="text-[#0ba97b]">(15)</span></th>
@@ -220,45 +172,28 @@
                         <tbody id="studentTableBody" class="divide-y divide-slate-100 text-xs sm:text-sm"></tbody>
                     </table>
                 </div>
-
                 <div class="p-5 sm:p-6 md:p-8 bg-slate-50/50 border-t border-slate-100">
-                    <button type="submit" id="btnSubmitAll" class="w-full bg-gradient-to-r from-[#0ba97b] to-[#045844] hover:from-[#045844] hover:to-[#034435] text-white font-extrabold py-3.5 sm:py-4 rounded-2xl shadow-lg shadow-[#045844]/25 hover:shadow-[0_15px_30px_-5px_rgba(4,88,68,0.3)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2.5 text-sm md:text-base">
-                        <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
-                        <span>Simpan ke Database</span>
-                    </button>
+                    <button type="submit" id="btnSubmitAll" class="w-full bg-gradient-to-r from-[#0ba97b] to-[#045844] hover:from-[#045844] hover:to-[#034435] text-white font-extrabold py-3.5 sm:py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2.5 text-sm md:text-base transition-all"><i class="fa-solid fa-cloud-arrow-up text-lg"></i><span>Simpan ke Database</span></button>
                 </div>
             </form>
         </div>
 
     </main>
 
-    <!-- Footer Resmi -->
     <footer class="w-full text-center py-6 sm:py-8 mt-auto text-slate-400 font-semibold text-[10px] sm:text-xs tracking-wider">
         &copy; 2026 Portal Akademik &bull; STAI Imam Syafi'i Cianjur
     </footer>
 
-    <!-- Tombol WhatsApp Mengambang -->
-    <a href="https://wa.me/6285111450055" target="_blank" aria-label="Hubungi Kami via WhatsApp" class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-tr from-[#25D366] to-[#128C7E] text-white rounded-full shadow-[0_4px_20px_-4px_rgba(37,211,102,0.5)] hover:shadow-[0_15px_30px_-5px_rgba(37,211,102,0.4)] hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
-        <i class="fa-brands fa-whatsapp text-2xl sm:text-[32px]"></i>
-        <span class="absolute right-[120%] top-1/2 -translate-y-1/2 bg-white text-slate-700 text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-300 pointer-events-none whitespace-nowrap border border-slate-100">
-            Hubungi Kami
-        </span>
-    </a>
-
     <script>
-        // URL Web App Google Apps Script Anda
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTozvvshKZGbj27fEg-LBb6FI2c1rWIXtl0qtoHhUO3jlOFblbtWiGSdt6hFZ8cN_t0g/exec";
-
-        // Konfigurasi Cache Lokal 1 Tahun
         const LOCAL_CACHE_KEY = "STAIIS_PORTAL_CACHE_V1";
         const LOCAL_CACHE_TIME_KEY = "STAIIS_PORTAL_CACHE_TIME_V1";
-        const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000; // 1 Tahun
+        const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
 
         let appData = null;
         let selectedCourse = null;
         let toastTimeout = null;
 
-        // Fungsi menampilkan notifikasi melayang di atas ala WhatsApp
         function showWaNotification(title, message, isError = false) {
             const toast = document.getElementById('waToast');
             const box = document.getElementById('waToastBox');
@@ -267,7 +202,6 @@
             const msgEl = document.getElementById('waToastMessage');
 
             if (toastTimeout) clearTimeout(toastTimeout);
-
             titleEl.textContent = title;
             msgEl.textContent = message;
 
@@ -285,28 +219,20 @@
 
             toast.classList.remove('toast-hidden');
             toast.classList.add('toast-visible');
-
-            toastTimeout = setTimeout(() => {
-                toast.classList.remove('toast-visible');
-                toast.classList.add('toast-hidden');
-            }, 3500);
+            toastTimeout = setTimeout(() => { toast.classList.remove('toast-visible'); toast.classList.add('toast-hidden'); }, 3500);
         }
 
-        // Render daftar nama dosen ke dalam dropdown
         function populateDosenDropdown(preserveSelection = true) {
             const selectDosen = document.getElementById('selectDosen');
             const previousValue = preserveSelection ? selectDosen.value : "";
-
             selectDosen.innerHTML = '<option value="">-- Pilih Nama Anda --</option>';
 
             if (appData && appData.dosenList && appData.dosenList.length > 0) {
                 appData.dosenList.forEach(dosen => {
                     const opt = document.createElement('option');
-                    opt.value = dosen;
-                    opt.textContent = dosen;
+                    opt.value = dosen; opt.textContent = dosen;
                     selectDosen.appendChild(opt);
                 });
-
                 if (previousValue && appData.dosenList.includes(previousValue)) {
                     selectDosen.value = previousValue;
                     renderCoursesForDosen(previousValue);
@@ -316,17 +242,10 @@
             }
         }
 
-        // Simpan ke localStorage untuk cache 1 tahun
         function saveToLocalCache(data) {
-            try {
-                localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(data));
-                localStorage.setItem(LOCAL_CACHE_TIME_KEY, Date.now().toString());
-            } catch (e) {
-                console.warn("Gagal menyimpan cache lokal:", e);
-            }
+            try { localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(data)); localStorage.setItem(LOCAL_CACHE_TIME_KEY, Date.now().toString()); } catch (e) { }
         }
 
-        // Ambil data dari server (dengan opsi paksa pembaruan cache server)
         async function fetchPortalDataFromServer(forceRefreshServer = false) {
             const url = forceRefreshServer ? `${SCRIPT_URL}?action=refresh&t=${Date.now()}` : SCRIPT_URL;
             const res = await fetch(url);
@@ -337,7 +256,6 @@
             return data;
         }
 
-        // Inisialisasi data saat halaman dibuka
         window.addEventListener('DOMContentLoaded', async () => {
             const cachedStr = localStorage.getItem(LOCAL_CACHE_KEY);
             const cachedTime = parseInt(localStorage.getItem(LOCAL_CACHE_TIME_KEY) || "0", 10);
@@ -347,139 +265,76 @@
                 try {
                     appData = JSON.parse(cachedStr);
                     populateDosenDropdown(false);
-
-                    fetch(`${SCRIPT_URL}?action=version&t=${now}`)
-                        .then(r => r.json())
-                        .then(verInfo => {
-                            if (verInfo.cacheVersion && (!appData.cacheVersion || verInfo.cacheVersion !== appData.cacheVersion)) {
-                                fetchPortalDataFromServer(false);
-                            }
-                        })
-                        .catch(() => {});
+                    fetch(`${SCRIPT_URL}?action=version&t=${now}`).then(r => r.json()).then(verInfo => {
+                        if (verInfo.cacheVersion && (!appData.cacheVersion || verInfo.cacheVersion !== appData.cacheVersion)) fetchPortalDataFromServer(false);
+                    }).catch(() => {});
                     return;
-                } catch (e) {
-                    localStorage.removeItem(LOCAL_CACHE_KEY);
-                }
+                } catch (e) { localStorage.removeItem(LOCAL_CACHE_KEY); }
             }
-
-            try {
-                await fetchPortalDataFromServer(false);
-            } catch (err) {
-                console.error(err);
+            try { await fetchPortalDataFromServer(false); } catch (err) {
                 document.getElementById('selectDosen').innerHTML = '<option value="">-- Gagal Memuat Data --</option>';
-                showWaNotification("Gagal Memuat", "Periksa koneksi atau pastikan Script telah di-deploy.", true);
+                showWaNotification("Gagal Memuat", "Periksa koneksi internet Anda.", true);
             }
         });
 
-        // Fungsi Tombol Refresh
         async function refreshServerCache() {
             const btn = document.getElementById('btnRefreshCache');
             const icon = document.getElementById('iconRefresh');
-            btn.disabled = true;
-            icon.classList.add('fa-spin');
-
+            btn.disabled = true; icon.classList.add('fa-spin');
             try {
                 await fetchPortalDataFromServer(true);
-                showWaNotification("Cache Diperbarui!", "Data terbaru dari server telah disinkronkan untuk semua perangkat.");
-            } catch (err) {
-                console.error(err);
-                showWaNotification("Gagal Refresh", "Tidak dapat menghubungi server Spreadsheet.", true);
-            } finally {
-                btn.disabled = false;
-                icon.classList.remove('fa-spin');
-            }
+                showWaNotification("Cache Diperbarui!", "Data terbaru dari server telah disinkronkan.");
+            } catch (err) { showWaNotification("Gagal Refresh", "Tidak dapat menghubungi server.", true); } 
+            finally { btn.disabled = false; icon.classList.remove('fa-spin'); }
         }
 
-        // Membuat elemen kartu mata kuliah
         function createCourseCardElement(c, displayIndex) {
             const isPba = String(c.prodi).toLowerCase().includes('arab') || String(c.prodi).toLowerCase().includes('pba');
-            
-            const gradientIcon = isPba 
-                ? 'from-blue-500 to-indigo-600 shadow-blue-500/30' 
-                : 'from-[#0ba97b] to-[#045844] shadow-[#045844]/30';
-            const blurCircle = isPba 
-                ? 'bg-blue-50 group-hover:bg-blue-100' 
-                : 'bg-emerald-50 group-hover:bg-emerald-100';
-            const badgeProdi = isPba 
-                ? 'bg-blue-50 text-blue-700 border-blue-200' 
-                : 'bg-emerald-50 text-[#045844] border-emerald-200';
-            const titleHover = isPba
-                ? 'group-hover:text-blue-600'
-                : 'group-hover:text-[#0ba97b]';
-            const actionColor = isPba
-                ? 'text-blue-600 bg-blue-50 group-hover:bg-blue-600 group-hover:text-white'
-                : 'text-[#045844] bg-emerald-50 group-hover:bg-[#0ba97b] group-hover:text-white';
+            const gradientIcon = isPba ? 'from-blue-500 to-indigo-600 shadow-blue-500/30' : 'from-[#0ba97b] to-[#045844] shadow-[#045844]/30';
+            const blurCircle = isPba ? 'bg-blue-50 group-hover:bg-blue-100' : 'bg-emerald-50 group-hover:bg-emerald-100';
+            const badgeProdi = isPba ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-emerald-50 text-[#045844] border-emerald-200';
+            const actionColor = isPba ? 'text-blue-600 bg-blue-50 group-hover:bg-blue-600 group-hover:text-white' : 'text-[#045844] bg-emerald-50 group-hover:bg-[#0ba97b] group-hover:text-white';
 
             const card = document.createElement('div');
             card.style.animationDelay = `${displayIndex * 60}ms`;
-            card.className = "group block w-full bg-white rounded-3xl p-5 sm:p-6 md:p-8 border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_30px_-5px_rgba(4,88,68,0.15)] hover:-translate-y-1.5 transition-all duration-300 animate-fade-in-up relative overflow-hidden cursor-pointer";
+            card.className = "group block w-full bg-white rounded-3xl p-5 sm:p-6 md:p-8 border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:-translate-y-1.5 transition-all duration-300 animate-fade-in-up relative overflow-hidden cursor-pointer";
             
             card.innerHTML = `
                 <div class="absolute top-0 right-0 w-36 h-36 ${blurCircle} rounded-full blur-3xl transition-colors duration-500 -mr-10 -mt-10 pointer-events-none"></div>
-                
                 <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5 sm:gap-6">
                     <div class="flex items-start md:items-center gap-4 sm:gap-5">
-                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br ${gradientIcon} text-white flex items-center justify-center text-lg sm:text-xl font-black shadow-lg group-hover:scale-110 transition-transform duration-300 shrink-0">
-                            ${displayIndex}
-                        </div>
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br ${gradientIcon} text-white flex items-center justify-center text-lg sm:text-xl font-black shadow-lg shrink-0">${displayIndex}</div>
                         <div>
                             <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
-                                <span class="text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 rounded-full border ${badgeProdi}">
-                                    <i class="fa-solid fa-graduation-cap mr-1"></i> ${c.prodi}
-                                </span>
-                                <span class="text-[10px] sm:text-xs font-bold bg-slate-100 text-slate-600 px-2 sm:px-3 py-1 rounded-full">
-                                    Kode: ${c.kodeMk}
-                                </span>
-                                <span class="text-[10px] sm:text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 px-2 sm:px-3 py-1 rounded-full mt-1 sm:mt-0">
-                                    Smt ${c.semester} &bull; ${c.sks} SKS ${c.kelas ? '&bull; Kelas ' + c.kelas : ''}
-                                </span>
+                                <span class="text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 rounded-full border ${badgeProdi}">${c.prodi}</span>
+                                <span class="text-[10px] sm:text-xs font-bold bg-slate-100 text-slate-600 px-2 sm:px-3 py-1 rounded-full">Kode: ${c.kodeMk}</span>
                             </div>
-                            <h3 class="text-lg sm:text-xl md:text-2xl font-extrabold text-slate-800 ${titleHover} transition-colors leading-snug">
-                                ${c.mataKuliah}
-                            </h3>
-                            <p class="text-[11px] sm:text-xs md:text-sm text-slate-500 font-medium mt-1">
-                                <i class="fa-regular fa-calendar-check mr-1 text-slate-400"></i> TA: <span class="text-slate-700 font-bold">${c.ta}</span>
-                            </p>
+                            <h3 class="text-lg sm:text-xl md:text-2xl font-extrabold text-slate-800 leading-snug">${c.mataKuliah}</h3>
+                            <p class="text-[11px] sm:text-xs md:text-sm text-slate-500 font-medium mt-1">Smt ${c.semester} &bull; ${c.sks} SKS &bull; TA: ${c.ta}</p>
                         </div>
                     </div>
-
                     <div class="flex items-center justify-end border-t md:border-t-0 pt-3 sm:pt-4 md:pt-0 border-slate-100 shrink-0">
-                        <span class="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-3 rounded-2xl text-xs sm:text-sm font-bold ${actionColor} transition-all duration-300 shadow-sm w-full md:w-auto justify-center">
+                        <span class="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-3 rounded-2xl text-xs sm:text-sm font-bold ${actionColor} transition-all duration-300 w-full md:w-auto justify-center">
                             Input Nilai <i class="fa-solid fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
                         </span>
                     </div>
-                </div>
-            `;
-
+                </div>`;
             card.onclick = () => selectCourse(c);
             return card;
         }
 
-        // Membuat blok kelompok Semester
         function createSemesterGroupBlock(title, badgeText, iconClass, badgeStyle, coursesArray) {
             const wrapper = document.createElement('div');
             wrapper.className = "space-y-4";
-
-            const header = document.createElement('div');
-            header.className = "flex items-center justify-between bg-white/90 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border border-slate-200/80 shadow-sm";
-            header.innerHTML = `
-                <div class="flex items-center gap-2.5 sm:gap-3">
-                    <i class="${iconClass} text-sm sm:text-base"></i>
-                    <h4 class="text-xs sm:text-sm md:text-base font-extrabold text-slate-800 uppercase tracking-wide">${title}</h4>
-                </div>
-                <span class="text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 rounded-full border ${badgeStyle}">
-                    ${badgeText} (${coursesArray.length} MK)
-                </span>
-            `;
-            wrapper.appendChild(header);
-
+            wrapper.innerHTML = `
+                <div class="flex items-center justify-between bg-white/90 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="flex items-center gap-2.5 sm:gap-3"><i class="${iconClass} text-sm sm:text-base"></i><h4 class="text-xs sm:text-sm md:text-base font-extrabold text-slate-800 uppercase tracking-wide">${title}</h4></div>
+                    <span class="text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 rounded-full border ${badgeStyle}">${badgeText} (${coursesArray.length} MK)</span>
+                </div>`;
+            
             const cardsStack = document.createElement('div');
             cardsStack.className = "flex flex-col gap-4 sm:gap-5";
-
-            coursesArray.forEach((course, idx) => {
-                cardsStack.appendChild(createCourseCardElement(course, idx + 1));
-            });
-
+            coursesArray.forEach((course, idx) => cardsStack.appendChild(createCourseCardElement(course, idx + 1)));
             wrapper.appendChild(cardsStack);
             return wrapper;
         }
@@ -487,66 +342,33 @@
         function renderCoursesForDosen(dosenName) {
             const listContainer = document.getElementById('courseCardsList');
             const sectionCourses = document.getElementById('sectionCourses');
-            const countBadge = document.getElementById('courseCountBadge');
-            
             document.getElementById('sectionInputNilai').classList.add('hidden');
+            document.getElementById('sectionHistory').classList.add('hidden');
             listContainer.innerHTML = '';
 
-            if (!dosenName || !appData) {
-                sectionCourses.classList.add('hidden');
-                return;
-            }
+            if (!dosenName || !appData) { sectionCourses.classList.add('hidden'); return; }
 
             const filteredCourses = appData.courses.filter(c => c.dosen === dosenName);
-            countBadge.textContent = `${filteredCourses.length} MK`;
+            document.getElementById('courseCountBadge').textContent = `${filteredCourses.length} MK`;
 
             if (filteredCourses.length === 0) {
-                listContainer.innerHTML = `
-                    <div class="bg-white rounded-3xl p-8 text-center border border-slate-100 text-slate-500 font-medium shadow-sm">
-                        Tidak ada mata kuliah ditemukan untuk dosen ini.
-                    </div>
-                `;
+                listContainer.innerHTML = `<div class="bg-white rounded-3xl p-8 text-center border border-slate-100 text-slate-500 font-medium shadow-sm">Tidak ada mata kuliah untuk dosen ini.</div>`;
             } else {
-                const ganjilCourses = [];
-                const genapCourses = [];
-
+                const ganjil = [], genap = [];
                 filteredCourses.forEach(c => {
                     const semNum = parseInt(String(c.semester).replace(/\D/g, ''), 10);
-                    const taLower = String(c.ta || '').toLowerCase();
-
-                    if (!isNaN(semNum)) {
-                        if (semNum % 2 !== 0) ganjilCourses.push(c);
-                        else genapCourses.push(c);
-                    } else if (taLower.includes('ganjil')) {
-                        ganjilCourses.push(c);
-                    } else {
-                        genapCourses.push(c);
-                    }
+                    if (!isNaN(semNum)) { semNum % 2 !== 0 ? ganjil.push(c) : genap.push(c); }
                 });
+                const sortSem = (a, b) => (parseInt(a.semester, 10) || 0) - (parseInt(b.semester, 10) || 0);
+                ganjil.sort(sortSem); genap.sort(sortSem);
 
-                const sortBySem = (a, b) => (parseInt(a.semester, 10) || 0) - (parseInt(b.semester, 10) || 0);
-                ganjilCourses.sort(sortBySem);
-                genapCourses.sort(sortBySem);
-
-                if (ganjilCourses.length > 0) {
-                    listContainer.appendChild(
-                        createSemesterGroupBlock("Semester Ganjil", "Smt 1,3,5,7", "fa-solid fa-sun text-emerald-600", "bg-emerald-50 text-[#045844] border-emerald-200", ganjilCourses)
-                    );
-                }
-
-                if (genapCourses.length > 0) {
-                    listContainer.appendChild(
-                        createSemesterGroupBlock("Semester Genap", "Smt 2,4,6,8", "fa-solid fa-moon text-indigo-600", "bg-indigo-50 text-indigo-700 border-indigo-200", genapCourses)
-                    );
-                }
+                if (ganjil.length > 0) listContainer.appendChild(createSemesterGroupBlock("Semester Ganjil", "Smt 1,3,5,7", "fa-solid fa-sun text-emerald-600", "bg-emerald-50 text-[#045844] border-emerald-200", ganjil));
+                if (genap.length > 0) listContainer.appendChild(createSemesterGroupBlock("Semester Genap", "Smt 2,4,6,8", "fa-solid fa-moon text-indigo-600", "bg-indigo-50 text-indigo-700 border-indigo-200", genap));
             }
-
             sectionCourses.classList.remove('hidden');
         }
 
-        document.getElementById('selectDosen').addEventListener('change', function() {
-            renderCoursesForDosen(this.value);
-        });
+        document.getElementById('selectDosen').addEventListener('change', function() { renderCoursesForDosen(this.value); });
 
         function selectCourse(course) {
             selectedCourse = course;
@@ -556,77 +378,48 @@
             document.getElementById('activeCourseProdiBadge').textContent = course.prodi;
             document.getElementById('activeCourseKodeBadge').textContent = `Kode: ${course.kodeMk}`;
             document.getElementById('activeCourseTitle').textContent = course.mataKuliah;
-            document.getElementById('activeCourseMeta').textContent = `Dosen: ${course.dosen} • Smt ${course.semester} (${course.sks} SKS) • ${course.ta}`;
+            document.getElementById('activeCourseMeta').textContent = `Dosen: ${course.dosen} • Smt ${course.semester} (${course.sks} SKS) • TA: ${course.ta}`;
 
             const semStr = String(course.semester).trim().toLowerCase();
             const prodiStr = String(course.prodi).trim().toLowerCase();
-            const isPba = prodiStr.includes('arab') || prodiStr.includes('pba');
-            const prefix = isPba ? 'pba' : 'hki';
+            const prefix = (prodiStr.includes('arab') || prodiStr.includes('pba')) ? 'pba' : 'hki';
 
             let semGroup = 'sem1';
-            if (semStr.includes('1') || semStr.includes('2')) semGroup = 'sem1';
-            else if (semStr.includes('3') || semStr.includes('4')) semGroup = 'sem3';
+            if (semStr.includes('3') || semStr.includes('4')) semGroup = 'sem3';
             else if (semStr.includes('5') || semStr.includes('6')) semGroup = 'sem5';
             else if (semStr.includes('7') || semStr.includes('8')) semGroup = 'sem7';
 
-            const key = `${semGroup}_${prefix}`;
-            const studentsMap = appData.studentsMap || {};
-            const studentList = studentsMap[key] || [];
-
+            const studentList = (appData.studentsMap || {})[`${semGroup}_${prefix}`] || [];
             document.getElementById('studentCountBadge').innerHTML = `<i class="fa-solid fa-users mr-1"></i> ${studentList.length} Mhs`;
 
             const tbody = document.getElementById('studentTableBody');
             tbody.innerHTML = '';
-
+            
             if (studentList.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="p-8 text-center text-slate-500 font-medium">
-                            Tidak ada daftar mahasiswa ditemukan untuk ${course.prodi} Semester ${course.semester}.
-                        </td>
-                    </tr>
-                `;
+                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500 font-medium">Tidak ada mahasiswa.</td></tr>`;
             } else {
                 studentList.forEach((namaMhs, idx) => {
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-emerald-50/40 transition-colors group";
-                    
-                    // Struktur input yang disesuaikan untuk tampilan HP (bulat penuh)
                     tr.innerHTML = `
                         <td class="py-3 px-2 sm:px-4 text-center text-slate-400 font-bold text-[11px] sm:text-xs">${idx + 1}</td>
-                        <td class="py-3 px-2 sm:px-4 font-bold text-slate-800 student-name sticky-col text-xs sm:text-sm leading-tight">${namaMhs}</td>
-                        <td class="py-2.5 px-1 sm:px-2">
-                            <input type="number" step="0.1" min="0" max="15" class="input-keaktifan w-full min-w-[55px] max-w-[80px] mx-auto py-2 px-1.5 border border-slate-200 rounded-full text-center font-bold text-slate-700 text-xs sm:text-sm focus:border-[#0ba97b] focus:ring-2 focus:ring-[#0ba97b]/20 outline-none transition block bg-white" placeholder="0 - 15" oninput="calculateTotal(this)">
-                        </td>
-                        <td class="py-2.5 px-1 sm:px-2">
-                            <input type="number" step="0.1" min="0" max="35" class="input-tugas w-full min-w-[55px] max-w-[80px] mx-auto py-2 px-1.5 border border-slate-200 rounded-full text-center font-bold text-slate-700 text-xs sm:text-sm focus:border-[#0ba97b] focus:ring-2 focus:ring-[#0ba97b]/20 outline-none transition block bg-white" placeholder="0 - 35" oninput="calculateTotal(this)">
-                        </td>
-                        <td class="py-2.5 px-1 sm:px-2">
-                            <input type="number" step="0.1" min="0" max="15" class="input-uts w-full min-w-[55px] max-w-[80px] mx-auto py-2 px-1.5 border border-slate-200 rounded-full text-center font-bold text-slate-700 text-xs sm:text-sm focus:border-[#0ba97b] focus:ring-2 focus:ring-[#0ba97b]/20 outline-none transition block bg-white" placeholder="0 - 15" oninput="calculateTotal(this)">
-                        </td>
-                        <td class="py-2.5 px-1 sm:px-2">
-                            <input type="number" step="0.1" min="0" max="35" class="input-uas w-full min-w-[55px] max-w-[80px] mx-auto py-2 px-1.5 border border-slate-200 rounded-full text-center font-bold text-slate-700 text-xs sm:text-sm focus:border-[#0ba97b] focus:ring-2 focus:ring-[#0ba97b]/20 outline-none transition block bg-white" placeholder="0 - 35" oninput="calculateTotal(this)">
-                        </td>
-                        <td class="py-2.5 px-2 sm:px-3 text-center">
-                            <span class="inline-flex justify-center items-center min-w-[3.5rem] py-1.5 px-2 rounded-full bg-emerald-50 border border-emerald-100 text-[#045844] font-black total-score text-xs sm:text-sm">0.0</span>
-                        </td>
+                        <td class="py-3 px-2 sm:px-4 font-bold text-slate-800 student-name sticky-col sticky-col-input text-xs sm:text-sm bg-white">${namaMhs}</td>
+                        <td class="py-2.5 px-1 sm:px-2"><input type="number" step="0.1" min="0" max="15" class="input-keaktifan w-full min-w-[55px] max-w-[80px] mx-auto py-2 px-1.5 border border-slate-200 rounded-full text-center font-bold text-slate-700 text-xs sm:text-sm focus:border-[#0ba97b] outline-none block bg-white" placeholder="0 - 15" oninput="calculateTotal(this)"></td>
+                        <td class="py-2.5 px-1 sm:px-2"><input type="number" step="0.1" min="0" max="35" class="input-tugas w-full min-w-[55px] max-w-[80px] mx-auto py-2 px-1.5 border border-slate-200 rounded-full text-center font-bold text-slate-700 text-xs sm:text-sm focus:border-[#0ba97b] outline-none block bg-white" placeholder="0 - 35" oninput="calculateTotal(this)"></td>
+                        <td class="py-2.5 px-1 sm:px-2"><input type="number" step="0.1" min="0" max="15" class="input-uts w-full min-w-[55px] max-w-[80px] mx-auto py-2 px-1.5 border border-slate-200 rounded-full text-center font-bold text-slate-700 text-xs sm:text-sm focus:border-[#0ba97b] outline-none block bg-white" placeholder="0 - 15" oninput="calculateTotal(this)"></td>
+                        <td class="py-2.5 px-1 sm:px-2"><input type="number" step="0.1" min="0" max="35" class="input-uas w-full min-w-[55px] max-w-[80px] mx-auto py-2 px-1.5 border border-slate-200 rounded-full text-center font-bold text-slate-700 text-xs sm:text-sm focus:border-[#0ba97b] outline-none block bg-white" placeholder="0 - 35" oninput="calculateTotal(this)"></td>
+                        <td class="py-2.5 px-2 sm:px-3 text-center"><span class="inline-flex justify-center items-center min-w-[3.5rem] py-1.5 px-2 rounded-full bg-emerald-50 border border-emerald-100 text-[#045844] font-black total-score text-xs sm:text-sm">0.0</span></td>
                     `;
                     tbody.appendChild(tr);
                 });
             }
-
             document.getElementById('sectionInputNilai').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function calculateTotal(input) {
             const row = input.closest('tr');
-            const keaktifan = parseFloat(row.querySelector('.input-keaktifan').value) || 0;
-            const tugas = parseFloat(row.querySelector('.input-tugas').value) || 0;
-            const uts = parseFloat(row.querySelector('.input-uts').value) || 0;
-            const uas = parseFloat(row.querySelector('.input-uas').value) || 0;
-            
-            const total = keaktifan + tugas + uts + uas;
+            const total = (parseFloat(row.querySelector('.input-keaktifan').value) || 0) + (parseFloat(row.querySelector('.input-tugas').value) || 0) + (parseFloat(row.querySelector('.input-uts').value) || 0) + (parseFloat(row.querySelector('.input-uas').value) || 0);
             row.querySelector('.total-score').textContent = total.toFixed(1);
         }
 
@@ -640,61 +433,139 @@
         document.getElementById('formBatchNilai').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSubmitAll');
-            
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span>Menyimpan ke Database...</span>`;
+            btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span>Menyimpan...</span>`;
 
-            const rows = document.querySelectorAll('#studentTableBody tr');
-            const gradesData = [];
-
-            rows.forEach(row => {
+            const gradesData = Array.from(document.querySelectorAll('#studentTableBody tr')).map(row => {
                 const nameEl = row.querySelector('.student-name');
-                if (!nameEl) return;
+                if (!nameEl) return null;
+                return {
+                    nama: nameEl.textContent,
+                    keaktifan: row.querySelector('.input-keaktifan').value, tugas: row.querySelector('.input-tugas').value,
+                    uts: row.querySelector('.input-uts').value, uas: row.querySelector('.input-uas').value
+                };
+            }).filter(Boolean);
 
-                const nama = nameEl.textContent;
-                const keaktifan = row.querySelector('.input-keaktifan').value;
-                const tugas = row.querySelector('.input-tugas').value;
-                const uts = row.querySelector('.input-uts').value;
-                const uas = row.querySelector('.input-uas').value;
-
-                gradesData.push({ nama, keaktifan, tugas, uts, uas });
-            });
-
-            const payload = {
-                dosen: selectedCourse.dosen,
-                kodeMk: selectedCourse.kodeMk,
-                mataKuliah: selectedCourse.mataKuliah,
-                prodi: selectedCourse.prodi,
-                ta: selectedCourse.ta,
-                semester: selectedCourse.semester,
-                grades: gradesData
-            };
+            const payload = { dosen: selectedCourse.dosen, kodeMk: selectedCourse.kodeMk, mataKuliah: selectedCourse.mataKuliah, prodi: selectedCourse.prodi, ta: selectedCourse.ta, semester: selectedCourse.semester, grades: gradesData };
 
             try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                resetSelection(); showWaNotification("Berhasil!", "Data tersimpan ke 'Database Nilai'.");
+            } catch (err) { showWaNotification("Gagal Menyimpan", "Periksa koneksi internet.", true); } 
+            finally { btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-lg"></i> <span>Simpan ke Database</span>`; }
+        });
+
+        /* --- FUNGSI UNTUK RIWAYAT REALTIME --- */
+        function formatDate(dateStr) {
+            try { const d = new Date(dateStr); return d.toLocaleString('id-ID', {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'}) + " WIB"; } catch(e) { return dateStr; }
+        }
+
+        function fetchAndShowHistory() {
+            const dosen = document.getElementById('selectDosen').value;
+            if (!dosen) { showWaNotification("Pilih Nama Dosen", "Silakan pilih nama Anda terlebih dahulu.", true); return; }
+
+            document.getElementById('sectionCourses').classList.add('hidden');
+            document.getElementById('cardPilihDosen').classList.add('hidden');
+            document.getElementById('sectionHistory').classList.remove('hidden');
+            document.getElementById('historyDosenLabel').innerHTML = `<i class="fa-solid fa-user-tie mr-1 text-slate-400"></i> ${dosen}`;
+            
+            const container = document.getElementById('historyContainer');
+            const loader = document.getElementById('historyLoader');
+            container.innerHTML = '';
+            loader.classList.remove('hidden'); loader.classList.add('flex');
+
+            // Append timestamp to bypass caching
+            fetch(`${SCRIPT_URL}?action=history&dosen=${encodeURIComponent(dosen)}&t=${Date.now()}`)
+                .then(r => r.json())
+                .then(res => {
+                    loader.classList.add('hidden'); loader.classList.remove('flex');
+                    renderHistoryData(res.data);
+                })
+                .catch(err => {
+                    loader.classList.add('hidden'); loader.classList.remove('flex');
+                    container.innerHTML = `<div class="bg-red-50 text-red-600 p-6 rounded-2xl text-center font-bold">Gagal memuat riwayat dari server.</div>`;
+                });
+        }
+
+        function closeHistory() {
+            document.getElementById('sectionHistory').classList.add('hidden');
+            document.getElementById('cardPilihDosen').classList.remove('hidden');
+            document.getElementById('sectionCourses').classList.remove('hidden');
+        }
+
+        function renderHistoryData(data) {
+            const container = document.getElementById('historyContainer');
+            if (!data || data.length === 0) {
+                container.innerHTML = `<div class="bg-slate-50 text-slate-500 p-10 rounded-3xl text-center border border-slate-200"><i class="fa-solid fa-folder-open text-4xl mb-3 text-slate-300"></i><br><span class="font-bold">Belum ada riwayat input nilai.</span></div>`;
+                return;
+            }
+
+            // Group by submit time and subject
+            const groups = {};
+            data.forEach(item => {
+                const key = item.timestampStr + "_" + item.mataKuliah;
+                if (!groups[key]) groups[key] = { time: item.timestampStr, mataKuliah: item.mataKuliah, dosen: item.dosen, records: [] };
+                groups[key].records.push(item);
+            });
+
+            // Membuat tabel dengan layout mengikuti Gambar 2
+            Object.values(groups).forEach(group => {
+                const wrapper = document.createElement('div');
+                wrapper.className = "bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8 animate-fade-in-up";
+
+                const timeHeader = document.createElement('div');
+                timeHeader.className = "bg-slate-50 px-4 py-2.5 border-b border-slate-200 text-[11px] sm:text-xs font-bold text-slate-500 flex justify-between";
+                timeHeader.innerHTML = `<span><i class="fa-solid fa-clock mr-1"></i> Diinput: ${formatDate(group.time)}</span><span>${group.records.length} Mhs</span>`;
+                wrapper.appendChild(timeHeader);
+
+                const tableContainer = document.createElement('div');
+                tableContainer.className = "overflow-x-auto";
+                
+                let rowsHtml = '';
+                group.records.forEach((rec, idx) => {
+                    // Logic Merah = 0 atau Nilai Akhir < 60
+                    const valKeaktifan = parseFloat(rec.keaktifan);
+                    const valTugas = parseFloat(rec.tugas);
+                    const valUts = parseFloat(rec.uts);
+                    const valUas = parseFloat(rec.uas);
+                    const valTotal = parseFloat(rec.nilaiAkhir);
+
+                    const getC = (val) => val === 0 ? 'bg-[#ff0000] text-white' : 'text-slate-800';
+                    const getT = (val) => val < 60 ? 'bg-[#ff0000] text-white' : 'text-slate-800 bg-red-50/20';
+
+                    rowsHtml += `
+                        <tr class="border-b border-slate-200/50 history-row text-xs sm:text-sm">
+                            <td class="py-2 px-2 text-center border-r border-slate-200/50">${idx + 1}</td>
+                            <td class="py-2 px-3 border-r border-slate-200/50 sticky-col sticky-col-body bg-white min-w-[160px] font-semibold text-slate-800 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]">${rec.nama}</td>
+                            <td class="py-2 px-2 text-center border-r border-slate-200/50 ${getC(valKeaktifan)}">${valKeaktifan.toFixed(1).replace('.0', '')}</td>
+                            <td class="py-2 px-2 text-center border-r border-slate-200/50 ${getC(valTugas)}">${valTugas.toFixed(1).replace('.0', '')}</td>
+                            <td class="py-2 px-2 text-center border-r border-slate-200/50 ${getC(valUts)}">${valUts.toFixed(1).replace('.0', '')}</td>
+                            <td class="py-2 px-2 text-center border-r border-slate-200/50 ${getC(valUas)}">${valUas.toFixed(1).replace('.0', '')}</td>
+                            <td class="py-2 px-2 text-center font-black ${getT(valTotal)}">${valTotal.toFixed(1).replace('.0', '')}</td>
+                        </tr>`;
                 });
 
-                resetSelection();
-
-                showWaNotification(
-                    "Berhasil!",
-                    "Semua nilai mahasiswa telah tersimpan ke tab 'Database Nilai'."
-                );
-            } catch (err) {
-                showWaNotification(
-                    "Gagal Menyimpan",
-                    "Periksa koneksi internet Anda dan coba lagi.",
-                    true
-                );
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-lg"></i> <span>Simpan ke Database</span>`;
-            }
-        });
+                tableContainer.innerHTML = `
+                    <table class="w-full text-left border-collapse min-w-[600px]">
+                        <thead>
+                            <tr><th colspan="7" class="bg-[#00b050] text-white text-center py-2.5 text-sm sm:text-base font-black border-b border-slate-300 tracking-wide">${group.mataKuliah}</th></tr>
+                            <tr><th colspan="7" class="bg-[#4472c4] text-white text-center py-1.5 text-xs sm:text-sm font-bold border-b border-slate-300">${group.dosen}</th></tr>
+                            <tr class="bg-[#4472c4] text-white text-[10px] sm:text-xs font-bold text-center border-b border-slate-300">
+                                <th class="py-2.5 px-2 border-r border-blue-400 w-10 font-bold">No.</th>
+                                <th class="py-2.5 px-3 border-r border-blue-400 min-w-[160px] sticky-col bg-[#4472c4] shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)] text-left z-20 font-bold">Nama Mahasiswa</th>
+                                <th class="py-2.5 px-2 border-r border-blue-400 w-16 font-bold">Keaktifan<br>(15)</th>
+                                <th class="py-2.5 px-2 border-r border-blue-400 w-16 font-bold">Tugas (35)</th>
+                                <th class="py-2.5 px-2 border-r border-blue-400 w-16 font-bold">UTS (15)</th>
+                                <th class="py-2.5 px-2 border-r border-blue-400 w-16 font-bold">UAS (35)</th>
+                                <th class="py-2.5 px-2 w-20 font-bold">Nilai Akhir<br>(100)</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rowsHtml}</tbody>
+                    </table>`;
+                
+                wrapper.appendChild(tableContainer);
+                container.appendChild(wrapper);
+            });
+        }
     </script>
 </body>
 </html>
