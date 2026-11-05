@@ -1,444 +1,502 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Input Nilai Dosen - STAI Imam Syafi'i Cianjur</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #f8fafc;
-      background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-      background-size: 24px 24px;
-    }
-  </style>
-</head>
-<body class="min-h-screen flex flex-col text-slate-800">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Portal Input Nilai Prodi - STAIIS</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Top Navbar ala Portal Akademik STAIIS -->
-  <header class="bg-white border-b border-slate-100 sticky top-0 z-30 shadow-sm">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-full bg-emerald-900 flex items-center justify-center text-white shadow-md ring-4 ring-emerald-50">
-          <!-- Ikon Topi Akademik -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path d="M12 14l9-5-9-5-9 5 9 5z" />
-            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-          </svg>
-        </div>
-        <div>
-          <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-emerald-950 leading-none">PORTAL AKADEMIK</h1>
-          <p class="text-[11px] sm:text-xs font-semibold tracking-widest text-emerald-600 uppercase mt-1">STAI IMAM SYAFI'I CIANJUR</p>
-        </div>
-      </div>
-
-      <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-500 bg-slate-100 px-3.5 py-2 rounded-full">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        Sistem Input Nilai Dosen
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
-
-    <!-- Hero Title Section -->
-    <div class="text-center max-w-2xl mx-auto mb-10">
-      <div class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/60 text-emerald-700 text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
-        </svg>
-        PORTAL DOSEN
-      </div>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Selamat Datang di Portal Input Nilai</h2>
-      <p class="text-slate-500 text-sm sm:text-base mt-3 leading-relaxed">
-        Pilih nama dosen pengampu di bawah ini untuk menampilkan daftar mata kuliah yang diampu serta mengisi nilai perkuliahan mahasiswa secara instan.
-      </p>
-    </div>
-
-    <!-- Step 1: Card Pilih Dosen -->
-    <div id="cardPilihDosen" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 mb-8 transition-all">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold shadow-sm shadow-emerald-200">
-          1
-        </div>
-        <div>
-          <label for="selectDosen" class="block text-base font-bold text-slate-800">Pilih Nama Dosen Pengampu</label>
-          <p class="text-xs text-slate-500">Data diambil langsung dari Kolom M Sheet Dosen Pengampu dan Mahasiswa</p>
-        </div>
-      </div>
-
-      <div class="relative">
-        <select id="selectDosen" class="w-full appearance-none px-4 py-3.5 pr-10 border-2 border-slate-200 rounded-2xl bg-slate-50/70 hover:bg-white focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 font-semibold text-slate-700 transition outline-none cursor-pointer">
-          <option value="">-- Memuat Data Dosen... --</option>
-        </select>
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-          </svg>
-        </div>
-      </div>
-    </div>
-
-    <!-- Step 2: Daftar Kartu Mata Kuliah (Memanjang Penuh ke Bawah) -->
-    <div id="sectionCourses" class="hidden space-y-4">
-      <div class="flex items-center justify-between px-1">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-sm">
-            2
-          </div>
-          <h3 class="text-base sm:text-lg font-bold text-slate-800">Pilih Mata Kuliah yang Diampu</h3>
-        </div>
-        <span id="courseCountBadge" class="text-xs font-bold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full"></span>
-      </div>
-
-      <!-- Kontainer Kartu Memanjang Penuh (1 Kolom Vertikal ke Bawah) -->
-      <div id="courseCardsList" class="flex flex-col space-y-4"></div>
-    </div>
-
-    <!-- Step 3: Tabel Input Nilai Mahasiswa -->
-    <div id="sectionInputNilai" class="hidden space-y-6">
-      <!-- Info Mata Kuliah Aktif -->
-      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div class="flex items-start gap-4">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-100">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
-          <div>
-            <div class="flex flex-wrap items-center gap-2 mb-1">
-              <span id="activeCourseProdiBadge" class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full"></span>
-              <span id="activeCourseKodeBadge" class="text-xs font-semibold bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full"></span>
-            </div>
-            <h2 id="activeCourseTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900"></h2>
-            <p id="activeCourseMeta" class="text-xs sm:text-sm text-slate-500 mt-1 font-medium"></p>
-          </div>
-        </div>
-
-        <button type="button" onclick="resetSelection()" class="inline-flex items-center gap-2 text-xs sm:text-sm bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 hover:border-emerald-300 px-4 py-2.5 rounded-xl font-bold transition shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Ganti Mata Kuliah
-        </button>
-      </div>
-
-      <!-- Tabel Form Input Nilai -->
-      <form id="formBatchNilai" class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-        <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <h3 class="text-base font-bold text-slate-800">Daftar Mahasiswa & Komponen Penilaian</h3>
-            <p class="text-xs text-slate-500">Masukkan nilai sesuai bobot maksimum masing-masing komponen</p>
-          </div>
-          <span id="studentCountBadge" class="text-xs font-bold bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-full self-start sm:self-auto"></span>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs font-bold uppercase tracking-wider">
-                <th class="py-3.5 px-4 text-center w-14">No</th>
-                <th class="py-3.5 px-4 min-w-[220px]">Nama Mahasiswa</th>
-                <th class="py-3.5 px-3 text-center w-32">Keaktifan <span class="text-emerald-600">(15)</span></th>
-                <th class="py-3.5 px-3 text-center w-32">Tugas <span class="text-emerald-600">(35)</span></th>
-                <th class="py-3.5 px-3 text-center w-32">UTS <span class="text-emerald-600">(15)</span></th>
-                <th class="py-3.5 px-3 text-center w-32">UAS <span class="text-emerald-600">(35)</span></th>
-                <th class="py-3.5 px-4 text-center w-32">Nilai Akhir</th>
-              </tr>
-            </thead>
-            <tbody id="studentTableBody" class="divide-y divide-slate-100 text-sm"></tbody>
-          </table>
-        </div>
-
-        <div class="p-6 bg-slate-50/60 border-t border-slate-100">
-          <button type="submit" id="btnSubmitAll" class="w-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold py-4 rounded-2xl shadow-lg shadow-emerald-600/20 transition duration-200 flex items-center justify-center gap-2 text-base">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-            <span>Simpan Semua Nilai ke Database Nilai</span>
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <!-- Alert Notifikasi -->
-    <div id="alertBox" class="hidden mt-6 p-4 rounded-2xl text-center text-sm font-bold shadow-sm"></div>
-
-  </main>
-
-  <script>
-    // Pastikan URL Web App Google Apps Script Anda sudah di-deploy dengan versi terbaru
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTozvvshKZGbj27fEg-LBb6FI2c1rWIXtl0qtoHhUO3jlOFblbtWiGSdt6hFZ8cN_t0g/exec";
-
-    let appData = null;
-    let selectedCourse = null;
-
-    // Muat data saat halaman dibuka
-    window.addEventListener('DOMContentLoaded', async () => {
-      const selectDosen = document.getElementById('selectDosen');
-      try {
-        const res = await fetch(SCRIPT_URL);
-        appData = await res.json();
-        
-        selectDosen.innerHTML = '<option value="">-- Pilih Nama Dosen Pengampu --</option>';
-        
-        if (appData.dosenList && appData.dosenList.length > 0) {
-          appData.dosenList.forEach(dosen => {
-            const opt = document.createElement('option');
-            opt.value = dosen;
-            opt.textContent = dosen;
-            selectDosen.appendChild(opt);
-          });
-        } else {
-          selectDosen.innerHTML = '<option value="">-- Data Dosen Kosong --</option>';
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
-      } catch (err) {
-        console.error(err);
-        selectDosen.innerHTML = '<option value="">-- Gagal Memuat Data dari Spreadsheet --</option>';
-        alert("Gagal memuat data dari Spreadsheet. Pastikan Web App Google Apps Script telah di-deploy dengan akses 'Anyone' (Siapa saja).");
-      }
-    });
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f8fafc;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    // Ketika dosen dipilih dari dropdown
-    document.getElementById('selectDosen').addEventListener('change', function() {
-      const dosenName = this.value;
-      const listContainer = document.getElementById('courseCardsList');
-      const sectionCourses = document.getElementById('sectionCourses');
-      const countBadge = document.getElementById('courseCountBadge');
-      
-      document.getElementById('sectionInputNilai').classList.add('hidden');
-      document.getElementById('alertBox').classList.add('hidden');
-      listContainer.innerHTML = '';
+        /* Animasi Kustom */
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
 
-      if (!dosenName || !appData) {
-        sectionCourses.classList.add('hidden');
-        return;
-      }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-      const filteredCourses = appData.courses.filter(c => c.dosen === dosenName);
-      countBadge.textContent = `${filteredCourses.length} Mata Kuliah`;
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
 
-      if (filteredCourses.length === 0) {
-        listContainer.innerHTML = `
-          <div class="bg-white rounded-2xl p-8 text-center border border-slate-200 text-slate-500">
-            Tidak ada mata kuliah yang ditemukan untuk dosen ini.
-          </div>
-        `;
-      } else {
-        filteredCourses.forEach((c, index) => {
-          const isPba = String(c.prodi).toLowerCase().includes('arab') || String(c.prodi).toLowerCase().includes('pba');
-          const iconBg = isPba ? 'bg-indigo-600 shadow-indigo-100' : 'bg-emerald-500 shadow-emerald-100';
-          const badgeStyle = isPba ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200';
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
 
-          // Kartu memanjang penuh (w-full) tersusun ke bawah
-          const card = document.createElement('div');
-          card.className = "w-full bg-white hover:bg-emerald-50/20 border border-slate-200/90 hover:border-emerald-500 rounded-3xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4 group";
-          
-          card.innerHTML = `
-            <div class="flex items-start sm:items-center gap-4">
-              <div class="w-12 h-12 rounded-2xl ${iconBg} text-white flex items-center justify-center font-extrabold text-base shrink-0 shadow-md">
-                ${index + 1}
-              </div>
-              <div class="space-y-1.5">
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="text-xs font-bold px-2.5 py-0.5 rounded-full border ${badgeStyle}">
-                    ${c.prodi}
-                  </span>
-                  <span class="text-xs font-semibold bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full">
-                    Kode MK: ${c.kodeMk}
-                  </span>
-                  <span class="text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 px-2.5 py-0.5 rounded-full">
-                    Semester ${c.semester} • ${c.sks} SKS ${c.kelas ? '• Kelas ' + c.kelas : ''}
-                  </span>
+        /* Hilangkan panah spinner default pada input number agar lebih rapi */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden">
+
+    <!-- Efek Cahaya Latar Belakang -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none -z-10"></div>
+
+    <!-- Header Resmi STAIIS -->
+    <header class="glass-header sticky top-0 z-50 w-full px-6 py-4 flex justify-center">
+        <div class="max-w-5xl w-full flex items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <img src="https://i.ibb.co.com/fGv3qQ11/logo-staiis.webp" alt="Logo STAIIS" class="w-12 h-12 object-contain drop-shadow-sm">
+                <div>
+                    <h1 class="font-extrabold text-[#045844] text-lg leading-tight tracking-tight">PORTAL AKADEMIK</h1>
+                    <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-[0.2em]">STAI Imam Syafi'i Cianjur</p>
                 </div>
-                <h4 class="text-lg sm:text-xl font-extrabold text-slate-900 group-hover:text-emerald-800 transition-colors">
-                  ${c.mataKuliah}
-                </h4>
-                <p class="text-xs text-slate-500 font-medium">
-                  Tahun Akademik: <span class="text-slate-700 font-semibold">${c.ta}</span>
-                </p>
-              </div>
+            </div>
+            <div class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-[#045844] text-xs font-bold">
+                <span class="w-2 h-2 rounded-full bg-[#0ba97b] animate-pulse"></span>
+                Portal Dosen
+            </div>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="flex-1 w-full max-w-5xl mx-auto px-6 py-10 md:py-14">
+        
+        <!-- Judul Halaman -->
+        <div class="text-center max-w-2xl mx-auto mb-12 animate-fade-in-up">
+            <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-widest mb-4">
+                <i class="fa-solid fa-bolt mr-2"></i> Evaluasi Perkuliahan
+            </div>
+            <h2 class="text-3xl md:text-4xl font-black text-slate-800 mb-3 tracking-tight">Portal Input Nilai Dosen</h2>
+            <p class="text-slate-500 font-medium text-sm md:text-base leading-relaxed">
+                Pilih nama dosen pengampu di bawah ini untuk menampilkan daftar mata kuliah yang diampu dan mengisi nilai mahasiswa secara instan.
+            </p>
+        </div>
+
+        <!-- Langkah 1: Pilih Nama Dosen -->
+        <div id="cardPilihDosen" class="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] mb-8 animate-fade-in-up delay-100 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-40 h-40 bg-[#045844]/5 rounded-full blur-3xl pointer-events-none -mr-10 -mt-10"></div>
+            
+            <div class="flex items-center gap-4 mb-5 relative z-10">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0ba97b] to-[#045844] text-white flex items-center justify-center text-xl shadow-lg shadow-[#045844]/25 shrink-0">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <div>
+                    <label for="selectDosen" class="block text-lg font-extrabold text-slate-800">1. Pilih Nama Dosen Pengampu</label>
+                    <p class="text-xs font-medium text-slate-500">Pilih nama Anda untuk memuat daftar mata kuliah yang diampu</p>
+                </div>
             </div>
 
-            <div class="flex sm:flex-col items-center sm:items-end justify-between border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-100 shrink-0">
-              <span class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-700 bg-emerald-50 group-hover:bg-emerald-600 group-hover:text-white px-4 py-2.5 rounded-xl transition-all">
-                Input Nilai Mahasiswa
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </span>
+            <div class="relative z-10">
+                <select id="selectDosen" class="w-full appearance-none px-5 py-4 pr-12 border-2 border-slate-200 rounded-2xl bg-slate-50/80 hover:bg-white focus:bg-white focus:border-[#0ba97b] focus:ring-4 focus:ring-[#0ba97b]/15 font-bold text-slate-700 text-sm md:text-base transition-all outline-none cursor-pointer">
+                    <option value="">-- Memuat Data Dosen... --</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-500">
+                    <i class="fa-solid fa-chevron-down text-sm"></i>
+                </div>
             </div>
-          `;
+        </div>
 
-          card.onclick = () => selectCourse(c);
-          listContainer.appendChild(card);
-        });
-      }
+        <!-- Langkah 2: Daftar Kartu Mata Kuliah (Memanjang Penuh ke Bawah) -->
+        <div id="sectionCourses" class="hidden space-y-5 animate-fade-in-up delay-200">
+            <div class="flex items-center justify-between px-2">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-7 h-7 rounded-lg bg-[#045844] text-white flex items-center justify-center text-xs font-extrabold">2</span>
+                    <h3 class="text-base md:text-lg font-extrabold text-slate-800">Pilih Mata Kuliah (Klik Kartu)</h3>
+                </div>
+                <span id="courseCountBadge" class="text-xs font-bold bg-emerald-50 border border-emerald-200 text-[#045844] px-3.5 py-1.5 rounded-full"></span>
+            </div>
 
-      sectionCourses.classList.remove('hidden');
-    });
+            <!-- Wadah Kartu Memanjang Penuh (1 Kolom Vertikal ke Bawah) -->
+            <div id="courseCardsList" class="flex flex-col gap-5"></div>
+        </div>
 
-    // Ketika salah satu kartu mata kuliah diklik
-    function selectCourse(course) {
-      selectedCourse = course;
-      document.getElementById('sectionCourses').classList.add('hidden');
-      document.getElementById('cardPilihDosen').classList.add('hidden');
-      document.getElementById('alertBox').classList.add('hidden');
+        <!-- Langkah 3: Form Tabel Input Nilai Mahasiswa -->
+        <div id="sectionInputNilai" class="hidden space-y-6 animate-fade-in-up">
+            
+            <!-- Header Info Mata Kuliah Aktif -->
+            <div class="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] flex flex-col md:flex-row justify-between items-start md:items-center gap-5 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-44 h-44 bg-emerald-50 rounded-full blur-3xl pointer-events-none -mr-12 -mt-12"></div>
 
-      document.getElementById('activeCourseProdiBadge').textContent = course.prodi;
-      document.getElementById('activeCourseKodeBadge').textContent = `Kode: ${course.kodeMk}`;
-      document.getElementById('activeCourseTitle').textContent = course.mataKuliah;
-      document.getElementById('activeCourseMeta').textContent = `Dosen: ${course.dosen} • Semester ${course.semester} (${course.sks} SKS) • ${course.ta}`;
+                <div class="flex items-start gap-4 relative z-10">
+                    <div id="activeCourseIconBox" class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0ba97b] to-[#045844] text-white flex items-center justify-center text-2xl shadow-lg shadow-[#045844]/30 shrink-0">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                            <span id="activeCourseProdiBadge" class="text-xs font-bold bg-emerald-50 border border-emerald-200 text-[#045844] px-3 py-0.5 rounded-full"></span>
+                            <span id="activeCourseKodeBadge" class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-0.5 rounded-full"></span>
+                        </div>
+                        <h2 id="activeCourseTitle" class="text-xl md:text-2xl font-black text-slate-800 tracking-tight"></h2>
+                        <p id="activeCourseMeta" class="text-xs md:text-sm font-medium text-slate-500 mt-1"></p>
+                    </div>
+                </div>
 
-      // Konversi ke string agar aman ketika dicek
-      const semStr = String(course.semester).trim().toLowerCase();
-      const prodiStr = String(course.prodi).trim().toLowerCase();
+                <button type="button" onclick="resetSelection()" class="relative z-10 inline-flex items-center gap-2 text-xs md:text-sm bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-[#045844] border border-slate-200 hover:border-emerald-200 px-4 py-2.5 rounded-xl font-bold transition-all shrink-0">
+                    <i class="fa-solid fa-arrow-left"></i> Ganti Mata Kuliah
+                </button>
+            </div>
 
-      // Tentukan Prodi: PBA (Kolom E-H) atau Ahwal Al-Syakhshiyyah / HKI (Kolom A-D)
-      const isPba = prodiStr.includes('arab') || prodiStr.includes('pba');
-      const prefix = isPba ? 'pba' : 'hki';
+            <!-- Tabel Input Nilai -->
+            <form id="formBatchNilai" class="bg-white rounded-3xl border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] overflow-hidden">
+                <div class="p-6 md:px-8 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <h3 class="text-base md:text-lg font-extrabold text-slate-800">Daftar Mahasiswa & Komponen Nilai</h3>
+                        <p class="text-xs text-slate-500 font-medium">Isi nilai sesuai rentang bobot masing-masing kolom penilaian</p>
+                    </div>
+                    <span id="studentCountBadge" class="text-xs font-bold bg-blue-50 border border-blue-100 text-blue-700 px-3.5 py-1.5 rounded-full self-start sm:self-auto"></span>
+                </div>
 
-      // Tentukan kelompok semester (1&2, 3&4, 5&6, atau 7&8)
-      let semGroup = 'sem1';
-      if (semStr.includes('1') || semStr.includes('2')) semGroup = 'sem1';
-      else if (semStr.includes('3') || semStr.includes('4')) semGroup = 'sem3';
-      else if (semStr.includes('5') || semStr.includes('6')) semGroup = 'sem5';
-      else if (semStr.includes('7') || semStr.includes('8')) semGroup = 'sem7';
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 text-xs font-extrabold uppercase tracking-wider">
+                                <th class="py-4 px-4 text-center w-14">No</th>
+                                <th class="py-4 px-4 min-w-[220px]">Nama Mahasiswa</th>
+                                <th class="py-4 px-3 text-center w-32">Keaktifan <span class="text-[#0ba97b]">(15)</span></th>
+                                <th class="py-4 px-3 text-center w-32">Tugas <span class="text-[#0ba97b]">(35)</span></th>
+                                <th class="py-4 px-3 text-center w-32">UTS <span class="text-[#0ba97b]">(15)</span></th>
+                                <th class="py-4 px-3 text-center w-32">UAS <span class="text-[#0ba97b]">(35)</span></th>
+                                <th class="py-4 px-4 text-center w-32">Nilai Akhir</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTableBody" class="divide-y divide-slate-100 text-sm"></tbody>
+                    </table>
+                </div>
 
-      const key = `${semGroup}_${prefix}`;
-      const studentsMap = appData.studentsMap || {};
-      const studentList = studentsMap[key] || [];
+                <div class="p-6 md:p-8 bg-slate-50/50 border-t border-slate-100">
+                    <button type="submit" id="btnSubmitAll" class="w-full bg-gradient-to-r from-[#0ba97b] to-[#045844] hover:from-[#045844] hover:to-[#034435] text-white font-extrabold py-4 rounded-2xl shadow-lg shadow-[#045844]/25 hover:shadow-[0_15px_30px_-5px_rgba(4,88,68,0.3)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2.5 text-sm md:text-base">
+                        <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+                        <span>Simpan Semua Nilai ke Database Nilai</span>
+                    </button>
+                </div>
+            </form>
+        </div>
 
-      document.getElementById('studentCountBadge').textContent = `${studentList.length} Mahasiswa (Semester ${course.semester} - ${course.prodi})`;
+        <!-- Kotak Notifikasi -->
+        <div id="alertBox" class="hidden mt-6 p-5 rounded-2xl text-center text-sm font-bold shadow-sm"></div>
 
-      const tbody = document.getElementById('studentTableBody');
-      tbody.innerHTML = '';
+    </main>
 
-      if (studentList.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="7" class="p-8 text-center text-slate-500 font-medium">
-              Tidak ada data mahasiswa untuk ${course.prodi} Semester ${course.semester} pada Kolom A-H.
-            </td>
-          </tr>
-        `;
-      } else {
-        studentList.forEach((namaMhs, idx) => {
-          const tr = document.createElement('tr');
-          tr.className = "hover:bg-emerald-50/30 transition";
-          tr.innerHTML = `
-            <td class="py-3 px-4 text-center text-slate-400 font-bold">${idx + 1}</td>
-            <td class="py-3 px-4 font-bold text-slate-800 student-name">${namaMhs}</td>
-            <td class="py-2.5 px-3">
-              <input type="number" step="0.1" min="0" max="15" class="input-keaktifan w-full p-2.5 border border-slate-200 rounded-xl text-center font-semibold focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" placeholder="0 - 15" oninput="calculateTotal(this)">
-            </td>
-            <td class="py-2.5 px-3">
-              <input type="number" step="0.1" min="0" max="35" class="input-tugas w-full p-2.5 border border-slate-200 rounded-xl text-center font-semibold focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" placeholder="0 - 35" oninput="calculateTotal(this)">
-            </td>
-            <td class="py-2.5 px-3">
-              <input type="number" step="0.1" min="0" max="15" class="input-uts w-full p-2.5 border border-slate-200 rounded-xl text-center font-semibold focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" placeholder="0 - 15" oninput="calculateTotal(this)">
-            </td>
-            <td class="py-2.5 px-3">
-              <input type="number" step="0.1" min="0" max="35" class="input-uas w-full p-2.5 border border-slate-200 rounded-xl text-center font-semibold focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" placeholder="0 - 35" oninput="calculateTotal(this)">
-            </td>
-            <td class="py-3 px-4 text-center">
-              <span class="inline-block min-w-[3.5rem] py-1 px-2.5 rounded-lg bg-emerald-50 text-emerald-700 font-extrabold total-score">0.0</span>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
+    <!-- Footer Resmi -->
+    <footer class="w-full text-center py-8 mt-auto text-slate-400 font-semibold text-xs tracking-wider">
+        &copy; 2026 Portal Akademik &bull; STAI Imam Syafi'i Cianjur
+    </footer>
 
-      document.getElementById('sectionInputNilai').classList.remove('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    <!-- Tombol WhatsApp Mengambang -->
+    <a href="https://wa.me/6285111450055" target="_blank" aria-label="Hubungi Kami via WhatsApp" class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] group flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-[#25D366] to-[#128C7E] text-white rounded-full shadow-[0_4px_20px_-4px_rgba(37,211,102,0.5)] hover:shadow-[0_15px_30px_-5px_rgba(37,211,102,0.4)] hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
+        <i class="fa-brands fa-whatsapp text-[32px]"></i>
+        <span class="absolute right-[120%] top-1/2 -translate-y-1/2 bg-white text-slate-700 text-sm font-bold px-4 py-2 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-300 pointer-events-none whitespace-nowrap border border-slate-100">
+            Hubungi Kami
+        </span>
+    </a>
 
-    // Hitung otomatis Nilai Akhir per baris mahasiswa
-    function calculateTotal(input) {
-      const row = input.closest('tr');
-      const keaktifan = parseFloat(row.querySelector('.input-keaktifan').value) || 0;
-      const tugas = parseFloat(row.querySelector('.input-tugas').value) || 0;
-      const uts = parseFloat(row.querySelector('.input-uts').value) || 0;
-      const uas = parseFloat(row.querySelector('.input-uas').value) || 0;
-      
-      const total = keaktifan + tugas + uts + uas;
-      row.querySelector('.total-score').textContent = total.toFixed(1);
-    }
+    <script>
+        // URL Web App Google Apps Script Anda
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTozvvshKZGbj27fEg-LBb6FI2c1rWIXtl0qtoHhUO3jlOFblbtWiGSdt6hFZ8cN_t0g/exec";
 
-    // Kembali ke daftar mata kuliah
-    function resetSelection() {
-      document.getElementById('sectionInputNilai').classList.add('hidden');
-      document.getElementById('alertBox').classList.add('hidden');
-      document.getElementById('cardPilihDosen').classList.remove('hidden');
-      document.getElementById('sectionCourses').classList.remove('hidden');
-    }
+        let appData = null;
+        let selectedCourse = null;
 
-    // Simpan nilai ke sheet "Database Nilai"
-    document.getElementById('formBatchNilai').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const btn = document.getElementById('btnSubmitAll');
-      const alertBox = document.getElementById('alertBox');
-      
-      btn.disabled = true;
-      btn.innerHTML = '<span>Menyimpan ke Database...</span>';
-      alertBox.classList.add('hidden');
-
-      const rows = document.querySelectorAll('#studentTableBody tr');
-      const gradesData = [];
-
-      rows.forEach(row => {
-        const nameEl = row.querySelector('.student-name');
-        if (!nameEl) return;
-
-        const nama = nameEl.textContent;
-        const keaktifan = row.querySelector('.input-keaktifan').value;
-        const tugas = row.querySelector('.input-tugas').value;
-        const uts = row.querySelector('.input-uts').value;
-        const uas = row.querySelector('.input-uas').value;
-
-        gradesData.push({ nama, keaktifan, tugas, uts, uas });
-      });
-
-      const payload = {
-        dosen: selectedCourse.dosen,
-        kodeMk: selectedCourse.kodeMk,
-        mataKuliah: selectedCourse.mataKuliah,
-        prodi: selectedCourse.prodi,
-        ta: selectedCourse.ta,
-        semester: selectedCourse.semester,
-        grades: gradesData
-      };
-
-      try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+        // Memuat daftar dosen dari Google Spreadsheet
+        window.addEventListener('DOMContentLoaded', async () => {
+            const selectDosen = document.getElementById('selectDosen');
+            try {
+                const res = await fetch(SCRIPT_URL);
+                appData = await res.json();
+                
+                selectDosen.innerHTML = '<option value="">-- Pilih Nama Anda --</option>';
+                
+                if (appData.dosenList && appData.dosenList.length > 0) {
+                    appData.dosenList.forEach(dosen => {
+                        const opt = document.createElement('option');
+                        opt.value = dosen;
+                        opt.textContent = dosen;
+                        selectDosen.appendChild(opt);
+                    });
+                } else {
+                    selectDosen.innerHTML = '<option value="">-- Data Dosen Tidak Ditemukan --</option>';
+                }
+            } catch (err) {
+                console.error(err);
+                selectDosen.innerHTML = '<option value="">-- Gagal Memuat Data --</option>';
+                alert("Gagal memuat data dari Spreadsheet. Pastikan Web App Google Apps Script telah di-deploy dengan versi terbaru.");
+            }
         });
 
-        alertBox.className = "mt-6 p-4 rounded-2xl text-center text-sm font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
-        alertBox.textContent = "Berhasil! Semua nilai mahasiswa telah disimpan ke sheet 'Database Nilai'.";
-        alertBox.classList.remove('hidden');
-        alertBox.scrollIntoView({ behavior: 'smooth' });
-      } catch (err) {
-        alertBox.className = "mt-6 p-4 rounded-2xl text-center text-sm font-bold bg-red-100 text-red-800 border border-red-300";
-        alertBox.textContent = "Gagal menyimpan data. Periksa koneksi internet Anda.";
-        alertBox.classList.remove('hidden');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Simpan Semua Nilai ke Database Nilai</span>
-        `;
-      }
-    });
-  </script>
+        // Ketika Dosen dipilih, tampilkan kartu mata kuliah memanjang penuh ke bawah
+        document.getElementById('selectDosen').addEventListener('change', function() {
+            const dosenName = this.value;
+            const listContainer = document.getElementById('courseCardsList');
+            const sectionCourses = document.getElementById('sectionCourses');
+            const countBadge = document.getElementById('courseCountBadge');
+            
+            document.getElementById('sectionInputNilai').classList.add('hidden');
+            document.getElementById('alertBox').classList.add('hidden');
+            listContainer.innerHTML = '';
+
+            if (!dosenName || !appData) {
+                sectionCourses.classList.add('hidden');
+                return;
+            }
+
+            const filteredCourses = appData.courses.filter(c => c.dosen === dosenName);
+            countBadge.textContent = `${filteredCourses.length} Mata Kuliah`;
+
+            if (filteredCourses.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="bg-white rounded-3xl p-8 text-center border border-slate-100 text-slate-500 font-medium shadow-sm">
+                        Tidak ada mata kuliah ditemukan untuk dosen ini.
+                    </div>
+                `;
+            } else {
+                filteredCourses.forEach((c, index) => {
+                    const isPba = String(c.prodi).toLowerCase().includes('arab') || String(c.prodi).toLowerCase().includes('pba');
+                    
+                    // Variasi warna ala kartu Portal Akademik STAIIS
+                    const gradientIcon = isPba 
+                        ? 'from-blue-500 to-indigo-600 shadow-blue-500/30' 
+                        : 'from-[#0ba97b] to-[#045844] shadow-[#045844]/30';
+                    const blurCircle = isPba 
+                        ? 'bg-blue-50 group-hover:bg-blue-100' 
+                        : 'bg-emerald-50 group-hover:bg-emerald-100';
+                    const badgeProdi = isPba 
+                        ? 'bg-blue-50 text-blue-700 border-blue-200' 
+                        : 'bg-emerald-50 text-[#045844] border-emerald-200';
+                    const titleHover = isPba
+                        ? 'group-hover:text-blue-600'
+                        : 'group-hover:text-[#0ba97b]';
+                    const actionColor = isPba
+                        ? 'text-blue-600 bg-blue-50 group-hover:bg-blue-600 group-hover:text-white'
+                        : 'text-[#045844] bg-emerald-50 group-hover:bg-[#0ba97b] group-hover:text-white';
+
+                    const card = document.createElement('div');
+                    card.style.animationDelay = `${(index + 1) * 80}ms`;
+                    card.className = "group block w-full bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_30px_-5px_rgba(4,88,68,0.15)] hover:-translate-y-1.5 transition-all duration-300 animate-fade-in-up relative overflow-hidden cursor-pointer";
+                    
+                    card.innerHTML = `
+                        <div class="absolute top-0 right-0 w-36 h-36 ${blurCircle} rounded-full blur-3xl transition-colors duration-500 -mr-10 -mt-10 pointer-events-none"></div>
+                        
+                        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                            <div class="flex items-start md:items-center gap-5">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${gradientIcon} text-white flex items-center justify-center text-xl font-black shadow-lg group-hover:scale-110 transition-transform duration-300 shrink-0">
+                                    ${index + 1}
+                                </div>
+                                <div>
+                                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                                        <span class="text-xs font-bold px-3 py-1 rounded-full border ${badgeProdi}">
+                                            <i class="fa-solid fa-graduation-cap mr-1"></i> ${c.prodi}
+                                        </span>
+                                        <span class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-full">
+                                            Kode MK: ${c.kodeMk}
+                                        </span>
+                                        <span class="text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1 rounded-full">
+                                            Semester ${c.semester} &bull; ${c.sks} SKS ${c.kelas ? '&bull; Kelas ' + c.kelas : ''}
+                                        </span>
+                                    </div>
+                                    <h3 class="text-xl md:text-2xl font-extrabold text-slate-800 ${titleHover} transition-colors">
+                                        ${c.mataKuliah}
+                                    </h3>
+                                    <p class="text-xs md:text-sm text-slate-500 font-medium mt-1">
+                                        <i class="fa-regular fa-calendar-check mr-1 text-slate-400"></i> Tahun Akademik: <span class="text-slate-700 font-bold">${c.ta}</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-end border-t md:border-t-0 pt-4 md:pt-0 border-slate-100 shrink-0">
+                                <span class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-bold ${actionColor} transition-all duration-300 shadow-sm">
+                                    Input Nilai <i class="fa-solid fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
+                                </span>
+                            </div>
+                        </div>
+                    `;
+
+                    card.onclick = () => selectCourse(c);
+                    listContainer.appendChild(card);
+                });
+            }
+
+            sectionCourses.classList.remove('hidden');
+        });
+
+        // Menampilkan tabel mahasiswa sesuai Prodi dan Semester mata kuliah yang dipilih
+        function selectCourse(course) {
+            selectedCourse = course;
+            document.getElementById('sectionCourses').classList.add('hidden');
+            document.getElementById('cardPilihDosen').classList.add('hidden');
+            document.getElementById('alertBox').classList.add('hidden');
+
+            document.getElementById('activeCourseProdiBadge').textContent = course.prodi;
+            document.getElementById('activeCourseKodeBadge').textContent = `Kode MK: ${course.kodeMk}`;
+            document.getElementById('activeCourseTitle').textContent = course.mataKuliah;
+            document.getElementById('activeCourseMeta').textContent = `Dosen: ${course.dosen} • Semester ${course.semester} (${course.sks} SKS) • ${course.ta}`;
+
+            const semStr = String(course.semester).trim().toLowerCase();
+            const prodiStr = String(course.prodi).trim().toLowerCase();
+
+            // Cek Prodi: Pendidikan Bahasa Arab (pba) atau Ahwal Al-Syakhshiyyah (hki)
+            const isPba = prodiStr.includes('arab') || prodiStr.includes('pba');
+            const prefix = isPba ? 'pba' : 'hki';
+
+            // Tentukan kelompok semester dari Kolom A-H
+            let semGroup = 'sem1';
+            if (semStr.includes('1') || semStr.includes('2')) semGroup = 'sem1';
+            else if (semStr.includes('3') || semStr.includes('4')) semGroup = 'sem3';
+            else if (semStr.includes('5') || semStr.includes('6')) semGroup = 'sem5';
+            else if (semStr.includes('7') || semStr.includes('8')) semGroup = 'sem7';
+
+            const key = `${semGroup}_${prefix}`;
+            const studentsMap = appData.studentsMap || {};
+            const studentList = studentsMap[key] || [];
+
+            document.getElementById('studentCountBadge').innerHTML = `<i class="fa-solid fa-users mr-1.5"></i> ${studentList.length} Mahasiswa (Semester ${course.semester})`;
+
+            const tbody = document.getElementById('studentTableBody');
+            tbody.innerHTML = '';
+
+            if (studentList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="p-8 text-center text-slate-500 font-medium">
+                            Tidak ada daftar mahasiswa ditemukan untuk ${course.prodi} Semester ${course.semester}.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                studentList.forEach((namaMhs, idx) => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-emerald-50/40 transition-colors";
+                    tr.innerHTML = `
+                        <td class="py-3.5 px-4 text-center text-slate-400 font-bold">${idx + 1}</td>
+                        <td class="py-3.5 px-4 font-bold text-slate-800 student-name">${namaMhs}</td>
+                        <td class="py-2.5 px-3">
+                            <input type="number" step="0.1" min="0" max="15" class="input-keaktifan w-full p-2.5 border border-slate-200 rounded-xl text-center font-bold text-slate-700 focus:border-[#0ba97b] focus:ring-2 focus:ring-[#0ba97b]/20 outline-none transition" placeholder="0 - 15" oninput="calculateTotal(this)">
+                        </td>
+                        <td class="py-2.5 px-3">
+                            <input type="number" step="0.1" min="0" max="35" class="input-tugas w-full p-2.5 border border-slate-200 rounded-xl text-center font-bold text-slate-700 focus:border-[#0ba97b] focus:ring-2 focus:ring-[#0ba97b]/20 outline-none transition" placeholder="0 - 35" oninput="calculateTotal(this)">
+                        </td>
+                        <td class="py-2.5 px-3">
+                            <input type="number" step="0.1" min="0" max="15" class="input-uts w-full p-2.5 border border-slate-200 rounded-xl text-center font-bold text-slate-700 focus:border-[#0ba97b] focus:ring-2 focus:ring-[#0ba97b]/20 outline-none transition" placeholder="0 - 15" oninput="calculateTotal(this)">
+                        </td>
+                        <td class="py-2.5 px-3">
+                            <input type="number" step="0.1" min="0" max="35" class="input-uas w-full p-2.5 border border-slate-200 rounded-xl text-center font-bold text-slate-700 focus:border-[#0ba97b] focus:ring-2 focus:ring-[#0ba97b]/20 outline-none transition" placeholder="0 - 35" oninput="calculateTotal(this)">
+                        </td>
+                        <td class="py-3.5 px-4 text-center">
+                            <span class="inline-block min-w-[3.75rem] py-1.5 px-3 rounded-xl bg-emerald-50 border border-emerald-100 text-[#045844] font-black total-score">0.0</span>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('sectionInputNilai').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Menghitung otomatis Nilai Akhir
+        function calculateTotal(input) {
+            const row = input.closest('tr');
+            const keaktifan = parseFloat(row.querySelector('.input-keaktifan').value) || 0;
+            const tugas = parseFloat(row.querySelector('.input-tugas').value) || 0;
+            const uts = parseFloat(row.querySelector('.input-uts').value) || 0;
+            const uas = parseFloat(row.querySelector('.input-uas').value) || 0;
+            
+            const total = keaktifan + tugas + uts + uas;
+            row.querySelector('.total-score').textContent = total.toFixed(1);
+        }
+
+        // Kembali ke pilihan mata kuliah
+        function resetSelection() {
+            document.getElementById('sectionInputNilai').classList.add('hidden');
+            document.getElementById('alertBox').classList.add('hidden');
+            document.getElementById('cardPilihDosen').classList.remove('hidden');
+            document.getElementById('sectionCourses').classList.remove('hidden');
+        }
+
+        // Mengirim data nilai ke Google Apps Script
+        document.getElementById('formBatchNilai').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmitAll');
+            const alertBox = document.getElementById('alertBox');
+            
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span>Menyimpan ke Database...</span>`;
+            alertBox.classList.add('hidden');
+
+            const rows = document.querySelectorAll('#studentTableBody tr');
+            const gradesData = [];
+
+            rows.forEach(row => {
+                const nameEl = row.querySelector('.student-name');
+                if (!nameEl) return;
+
+                const nama = nameEl.textContent;
+                const keaktifan = row.querySelector('.input-keaktifan').value;
+                const tugas = row.querySelector('.input-tugas').value;
+                const uts = row.querySelector('.input-uts').value;
+                const uas = row.querySelector('.input-uas').value;
+
+                gradesData.push({ nama, keaktifan, tugas, uts, uas });
+            });
+
+            const payload = {
+                dosen: selectedCourse.dosen,
+                kodeMk: selectedCourse.kodeMk,
+                mataKuliah: selectedCourse.mataKuliah,
+                prodi: selectedCourse.prodi,
+                ta: selectedCourse.ta,
+                semester: selectedCourse.semester,
+                grades: gradesData
+            };
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                alertBox.className = "mt-6 p-5 rounded-2xl text-center text-sm font-bold bg-emerald-50 text-[#045844] border border-emerald-200 shadow-sm";
+                alertBox.innerHTML = `<i class="fa-solid fa-circle-check mr-2 text-[#0ba97b] text-base"></i> Berhasil! Semua nilai mahasiswa telah tersimpan ke tab 'Database Nilai'.`;
+                alertBox.classList.remove('hidden');
+                alertBox.scrollIntoView({ behavior: 'smooth' });
+            } catch (err) {
+                alertBox.className = "mt-6 p-5 rounded-2xl text-center text-sm font-bold bg-rose-50 text-rose-800 border border-rose-200 shadow-sm";
+                alertBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2 text-rose-600 text-base"></i> Gagal menyimpan data. Periksa koneksi internet Anda.`;
+                alertBox.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-lg"></i> <span>Simpan Semua Nilai ke Database Nilai</span>`;
+            }
+        });
+    </script>
 </body>
 </html>
