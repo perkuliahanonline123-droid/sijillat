@@ -45,7 +45,6 @@
 
         .delay-100 { animation-delay: 100ms; }
         .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
 
         .glass-header {
             background: rgba(255, 255, 255, 0.85);
@@ -53,7 +52,21 @@
             border-bottom: 1px solid rgba(226, 232, 240, 0.8);
         }
 
-        /* Hilangkan panah spinner default pada input number agar lebih rapi */
+        /* Notifikasi Melayang di Atas ala WhatsApp */
+        #waToast {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+        }
+        #waToast.toast-hidden {
+            transform: translate(-50%, -140%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #waToast.toast-visible {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+
+        /* Hilangkan panah spinner default pada input number */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
             -webkit-appearance: none; 
@@ -66,10 +79,23 @@
 </head>
 <body class="relative overflow-x-hidden">
 
+    <!-- Notifikasi Popup Atas ala WhatsApp -->
+    <div id="waToast" class="fixed top-5 left-1/2 z-[200] toast-hidden max-w-md w-[92%] sm:w-auto">
+        <div id="waToastBox" class="flex items-center gap-3.5 px-5 py-3.5 rounded-2xl bg-[#045844] text-white shadow-[0_12px_30px_-4px_rgba(4,88,68,0.45)] border border-emerald-400/30 backdrop-blur-md">
+            <div id="waToastIcon" class="w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-inner text-lg">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <div class="text-left pr-2">
+                <p id="waToastTitle" class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-200 leading-none mb-1">Berhasil</p>
+                <p id="waToastMessage" class="text-xs sm:text-sm font-bold leading-snug">Semua nilai mahasiswa telah tersimpan ke tab 'Database Nilai'.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Efek Cahaya Latar Belakang -->
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none -z-10"></div>
 
-    <!-- Header Resmi STAIIS -->
+    <!-- Header Resmi STAIIS (Tanpa tulisan Portal Dosen, dilengkapi tombol Refresh Cache Server) -->
     <header class="glass-header sticky top-0 z-50 w-full px-6 py-4 flex justify-center">
         <div class="max-w-5xl w-full flex items-center justify-between gap-4">
             <div class="flex items-center gap-4">
@@ -79,10 +105,12 @@
                     <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-[0.2em]">STAI Imam Syafi'i Cianjur</p>
                 </div>
             </div>
-            <div class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-[#045844] text-xs font-bold">
-                <span class="w-2 h-2 rounded-full bg-[#0ba97b] animate-pulse"></span>
-                Portal Dosen
-            </div>
+
+            <!-- Tombol Refresh yang memperbarui Cache Server untuk Semua Perangkat -->
+            <button type="button" id="btnRefreshCache" onclick="refreshServerCache()" title="Perbarui data dari Spreadsheet untuk semua perangkat" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-50 text-slate-700 hover:text-[#045844] border border-slate-200 hover:border-emerald-200 text-xs font-bold shadow-sm transition-all active:scale-95">
+                <i id="iconRefresh" class="fa-solid fa-arrows-rotate text-[#0ba97b]"></i>
+                <span class="hidden sm:inline">Refresh Data</span>
+            </button>
         </div>
     </header>
 
@@ -94,13 +122,13 @@
             <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-widest mb-4">
                 <i class="fa-solid fa-bolt mr-2"></i> Evaluasi Perkuliahan
             </div>
-            <h2 class="text-3xl md:text-4xl font-black text-slate-800 mb-3 tracking-tight">Portal Input Nilai Dosen</h2>
+            <h2 class="text-3xl md:text-4xl font-black text-slate-800 mb-3 tracking-tight">Portal Input Nilai Prodi</h2>
             <p class="text-slate-500 font-medium text-sm md:text-base leading-relaxed">
                 Pilih nama dosen pengampu di bawah ini untuk menampilkan daftar mata kuliah yang diampu dan mengisi nilai mahasiswa secara instan.
             </p>
         </div>
 
-        <!-- Langkah 1: Pilih Nama Dosen -->
+        <!-- Pilih Nama Dosen -->
         <div id="cardPilihDosen" class="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] mb-8 animate-fade-in-up delay-100 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-40 h-40 bg-[#045844]/5 rounded-full blur-3xl pointer-events-none -mr-10 -mt-10"></div>
             
@@ -109,7 +137,7 @@
                     <i class="fa-solid fa-user-tie"></i>
                 </div>
                 <div>
-                    <label for="selectDosen" class="block text-lg font-extrabold text-slate-800">1. Pilih Nama Dosen Pengampu</label>
+                    <label for="selectDosen" class="block text-lg font-extrabold text-slate-800">Dosen Pengampu</label>
                     <p class="text-xs font-medium text-slate-500">Pilih nama Anda untuk memuat daftar mata kuliah yang diampu</p>
                 </div>
             </div>
@@ -124,21 +152,23 @@
             </div>
         </div>
 
-        <!-- Langkah 2: Daftar Kartu Mata Kuliah (Memanjang Penuh ke Bawah) -->
-        <div id="sectionCourses" class="hidden space-y-5 animate-fade-in-up delay-200">
+        <!-- Daftar Kartu Mata Kuliah (Dikelompokkan Ganjil & Genap) -->
+        <div id="sectionCourses" class="hidden space-y-6 animate-fade-in-up delay-200">
             <div class="flex items-center justify-between px-2">
                 <div class="flex items-center gap-2.5">
-                    <span class="w-7 h-7 rounded-lg bg-[#045844] text-white flex items-center justify-center text-xs font-extrabold">2</span>
-                    <h3 class="text-base md:text-lg font-extrabold text-slate-800">Pilih Mata Kuliah (Klik Kartu)</h3>
+                    <span class="w-8 h-8 rounded-xl bg-[#045844] text-white flex items-center justify-center text-xs font-extrabold shadow-sm">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </span>
+                    <h3 class="text-base md:text-lg font-extrabold text-slate-800">Pilih Mata Kuliah</h3>
                 </div>
                 <span id="courseCountBadge" class="text-xs font-bold bg-emerald-50 border border-emerald-200 text-[#045844] px-3.5 py-1.5 rounded-full"></span>
             </div>
 
-            <!-- Wadah Kartu Memanjang Penuh (1 Kolom Vertikal ke Bawah) -->
-            <div id="courseCardsList" class="flex flex-col gap-5"></div>
+            <!-- Wadah Kartu Mata Kuliah (Ganjil & Genap) -->
+            <div id="courseCardsList" class="space-y-8"></div>
         </div>
 
-        <!-- Langkah 3: Form Tabel Input Nilai Mahasiswa -->
+        <!-- Form Tabel Input Nilai Mahasiswa -->
         <div id="sectionInputNilai" class="hidden space-y-6 animate-fade-in-up">
             
             <!-- Header Info Mata Kuliah Aktif -->
@@ -200,9 +230,6 @@
             </form>
         </div>
 
-        <!-- Kotak Notifikasi -->
-        <div id="alertBox" class="hidden mt-6 p-5 rounded-2xl text-center text-sm font-bold shadow-sm"></div>
-
     </main>
 
     <!-- Footer Resmi -->
@@ -222,44 +249,251 @@
         // URL Web App Google Apps Script Anda
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTozvvshKZGbj27fEg-LBb6FI2c1rWIXtl0qtoHhUO3jlOFblbtWiGSdt6hFZ8cN_t0g/exec";
 
+        // Konfigurasi Cache Lokal 1 Tahun
+        const LOCAL_CACHE_KEY = "STAIIS_PORTAL_CACHE_V1";
+        const LOCAL_CACHE_TIME_KEY = "STAIIS_PORTAL_CACHE_TIME_V1";
+        const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000; // 1 Tahun
+
         let appData = null;
         let selectedCourse = null;
+        let toastTimeout = null;
 
-        // Memuat daftar dosen dari Google Spreadsheet
-        window.addEventListener('DOMContentLoaded', async () => {
+        // Fungsi menampilkan notifikasi melayang di atas ala WhatsApp
+        function showWaNotification(title, message, isError = false) {
+            const toast = document.getElementById('waToast');
+            const box = document.getElementById('waToastBox');
+            const icon = document.getElementById('waToastIcon');
+            const titleEl = document.getElementById('waToastTitle');
+            const msgEl = document.getElementById('waToastMessage');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+
+            if (isError) {
+                box.className = "flex items-center gap-3.5 px-5 py-3.5 rounded-2xl bg-rose-700 text-white shadow-[0_12px_30px_-4px_rgba(190,18,60,0.45)] border border-rose-400/30 backdrop-blur-md";
+                icon.className = "w-9 h-9 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-inner text-lg";
+                icon.innerHTML = '<i class="fa-solid fa-exclamation"></i>';
+                titleEl.className = "text-[11px] font-extrabold uppercase tracking-wider text-rose-200 leading-none mb-1";
+            } else {
+                box.className = "flex items-center gap-3.5 px-5 py-3.5 rounded-2xl bg-[#045844] text-white shadow-[0_12px_30px_-4px_rgba(4,88,68,0.45)] border border-emerald-400/30 backdrop-blur-md";
+                icon.className = "w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-inner text-lg";
+                icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+                titleEl.className = "text-[11px] font-extrabold uppercase tracking-wider text-emerald-200 leading-none mb-1";
+            }
+
+            toast.classList.remove('toast-hidden');
+            toast.classList.add('toast-visible');
+
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('toast-visible');
+                toast.classList.add('toast-hidden');
+            }, 3500);
+        }
+
+        // Render daftar nama dosen ke dalam dropdown
+        function populateDosenDropdown(preserveSelection = true) {
             const selectDosen = document.getElementById('selectDosen');
-            try {
-                const res = await fetch(SCRIPT_URL);
-                appData = await res.json();
-                
-                selectDosen.innerHTML = '<option value="">-- Pilih Nama Anda --</option>';
-                
-                if (appData.dosenList && appData.dosenList.length > 0) {
-                    appData.dosenList.forEach(dosen => {
-                        const opt = document.createElement('option');
-                        opt.value = dosen;
-                        opt.textContent = dosen;
-                        selectDosen.appendChild(opt);
-                    });
-                } else {
-                    selectDosen.innerHTML = '<option value="">-- Data Dosen Tidak Ditemukan --</option>';
+            const previousValue = preserveSelection ? selectDosen.value : "";
+
+            selectDosen.innerHTML = '<option value="">-- Pilih Nama Anda --</option>';
+
+            if (appData && appData.dosenList && appData.dosenList.length > 0) {
+                appData.dosenList.forEach(dosen => {
+                    const opt = document.createElement('option');
+                    opt.value = dosen;
+                    opt.textContent = dosen;
+                    selectDosen.appendChild(opt);
+                });
+
+                if (previousValue && appData.dosenList.includes(previousValue)) {
+                    selectDosen.value = previousValue;
+                    renderCoursesForDosen(previousValue);
                 }
+            } else {
+                selectDosen.innerHTML = '<option value="">-- Data Dosen Tidak Ditemukan --</option>';
+            }
+        }
+
+        // Simpan ke localStorage untuk cache 1 tahun
+        function saveToLocalCache(data) {
+            try {
+                localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(data));
+                localStorage.setItem(LOCAL_CACHE_TIME_KEY, Date.now().toString());
+            } catch (e) {
+                console.warn("Gagal menyimpan cache lokal:", e);
+            }
+        }
+
+        // Ambil data dari server (dengan opsi paksa pembaruan cache server)
+        async function fetchPortalDataFromServer(forceRefreshServer = false) {
+            const url = forceRefreshServer ? `${SCRIPT_URL}?action=refresh&t=${Date.now()}` : SCRIPT_URL;
+            const res = await fetch(url);
+            const data = await res.json();
+            appData = data;
+            saveToLocalCache(data);
+            populateDosenDropdown(true);
+            return data;
+        }
+
+        // Inisialisasi data saat halaman dibuka (Cek Cache 1 Tahun & Sinkronisasi Versi Server)
+        window.addEventListener('DOMContentLoaded', async () => {
+            const cachedStr = localStorage.getItem(LOCAL_CACHE_KEY);
+            const cachedTime = parseInt(localStorage.getItem(LOCAL_CACHE_TIME_KEY) || "0", 10);
+            const now = Date.now();
+
+            // 1. Jika ada cache lokal yang belum melewati 1 tahun, langsung tampilkan secara instan
+            if (cachedStr && (now - cachedTime < ONE_YEAR_MS)) {
+                try {
+                    appData = JSON.parse(cachedStr);
+                    populateDosenDropdown(false);
+
+                    // Cek ke server di latar belakang apakah perangkat lain baru saja menekan tombol Refresh
+                    fetch(`${SCRIPT_URL}?action=version&t=${now}`)
+                        .then(r => r.json())
+                        .then(verInfo => {
+                            if (verInfo.cacheVersion && (!appData.cacheVersion || verInfo.cacheVersion !== appData.cacheVersion)) {
+                                fetchPortalDataFromServer(false);
+                            }
+                        })
+                        .catch(() => {});
+                    return;
+                } catch (e) {
+                    localStorage.removeItem(LOCAL_CACHE_KEY);
+                }
+            }
+
+            // 2. Jika belum ada cache lokal atau sudah lewat 1 tahun, ambil dari server
+            try {
+                await fetchPortalDataFromServer(false);
             } catch (err) {
                 console.error(err);
-                selectDosen.innerHTML = '<option value="">-- Gagal Memuat Data --</option>';
-                alert("Gagal memuat data dari Spreadsheet. Pastikan Web App Google Apps Script telah di-deploy dengan versi terbaru.");
+                document.getElementById('selectDosen').innerHTML = '<option value="">-- Gagal Memuat Data --</option>';
+                showWaNotification("Gagal Memuat", "Periksa koneksi atau pastikan Script telah di-deploy.", true);
             }
         });
 
-        // Ketika Dosen dipilih, tampilkan kartu mata kuliah memanjang penuh ke bawah
-        document.getElementById('selectDosen').addEventListener('change', function() {
-            const dosenName = this.value;
+        // Fungsi Tombol Refresh: Memperbarui Cache di Server (Berlaku untuk Semua Perangkat) & Lokal
+        async function refreshServerCache() {
+            const btn = document.getElementById('btnRefreshCache');
+            const icon = document.getElementById('iconRefresh');
+            btn.disabled = true;
+            icon.classList.add('fa-spin');
+
+            try {
+                await fetchPortalDataFromServer(true);
+                showWaNotification("Cache Diperbarui!", "Data terbaru dari server telah disinkronkan untuk semua perangkat.");
+            } catch (err) {
+                console.error(err);
+                showWaNotification("Gagal Refresh", "Tidak dapat menghubungi server Spreadsheet.", true);
+            } finally {
+                btn.disabled = false;
+                icon.classList.remove('fa-spin');
+            }
+        }
+
+        // Membuat elemen kartu mata kuliah memanjang penuh
+        function createCourseCardElement(c, displayIndex) {
+            const isPba = String(c.prodi).toLowerCase().includes('arab') || String(c.prodi).toLowerCase().includes('pba');
+            
+            const gradientIcon = isPba 
+                ? 'from-blue-500 to-indigo-600 shadow-blue-500/30' 
+                : 'from-[#0ba97b] to-[#045844] shadow-[#045844]/30';
+            const blurCircle = isPba 
+                ? 'bg-blue-50 group-hover:bg-blue-100' 
+                : 'bg-emerald-50 group-hover:bg-emerald-100';
+            const badgeProdi = isPba 
+                ? 'bg-blue-50 text-blue-700 border-blue-200' 
+                : 'bg-emerald-50 text-[#045844] border-emerald-200';
+            const titleHover = isPba
+                ? 'group-hover:text-blue-600'
+                : 'group-hover:text-[#0ba97b]';
+            const actionColor = isPba
+                ? 'text-blue-600 bg-blue-50 group-hover:bg-blue-600 group-hover:text-white'
+                : 'text-[#045844] bg-emerald-50 group-hover:bg-[#0ba97b] group-hover:text-white';
+
+            const card = document.createElement('div');
+            card.style.animationDelay = `${displayIndex * 60}ms`;
+            card.className = "group block w-full bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_30px_-5px_rgba(4,88,68,0.15)] hover:-translate-y-1.5 transition-all duration-300 animate-fade-in-up relative overflow-hidden cursor-pointer";
+            
+            card.innerHTML = `
+                <div class="absolute top-0 right-0 w-36 h-36 ${blurCircle} rounded-full blur-3xl transition-colors duration-500 -mr-10 -mt-10 pointer-events-none"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="flex items-start md:items-center gap-5">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${gradientIcon} text-white flex items-center justify-center text-xl font-black shadow-lg group-hover:scale-110 transition-transform duration-300 shrink-0">
+                            ${displayIndex}
+                        </div>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-2">
+                                <span class="text-xs font-bold px-3 py-1 rounded-full border ${badgeProdi}">
+                                    <i class="fa-solid fa-graduation-cap mr-1"></i> ${c.prodi}
+                                </span>
+                                <span class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-full">
+                                    Kode MK: ${c.kodeMk}
+                                </span>
+                                <span class="text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1 rounded-full">
+                                    Semester ${c.semester} &bull; ${c.sks} SKS ${c.kelas ? '&bull; Kelas ' + c.kelas : ''}
+                                </span>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-extrabold text-slate-800 ${titleHover} transition-colors">
+                                ${c.mataKuliah}
+                            </h3>
+                            <p class="text-xs md:text-sm text-slate-500 font-medium mt-1">
+                                <i class="fa-regular fa-calendar-check mr-1 text-slate-400"></i> Tahun Akademik: <span class="text-slate-700 font-bold">${c.ta}</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end border-t md:border-t-0 pt-4 md:pt-0 border-slate-100 shrink-0">
+                        <span class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-bold ${actionColor} transition-all duration-300 shadow-sm">
+                            Input Nilai <i class="fa-solid fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
+                        </span>
+                    </div>
+                </div>
+            `;
+
+            card.onclick = () => selectCourse(c);
+            return card;
+        }
+
+        // Membuat blok kelompok Semester Ganjil / Semester Genap
+        function createSemesterGroupBlock(title, badgeText, iconClass, badgeStyle, coursesArray) {
+            const wrapper = document.createElement('div');
+            wrapper.className = "space-y-4";
+
+            const header = document.createElement('div');
+            header.className = "flex items-center justify-between bg-white/90 px-5 py-3.5 rounded-2xl border border-slate-200/80 shadow-sm";
+            header.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <i class="${iconClass} text-base"></i>
+                    <h4 class="text-sm md:text-base font-extrabold text-slate-800 uppercase tracking-wide">${title}</h4>
+                </div>
+                <span class="text-xs font-bold px-3 py-1 rounded-full border ${badgeStyle}">
+                    ${badgeText} (${coursesArray.length} MK)
+                </span>
+            `;
+            wrapper.appendChild(header);
+
+            const cardsStack = document.createElement('div');
+            cardsStack.className = "flex flex-col gap-5";
+
+            coursesArray.forEach((course, idx) => {
+                cardsStack.appendChild(createCourseCardElement(course, idx + 1));
+            });
+
+            wrapper.appendChild(cardsStack);
+            return wrapper;
+        }
+
+        // Render kartu mata kuliah yang dikelompokkan berdasarkan Semester Ganjil dan Genap
+        function renderCoursesForDosen(dosenName) {
             const listContainer = document.getElementById('courseCardsList');
             const sectionCourses = document.getElementById('sectionCourses');
             const countBadge = document.getElementById('courseCountBadge');
             
             document.getElementById('sectionInputNilai').classList.add('hidden');
-            document.getElementById('alertBox').classList.add('hidden');
             listContainer.innerHTML = '';
 
             if (!dosenName || !appData) {
@@ -277,73 +511,60 @@
                     </div>
                 `;
             } else {
-                filteredCourses.forEach((c, index) => {
-                    const isPba = String(c.prodi).toLowerCase().includes('arab') || String(c.prodi).toLowerCase().includes('pba');
-                    
-                    // Variasi warna ala kartu Portal Akademik STAIIS
-                    const gradientIcon = isPba 
-                        ? 'from-blue-500 to-indigo-600 shadow-blue-500/30' 
-                        : 'from-[#0ba97b] to-[#045844] shadow-[#045844]/30';
-                    const blurCircle = isPba 
-                        ? 'bg-blue-50 group-hover:bg-blue-100' 
-                        : 'bg-emerald-50 group-hover:bg-emerald-100';
-                    const badgeProdi = isPba 
-                        ? 'bg-blue-50 text-blue-700 border-blue-200' 
-                        : 'bg-emerald-50 text-[#045844] border-emerald-200';
-                    const titleHover = isPba
-                        ? 'group-hover:text-blue-600'
-                        : 'group-hover:text-[#0ba97b]';
-                    const actionColor = isPba
-                        ? 'text-blue-600 bg-blue-50 group-hover:bg-blue-600 group-hover:text-white'
-                        : 'text-[#045844] bg-emerald-50 group-hover:bg-[#0ba97b] group-hover:text-white';
+                const ganjilCourses = [];
+                const genapCourses = [];
 
-                    const card = document.createElement('div');
-                    card.style.animationDelay = `${(index + 1) * 80}ms`;
-                    card.className = "group block w-full bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_30px_-5px_rgba(4,88,68,0.15)] hover:-translate-y-1.5 transition-all duration-300 animate-fade-in-up relative overflow-hidden cursor-pointer";
-                    
-                    card.innerHTML = `
-                        <div class="absolute top-0 right-0 w-36 h-36 ${blurCircle} rounded-full blur-3xl transition-colors duration-500 -mr-10 -mt-10 pointer-events-none"></div>
-                        
-                        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                            <div class="flex items-start md:items-center gap-5">
-                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${gradientIcon} text-white flex items-center justify-center text-xl font-black shadow-lg group-hover:scale-110 transition-transform duration-300 shrink-0">
-                                    ${index + 1}
-                                </div>
-                                <div>
-                                    <div class="flex flex-wrap items-center gap-2 mb-2">
-                                        <span class="text-xs font-bold px-3 py-1 rounded-full border ${badgeProdi}">
-                                            <i class="fa-solid fa-graduation-cap mr-1"></i> ${c.prodi}
-                                        </span>
-                                        <span class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-full">
-                                            Kode MK: ${c.kodeMk}
-                                        </span>
-                                        <span class="text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1 rounded-full">
-                                            Semester ${c.semester} &bull; ${c.sks} SKS ${c.kelas ? '&bull; Kelas ' + c.kelas : ''}
-                                        </span>
-                                    </div>
-                                    <h3 class="text-xl md:text-2xl font-extrabold text-slate-800 ${titleHover} transition-colors">
-                                        ${c.mataKuliah}
-                                    </h3>
-                                    <p class="text-xs md:text-sm text-slate-500 font-medium mt-1">
-                                        <i class="fa-regular fa-calendar-check mr-1 text-slate-400"></i> Tahun Akademik: <span class="text-slate-700 font-bold">${c.ta}</span>
-                                    </p>
-                                </div>
-                            </div>
+                filteredCourses.forEach(c => {
+                    const semNum = parseInt(String(c.semester).replace(/\D/g, ''), 10);
+                    const taLower = String(c.ta || '').toLowerCase();
 
-                            <div class="flex items-center justify-end border-t md:border-t-0 pt-4 md:pt-0 border-slate-100 shrink-0">
-                                <span class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-bold ${actionColor} transition-all duration-300 shadow-sm">
-                                    Input Nilai <i class="fa-solid fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
-                                </span>
-                            </div>
-                        </div>
-                    `;
-
-                    card.onclick = () => selectCourse(c);
-                    listContainer.appendChild(card);
+                    if (!isNaN(semNum)) {
+                        if (semNum % 2 !== 0) ganjilCourses.push(c);
+                        else genapCourses.push(c);
+                    } else if (taLower.includes('ganjil')) {
+                        ganjilCourses.push(c);
+                    } else {
+                        genapCourses.push(c);
+                    }
                 });
+
+                // Urutkan masing-masing kelompok berdasarkan angka semester
+                const sortBySem = (a, b) => (parseInt(a.semester, 10) || 0) - (parseInt(b.semester, 10) || 0);
+                ganjilCourses.sort(sortBySem);
+                genapCourses.sort(sortBySem);
+
+                // Tampilkan Kelompok Semester Ganjil terlebih dahulu, kemudian Semester Genap
+                if (ganjilCourses.length > 0) {
+                    listContainer.appendChild(
+                        createSemesterGroupBlock(
+                            "Semester Ganjil",
+                            "Semester 1, 3, 5, 7",
+                            "fa-solid fa-sun text-emerald-600",
+                            "bg-emerald-50 text-[#045844] border-emerald-200",
+                            ganjilCourses
+                        )
+                    );
+                }
+
+                if (genapCourses.length > 0) {
+                    listContainer.appendChild(
+                        createSemesterGroupBlock(
+                            "Semester Genap",
+                            "Semester 2, 4, 6, 8",
+                            "fa-solid fa-moon text-indigo-600",
+                            "bg-indigo-50 text-indigo-700 border-indigo-200",
+                            genapCourses
+                        )
+                    );
+                }
             }
 
             sectionCourses.classList.remove('hidden');
+        }
+
+        // Event saat memilih nama dosen
+        document.getElementById('selectDosen').addEventListener('change', function() {
+            renderCoursesForDosen(this.value);
         });
 
         // Menampilkan tabel mahasiswa sesuai Prodi dan Semester mata kuliah yang dipilih
@@ -351,7 +572,6 @@
             selectedCourse = course;
             document.getElementById('sectionCourses').classList.add('hidden');
             document.getElementById('cardPilihDosen').classList.add('hidden');
-            document.getElementById('alertBox').classList.add('hidden');
 
             document.getElementById('activeCourseProdiBadge').textContent = course.prodi;
             document.getElementById('activeCourseKodeBadge').textContent = `Kode MK: ${course.kodeMk}`;
@@ -432,23 +652,21 @@
             row.querySelector('.total-score').textContent = total.toFixed(1);
         }
 
-        // Kembali ke pilihan mata kuliah
+        // Kembali ke tampilan daftar kartu mata kuliah (seperti Gambar 2)
         function resetSelection() {
             document.getElementById('sectionInputNilai').classList.add('hidden');
-            document.getElementById('alertBox').classList.add('hidden');
             document.getElementById('cardPilihDosen').classList.remove('hidden');
             document.getElementById('sectionCourses').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Mengirim data nilai ke Google Apps Script
+        // Mengirim data nilai ke Google Apps Script lalu kembali ke daftar kartu mata kuliah
         document.getElementById('formBatchNilai').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSubmitAll');
-            const alertBox = document.getElementById('alertBox');
             
             btn.disabled = true;
             btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span>Menyimpan ke Database...</span>`;
-            alertBox.classList.add('hidden');
 
             const rows = document.querySelectorAll('#studentTableBody tr');
             const gradesData = [];
@@ -484,14 +702,20 @@
                     body: JSON.stringify(payload)
                 });
 
-                alertBox.className = "mt-6 p-5 rounded-2xl text-center text-sm font-bold bg-emerald-50 text-[#045844] border border-emerald-200 shadow-sm";
-                alertBox.innerHTML = `<i class="fa-solid fa-circle-check mr-2 text-[#0ba97b] text-base"></i> Berhasil! Semua nilai mahasiswa telah tersimpan ke tab 'Database Nilai'.`;
-                alertBox.classList.remove('hidden');
-                alertBox.scrollIntoView({ behavior: 'smooth' });
+                // 1. Kembali ke tampilan kartu mata kuliah (Gambar 2)
+                resetSelection();
+
+                // 2. Munculkan notifikasi melayang di atas ala WhatsApp lalu menghilang otomatis
+                showWaNotification(
+                    "Berhasil!",
+                    "Semua nilai mahasiswa telah tersimpan ke tab 'Database Nilai'."
+                );
             } catch (err) {
-                alertBox.className = "mt-6 p-5 rounded-2xl text-center text-sm font-bold bg-rose-50 text-rose-800 border border-rose-200 shadow-sm";
-                alertBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2 text-rose-600 text-base"></i> Gagal menyimpan data. Periksa koneksi internet Anda.`;
-                alertBox.classList.remove('hidden');
+                showWaNotification(
+                    "Gagal Menyimpan",
+                    "Periksa koneksi internet Anda dan coba lagi.",
+                    true
+                );
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-lg"></i> <span>Simpan Semua Nilai ke Database Nilai</span>`;
