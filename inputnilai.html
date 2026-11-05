@@ -100,7 +100,6 @@
                     <span class="w-8 h-8 rounded-xl bg-[#045844] text-white flex items-center justify-center text-xs font-extrabold shadow-sm"><i class="fa-solid fa-layer-group"></i></span>
                     <h3 class="text-base md:text-lg font-extrabold text-slate-800">Pilih Mata Kuliah</h3>
                 </div>
-                <span id="courseCountBadge" class="text-xs font-bold bg-emerald-50 border border-emerald-200 text-[#045844] px-3.5 py-1.5 rounded-full"></span>
             </div>
 
             <div id="courseCardsList" class="space-y-8"></div>
@@ -349,7 +348,6 @@
             if (!dosenName || !appData) { sectionCourses.classList.add('hidden'); return; }
 
             const filteredCourses = appData.courses.filter(c => c.dosen === dosenName);
-            document.getElementById('courseCountBadge').textContent = `${filteredCourses.length} Mata Kuliah`;
 
             if (filteredCourses.length === 0) {
                 listContainer.innerHTML = `<div class="bg-white rounded-3xl p-8 text-center border border-slate-100 text-slate-500 font-medium shadow-sm">Tidak ada mata kuliah untuk dosen ini.</div>`;
