@@ -401,11 +401,11 @@
             let rekap = {};
             
             // Indeks Kolom sesuai Spreadsheet aktual:
-            // 0 (A) = Tanggal Perkuliahan | 1 (B) = Metode | 2 (C) = Program Studi
-            // 3 (D) = Mata Kuliah         | 4 (E) = Semester | 5 (F) = Dosen Pengampu
+            // 0 (A) = Tanggal Perkuliahan | 1 (B) = Metode   | 2 (C) = Program Studi
+            // 3 (D) = Mata Kuliah         | 4 (E) = Semester | 9 (J) = Nama Dosen
             const indexMatkul   = [3]; // Indeks Kolom D
             const indexSemester = [4]; // Indeks Kolom E
-            const indexDosen    = [5]; // Indeks Kolom F
+            const indexDosen    = [9]; // Indeks Kolom J
 
             dataMentah.forEach((row) => {
                 if (!Array.isArray(row)) return;
